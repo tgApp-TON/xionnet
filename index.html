@@ -266,6 +266,22 @@ a{color:var(--poly2);text-decoration:none}
 .sc-total .lbl{font-size:10px;color:var(--text3);margin-bottom:4px}
 .sc-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:var(--text2)}
 
+/* ========== B&W THEME ========== */
+body.bw{--bg:#000;--bg2:#0a0a0a;--bg3:#111;--bg4:#1a1a1a;--bg5:#222;--poly:#888;--poly2:#bbb;--poly3:#444;--green:#fff;--green2:#ccc;--red:#999;--orange:#aaa;--blue:#999;--frozen:#bbb;--gold:#ddd;--text:#fff;--text2:#999;--text3:#555;--border:rgba(255,255,255,.1);--border2:rgba(255,255,255,.18);--border3:rgba(255,255,255,.3)}
+body.bw .cs-btn,body.bw .buy-btn,body.bw .buy-btn.btn-ready,body.bw .congrats-btn,body.bw .mint-btn{background:#fff;color:#000}
+body.bw .stat-box::before,body.bw .lvl-card::before{background:#fff!important}
+body.bw .lvl-card.lc-next{border-color:rgba(255,255,255,.5);animation:none;box-shadow:0 0 10px rgba(255,255,255,.15)}
+body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgba(255,255,255,.05);animation:none}
+
+/* ========== SETTINGS MODAL ========== */
+#settingsModal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+#settingsModal.hidden{display:none}
+.settings-sheet{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 20px 36px;animation:slideUp .25s ease;position:relative}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-label{font-size:13px;font-weight:600}
+.setting-sub{font-size:10px;color:var(--text3)}
+
 /* ========== PUSH NOTIFICATIONS ========== */
 #notifContainer{position:fixed;top:12px;right:12px;left:12px;z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .notif{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;pointer-events:auto;animation:notifIn .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);backdrop-filter:blur(12px);transition:all .3s}
@@ -411,6 +427,9 @@ a{color:var(--poly2);text-decoration:none}
       <span class="wp-addr">Connect...</span>
       <span class="wp-badge">POL</span>
     </div>
+    <button class="ref-btn" onclick="openSettings()" style="padding:5px 8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     <button class="ref-btn" onclick="copyRef(this)">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       Ref
@@ -816,6 +835,33 @@ a{color:var(--poly2);text-decoration:none}
     <div class="modal-btns">
       <button class="ghost-btn" onclick="closeModal()">Cancel</button>
       <button class="buy-btn" id="modalAction" onclick="doStep()"><span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Approve USDC</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SETTINGS MODAL ==================== -->
+<div id="settingsModal" class="hidden" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeSettings()">✕</button>
+    <div style="font-weight:900;font-size:16px;margin-bottom:16px">Settings</div>
+
+    <div class="setting-row">
+      <div><div class="setting-label">Theme</div><div class="setting-sub">Switch between Dark and B&W</div></div>
+      <div style="display:flex;gap:6px">
+        <button class="chip on" id="themeDark" onclick="setTheme('dark')">Dark</button>
+        <button class="chip" id="themeBW" onclick="setTheme('bw')">B&W</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <div><div class="setting-label">Sound</div><div class="setting-sub">Sounds on actions and notifications</div></div>
+      <label class="ab-switch"><input type="checkbox" id="soundToggle" checked onchange="toggleSound(this.checked)"><span class="ab-slider"></span></label>
+    </div>
+
+    <div class="setting-row">
+      <div><div class="setting-label">Vibration</div><div class="setting-sub">Haptic feedback on events</div></div>
+      <label class="ab-switch"><input type="checkbox" id="vibroToggle" checked onchange="toggleVibro(this.checked)"><span class="ab-slider"></span></label>
     </div>
   </div>
 </div>
@@ -1749,6 +1795,7 @@ async function doStep() {
 function showCongrats() {
   document.getElementById('bonusCongrats').classList.remove('hidden');
   soundBonus();
+  vibrate([100, 50, 100, 50, 200]);
   // Trigger bonus timer claimed
   if (typeof claimBonus === 'function') claimBonus();
 }
@@ -2137,10 +2184,10 @@ const MAX_NOTIFS = 3;
 function showNotif(type, title, sub, amount) {
   const container = document.getElementById('notifContainer');
   if (!container) return;
-  // Play sound
-  if (type === 'payout' || type === 'spillover') soundPayout();
-  else if (type === 'referral') soundSuccess();
-  else soundNotif();
+  // Play sound + vibrate
+  if (type === 'payout' || type === 'spillover') { soundPayout(); vibrate(100); }
+  else if (type === 'referral') { soundSuccess(); vibrate(80); }
+  else { soundNotif(); vibrate(50); }
   const s = notifSVGs[type] || notifSVGs.slot;
   const amtColor = type === 'payout' || type === 'spillover' ? 'var(--green)' :
                    type === 'frozen' ? 'var(--frozen)' : 'var(--poly2)';
@@ -2211,6 +2258,45 @@ async function checkNewEvents() {
   } catch (e) { /* silent */ }
 }
 
+// ==================== SETTINGS ====================
+let soundEnabled = localStorage.getItem('xn_sound') !== 'off';
+let vibroEnabled = localStorage.getItem('xn_vibro') !== 'off';
+let currentTheme = localStorage.getItem('xn_theme') || 'dark';
+
+function openSettings() {
+  document.getElementById('settingsModal').classList.remove('hidden');
+  document.getElementById('soundToggle').checked = soundEnabled;
+  document.getElementById('vibroToggle').checked = vibroEnabled;
+  document.getElementById('themeDark').classList.toggle('on', currentTheme === 'dark');
+  document.getElementById('themeBW').classList.toggle('on', currentTheme === 'bw');
+}
+function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
+
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('xn_theme', theme);
+  document.body.classList.toggle('bw', theme === 'bw');
+  document.getElementById('themeDark').classList.toggle('on', theme === 'dark');
+  document.getElementById('themeBW').classList.toggle('on', theme === 'bw');
+}
+
+function toggleSound(on) {
+  soundEnabled = on;
+  localStorage.setItem('xn_sound', on ? 'on' : 'off');
+}
+
+function toggleVibro(on) {
+  vibroEnabled = on;
+  localStorage.setItem('xn_vibro', on ? 'on' : 'off');
+}
+
+function vibrate(ms) {
+  if (vibroEnabled && navigator.vibrate) navigator.vibrate(ms || 50);
+}
+
+// Apply saved theme on load
+if (currentTheme === 'bw') document.body.classList.add('bw');
+
 // ==================== SOUNDS ====================
 let audioCtx = null;
 function getAudio() {
@@ -2219,6 +2305,7 @@ function getAudio() {
 }
 
 function playTone(freq, duration, type, vol) {
+  if (!soundEnabled) return;
   try {
     const ctx = getAudio();
     const osc = ctx.createOscillator();
