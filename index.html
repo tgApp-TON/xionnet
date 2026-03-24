@@ -1931,9 +1931,7 @@ function toggleSubRefs(wallet, containerId, itemEl) {
     const expandBtn = itemEl.querySelector('.ri-expand');
     if (expandBtn) expandBtn.classList.add('open');
     // Load sub-referrals if not loaded yet
-    if (!subRefsLoaded[wallet]) {
-      loadSubRefs(wallet, containerId, 0);
-    }
+    loadSubRefs(wallet, containerId, 0);
   }
 }
 
@@ -2523,7 +2521,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('focus', () => { refreshData(true); loadUserData().then(() => { renderLevels('dash-lvls'); renderLevels('main-lvls'); }); });
 
 // Periodic background refresh every 30s + check notifications every 15s
-setInterval(() => { if (!document.hidden) refreshData(); }, 30000);
+setInterval(() => { if (!document.hidden) { refreshData(); loadReferrals(); } }, 30000);
 setInterval(() => { if (!document.hidden) checkNewEvents(); }, 15000);
 </script>
 </body>
