@@ -282,6 +282,23 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 .setting-label{font-size:13px;font-weight:600}
 .setting-sub{font-size:10px;color:var(--text3)}
 
+/* ========== REFERRAL TREE VISUAL ========== */
+.tree-wrap{overflow-x:auto;padding:16px 0;-webkit-overflow-scrolling:touch}
+.tree{display:flex;flex-direction:column;align-items:center;min-width:fit-content}
+.tree-node{display:flex;flex-direction:column;align-items:center;position:relative}
+.tree-card{background:var(--bg4);border:1px solid var(--border2);border-radius:10px;padding:8px 12px;text-align:center;min-width:70px;position:relative;transition:all .15s}
+.tree-card.tc-me{border-color:var(--poly);background:rgba(124,58,237,.08);box-shadow:0 0 12px rgba(124,58,237,.15)}
+.tree-card.tc-active{border-color:rgba(6,214,160,.3)}
+.tree-card.tc-pending{border-color:var(--border);opacity:.5}
+.tree-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:9px;margin:0 auto 4px}
+.tree-addr{font-family:'DM Mono',monospace;font-size:8px;color:var(--text2)}
+.tree-lvl{font-size:9px;font-weight:700;margin-top:2px}
+.tree-children{display:flex;gap:8px;margin-top:0;position:relative;padding-top:20px}
+.tree-children::before{content:'';position:absolute;top:0;left:50%;width:1px;height:20px;background:var(--border2)}
+.tree-connector{position:relative;display:flex;flex-direction:column;align-items:center}
+.tree-connector::before{content:'';position:absolute;top:0;left:50%;width:1px;height:20px;background:var(--border2)}
+.tree-hline{position:absolute;top:0;height:1px;background:var(--border2)}
+
 /* ========== PUSH NOTIFICATIONS ========== */
 #notifContainer{position:fixed;top:12px;right:12px;left:12px;z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .notif{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;pointer-events:auto;animation:notifIn .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);backdrop-filter:blur(12px);transition:all .3s}
@@ -515,6 +532,12 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl">Pending</div></div>
     <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl">Earned</div></div>
   </div>
+  <div class="card" id="treeCard" style="display:none">
+    <div class="card-hdr"><span class="card-title">Referral Tree</span></div>
+    <div class="tree-wrap"><div class="tree" id="refTree"></div></div>
+  </div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:10px 0 6px">Referral List</div>
   <div id="refListContainer">
     <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No referrals yet. Share your link!</div>
   </div>
@@ -1457,7 +1480,7 @@ function switchTab(el, id) {
   refreshData();
   // Load tab-specific data
   if (id === 'history') loadHistory();
-  if (id === 'referrals') loadReferrals();
+  if (id === 'referrals') { loadReferrals(); loadRefTree(); }
   if (id === 'stats') { loadUserPayouts().then(buildChart); loadLeaderboard(); runCalc(); }
 }
 
@@ -1542,6 +1565,7 @@ async function connectWallet(btn) {
     renderLevels('main-lvls');
     loadUserPayouts().then(buildChart);
     loadReferrals();
+    loadRefTree();
     loadLeaderboard();
     startBonusTimer();
     refreshData(true);
@@ -2330,6 +2354,87 @@ async function checkNewEvents() {
         '+' + f(s.amount / 1e6));
     });
   } catch (e) { /* silent */ }
+}
+
+// ==================== REFERRAL TREE ====================
+async function loadRefTree() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  const treeCard = document.getElementById('treeCard');
+  const treeEl = document.getElementById('refTree');
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_referral_tree', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_wallet: currentWallet.toLowerCase(), depth: 2 })
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.length) { treeCard.style.display = 'none'; return; }
+
+    // Build tree structure
+    const directs = data.filter(d => d.level === 1);
+    const subs = data.filter(d => d.level === 2);
+
+    // Group subs by their referrer
+    const subMap = {};
+    subs.forEach(s => {
+      if (!subMap[s.referrer_wallet]) subMap[s.referrer_wallet] = [];
+      subMap[s.referrer_wallet].push(s);
+    });
+
+    // Render ME node
+    const myShort = currentWallet.slice(0,6) + '...' + currentWallet.slice(-4);
+    let html = '<div class="tree-node">';
+    html += '<div class="tree-card tc-me"><div class="tree-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">ME</div><div class="tree-addr">' + myShort + '</div></div>';
+
+    if (directs.length > 0) {
+      html += '<div class="tree-children" style="position:relative">';
+      // Horizontal connector line
+      if (directs.length > 1) {
+        html += '<div class="tree-hline" style="left:calc(50% / ' + directs.length + ');right:calc(50% / ' + directs.length + ');top:0"></div>';
+      }
+
+      directs.forEach(d => {
+        const short = d.wallet.slice(0,6) + '...' + d.wallet.slice(-4);
+        const initials = d.wallet.slice(2,4).toUpperCase();
+        const isActive = (d.active_levels || 0) > 0;
+        const cls = isActive ? 'tc-active' : 'tc-pending';
+        const avatarBg = isActive ? 'rgba(6,214,160,.15)' : 'var(--bg5)';
+        const avatarColor = isActive ? 'var(--green)' : 'var(--text3)';
+        const lvlText = isActive ? 'L' + d.active_levels : '—';
+        const lvlColor = isActive ? 'var(--green)' : 'var(--text3)';
+        const mySubs = subMap[d.wallet] || [];
+
+        html += '<div class="tree-connector" style="padding-top:20px">';
+        html += '<div class="tree-card ' + cls + '"><div class="tree-avatar" style="background:' + avatarBg + ';color:' + avatarColor + '">' + initials + '</div><div class="tree-addr">' + short + '</div><div class="tree-lvl" style="color:' + lvlColor + '">' + lvlText + '</div></div>';
+
+        if (mySubs.length > 0) {
+          html += '<div class="tree-children">';
+          if (mySubs.length > 1) {
+            html += '<div class="tree-hline" style="left:calc(50% / ' + mySubs.length + ');right:calc(50% / ' + mySubs.length + ');top:0"></div>';
+          }
+          mySubs.forEach(s => {
+            const sShort = s.wallet.slice(0,6) + '...' + s.wallet.slice(-4);
+            const sInitials = s.wallet.slice(2,4).toUpperCase();
+            const sActive = (s.active_levels || 0) > 0;
+            const sCls = sActive ? 'tc-active' : 'tc-pending';
+            const sAvBg = sActive ? 'rgba(56,189,248,.1)' : 'var(--bg5)';
+            const sAvColor = sActive ? 'var(--frozen)' : 'var(--text3)';
+            const sLvl = sActive ? 'L' + s.active_levels : '—';
+            const sLvlColor = sActive ? 'var(--frozen)' : 'var(--text3)';
+            html += '<div class="tree-connector" style="padding-top:20px"><div class="tree-card ' + sCls + '"><div class="tree-avatar" style="background:' + sAvBg + ';color:' + sAvColor + '">' + sInitials + '</div><div class="tree-addr">' + sShort + '</div><div class="tree-lvl" style="color:' + sLvlColor + '">' + sLvl + '</div></div></div>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+
+    treeEl.innerHTML = html;
+    treeCard.style.display = '';
+  } catch(e) { console.warn('Tree load:', e); }
 }
 
 // ==================== WALLET ADDRESS ====================
