@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090e">
+<title>XionNET — Polygon DeFi Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090e;--bg2:#0d0f1a;--bg3:#131628;--bg4:#181b30;--bg5:#1e2238;
+  --poly:#7c3aed;--poly2:#a78bfa;--poly3:#4c1d95;
+  --green:#06d6a0;--green2:#059669;--red:#fb4e6d;--orange:#f59e0b;
+  --blue:#60a5fa;--frozen:#38bdf8;--gold:#fcd34d;
+  --text:#f0f2f8;--text2:#9099b0;--text3:#424d68;
+  --border:rgba(124,58,237,0.14);--border2:rgba(124,58,237,0.28);--border3:rgba(124,58,237,0.45);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:0;height:0}
+a{color:var(--poly2);text-decoration:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes toastIn{from{transform:translateX(-50%) translateY(-8px);opacity:0}to{transform:translateX(-50%);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ========== CONNECT SCREEN ========== */
+#connectScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;background:radial-gradient(ellipse at top,rgba(124,58,237,0.12),transparent 60%)}
+.cs-logo{font-family:'Syne',sans-serif;font-weight:900;font-size:52px;letter-spacing:-2px;margin-bottom:4px}
+.cs-logo .t2{color:var(--poly2)}
+.cs-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+.cs-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:28px 24px;max-width:400px;width:100%;box-shadow:0 0 80px rgba(124,58,237,0.12)}
+.cs-features{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.cs-feat{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text2)}
+.cs-feat-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.cs-btn{width:100%;padding:15px;background:var(--poly);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.cs-btn:hover{background:var(--poly2);transform:translateY(-1px)}
+.cs-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.cs-net{display:flex;align-items:center;gap:6px;justify-content:center;margin-top:14px;font-size:11px;color:var(--text3)}
+.cs-net-dot{width:6px;height:6px;border-radius:50%;background:var(--poly2)}
+
+/* ========== HEADER ========== */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(8,9,14,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 16px 0}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.hdr-logo{font-weight:900;font-size:18px;letter-spacing:-0.5px}.hdr-logo .t2{color:var(--poly2)}
+.wallet-pill{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--bg4);border:1px solid var(--border2);border-radius:20px;padding:5px 10px}
+.wp-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+.wp-addr{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)}
+.wp-badge{font-size:9px;font-weight:700;color:var(--poly2);background:rgba(124,58,237,0.15);padding:2px 7px;border-radius:4px}
+.ref-btn{background:transparent;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);font-family:'Syne',sans-serif;font-weight:600;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.ref-btn:hover{border-color:var(--border3);color:var(--poly2)}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;gap:0}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:flex;align-items:center;gap:6px;padding:10px 14px;font-weight:600;font-size:12px;color:var(--text3);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Syne',sans-serif}
+.tab:hover{color:var(--text2)}
+.tab.on{color:var(--poly2);border-bottom-color:var(--poly)}
+.tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ========== SCREENS ========== */
+.screen{display:none;padding:18px 16px 40px}
+.screen.on{display:block;animation:fadeIn .18s ease}
+
+/* ========== CARDS / COMMON ========== */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-title{font-weight:800;font-size:13px}
+.ghost-btn{background:transparent;border:1px solid var(--border2);border-radius:8px;padding:4px 10px;color:var(--text2);font-family:'Syne',sans-serif;font-weight:600;font-size:10px;cursor:pointer;transition:all .15s}
+.ghost-btn:hover{border-color:var(--border3);color:var(--poly2)}
+
+/* ========== STAT BOXES ========== */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative;overflow:hidden}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-box.sb-poly::before{background:linear-gradient(90deg,var(--poly),var(--poly2))}
+.stat-box.sb-green::before{background:linear-gradient(90deg,var(--green),var(--green2))}
+.stat-box.sb-orange::before{background:linear-gradient(90deg,var(--orange),var(--gold))}
+.stat-box.sb-frozen::before{background:linear-gradient(90deg,var(--frozen),var(--blue))}
+.stat-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.stat-val{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:2px}
+.stat-hint{font-size:10px;color:var(--text3)}
+
+/* ========== FEED ========== */
+.feed-item{display:flex;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center;transition:background .1s}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover{background:var(--bg3)}
+.fi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.fi-body{flex:1;min-width:0}
+.fi-title{font-size:12px;font-weight:600}
+.fi-sub{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi-right{text-align:right;flex-shrink:0}
+.fi-amt{font-size:12px;font-weight:800;font-family:'DM Mono',monospace}
+.fi-time{font-size:9px;color:var(--text3)}
+
+/* ========== LEVELS GRID ========== */
+.lvl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lvl-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px;cursor:pointer;position:relative;overflow:hidden;transition:all .15s}
+.lvl-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.lvl-card.lc-on{border-color:rgba(6,214,160,.35);background:rgba(6,214,160,.03)}
+.lvl-card.lc-frz{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.04)}
+.lvl-card.lc-dim{opacity:.32}
+.lvl-card.lc-sel{border-color:var(--poly);box-shadow:0 0 0 1px var(--poly),0 0 16px rgba(124,58,237,0.15)}
+.lvl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.lvl-card.lc-on::before{background:linear-gradient(90deg,var(--green),var(--green2))}
+.lvl-card.lc-frz::before{background:linear-gradient(90deg,var(--frozen),var(--blue))}
+.lc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.lc-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.lc-cycle{font-size:9px;font-weight:700;color:var(--poly2)}
+.lc-price{font-size:12px;font-weight:800;margin-bottom:6px}
+.lc-price.dim{color:var(--text3)}
+.lc-pips{display:flex;gap:3px;margin-bottom:4px}
+.lc-pip{flex:1;height:3px;border-radius:2px;background:var(--bg5)}
+.lc-pip.p-on{background:var(--green)}
+.lc-pip.p-frz{background:var(--frozen)}
+.lc-pip.p-spill{background:var(--poly2)}
+.lc-meta{font-size:9px;color:var(--text3)}
+.lc-frozen-badge{font-size:9px;font-weight:700;color:var(--frozen);margin-top:4px}
+
+/* ========== LEVEL DETAIL ========== */
+#lvlDetail{display:none;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:14px;animation:fadeIn .18s ease}
+#lvlDetail.show{display:block}
+.ld-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.ld-badge{width:42px;height:42px;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--poly2);flex-shrink:0}
+.ld-info{flex:1}
+.ld-title{font-weight:900;font-size:15px;margin-bottom:2px}
+.ld-price{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)}
+.ld-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.ld-tag{font-size:9px;font-weight:700;text-transform:uppercase;padding:3px 8px;border-radius:6px;letter-spacing:.5px}
+.ld-tag.t-active{color:var(--green);background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25)}
+.ld-tag.t-inactive{color:var(--text3);background:var(--bg4);border:1px solid var(--border)}
+.ld-tag.t-frozen{color:var(--frozen);background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25)}
+.ld-tag.t-last{color:var(--gold);background:rgba(252,211,77,.1);border:1px solid rgba(252,211,77,.25)}
+.slots-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.slot-box{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px}
+.slot-box.s-on{border-color:rgba(6,214,160,.35);background:rgba(6,214,160,.04)}
+.slot-box.s-frz{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.04)}
+.slot-box.s-spill{border-color:rgba(124,58,237,.35);background:rgba(124,58,237,.04)}
+.slot-num{font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:3px}
+.slot-who{font-family:'DM Mono',monospace;font-size:10px;margin-bottom:2px}
+.slot-desc{font-size:10px;color:var(--text3)}
+.ld-info-box{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.ld-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px}
+.ld-row .lbl{color:var(--text2)}
+.ld-actions{margin-top:12px}
+.buy-btn{width:100%;padding:12px;background:var(--poly);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s}
+.buy-btn:hover{background:var(--poly2);transform:translateY(-1px)}
+
+/* ========== HISTORY ========== */
+.filter-chips{display:flex;overflow-x:auto;gap:6px;margin-bottom:12px;scrollbar-width:none}
+.filter-chips::-webkit-scrollbar{display:none}
+.chip{padding:5px 12px;border-radius:20px;font-family:'Syne',sans-serif;font-weight:600;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);cursor:pointer;white-space:nowrap;transition:all .15s}
+.chip.on{color:var(--poly2);background:rgba(124,58,237,.15);border-color:var(--border2)}
+
+/* ========== REFERRALS ========== */
+.ref-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.ref-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center}
+.ref-stat .val{font-size:22px;font-weight:900}
+.ref-stat .lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.ref-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:center;margin-bottom:8px;transition:border-color .15s}
+.ref-item:hover{border-color:var(--border2)}
+.ref-avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.ref-info{flex:1;min-width:0}
+.ref-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.ref-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)}
+.ref-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.ref-tags .ld-tag{font-size:8px;padding:2px 6px}
+.ref-earned{text-align:right;flex-shrink:0}
+.ref-earned .val{font-size:14px;font-weight:900;color:var(--green)}
+.ref-earned .lbl{font-size:9px;color:var(--text3)}
+
+/* ========== STATS ========== */
+.chart-wrap{position:relative;height:100px;display:flex;align-items:flex-end;gap:3px;margin:14px 0 8px}
+.chart-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--poly3),var(--poly2));opacity:.65;transition:opacity .15s;cursor:pointer;position:relative;min-height:4px}
+.chart-bar:hover{opacity:1}
+.chart-bar:hover~.chart-bar{opacity:.4}
+.chart-labels{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3)}
+.chart-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;white-space:nowrap;font-size:10px;pointer-events:none;display:none;z-index:5}
+.chart-bar:hover .chart-tooltip{display:block}
+.lb-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.lb-item:last-child{border-bottom:none}
+.lb-rank{font-size:12px;font-weight:900;width:24px;text-align:center}
+.lb-info{flex:1}
+.lb-addr{font-family:'DM Mono',monospace;font-size:11px;font-weight:600}
+.lb-meta{font-size:10px;color:var(--text3)}
+.lb-amt{font-size:13px;font-weight:900;color:var(--green);font-family:'DM Mono',monospace}
+
+/* ========== FAQ ========== */
+.faq-section-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;margin-top:18px}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden}
+.faq-item.open{border-color:var(--border2)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-size:13px;font-weight:600}
+.faq-arrow{width:20px;height:20px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);transition:all .2s;flex-shrink:0}
+.faq-item.open .faq-arrow{background:var(--poly);color:#fff;transform:rotate(180deg)}
+.faq-a{display:none;padding:0 16px 14px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.7}
+.faq-item.open .faq-a{display:block}
+.faq-step{display:flex;gap:10px;margin:8px 0}
+.faq-step-num{width:22px;height:22px;border-radius:50%;background:var(--poly);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.faq-fee-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px}
+.faq-fee-table th{background:var(--bg4);color:var(--text3);font-size:9px;text-transform:uppercase;padding:6px 10px;text-align:left}
+.faq-fee-table td{padding:6px 10px;border-bottom:1px solid var(--border)}
+
+/* ========== SCENARIO CARDS (FAQ earnings) ========== */
+.scenario-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:10px}
+.sc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sc-title{font-size:13px;font-weight:800}
+.sc-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+.earn-table{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0}
+.earn-table th{background:var(--bg4);color:var(--text3);font-size:9px;text-transform:uppercase;padding:6px 10px;text-align:left}
+.earn-table td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.earn-table .lvl-cell{color:var(--poly2);font-weight:700;font-family:'DM Mono',monospace}
+.earn-table .amt-cell{color:var(--green);font-weight:700}
+.earn-table .total-row{background:rgba(124,58,237,.08);font-weight:800}
+.sc-total{background:var(--bg4);border-radius:10px;padding:12px;text-align:center;margin-top:10px}
+.sc-total .val{font-size:24px;font-weight:900;color:var(--green)}
+.sc-total .lbl{font-size:10px;color:var(--text3);margin-bottom:4px}
+.sc-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:var(--text2)}
+
+/* ========== BUY MODAL ========== */
+#buyOverlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+#buyOverlay.hidden{display:none}
+.modal-sheet{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 20px 36px;animation:slideUp .25s ease}
+.modal-handle{width:40px;height:4px;background:var(--bg5);border-radius:2px;margin:0 auto 18px}
+.modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:14px;border:none}
+.modal-title{font-weight:900;font-size:17px;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+.modal-breakdown{background:var(--bg4);border:1px solid var(--border);border-radius:11px;padding:12px 14px;margin-bottom:16px}
+.mb-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2)}
+.mb-row.mb-total{font-size:13px;font-weight:700;color:var(--text);border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
+.mb-row .mb-val{color:var(--poly2)}
+.modal-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.m-step{display:flex;gap:11px;background:var(--bg4);border:1px solid var(--border);border-radius:11px;padding:12px;align-items:center}
+.m-step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;background:var(--bg5);color:var(--text3)}
+.m-step-num.active{background:var(--poly);color:#fff}
+.m-step-num.done{background:var(--green);color:#001a10}
+.m-step-text{font-size:12px;font-weight:600}
+.m-step-sub{font-size:10px;color:var(--text3)}
+.modal-btns{display:flex;gap:8px}
+.modal-btns .ghost-btn{flex:1;padding:12px;font-size:13px;border-radius:10px}
+.modal-btns .buy-btn{flex:2}
+
+/* ========== TX TOAST ========== */
+#txToast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;min-width:260px;z-index:300;display:none}
+#txToast.show{display:block;animation:toastIn .25s ease}
+.toast-title{font-size:12px;font-weight:700}
+.toast-sub{font-size:10px;color:var(--text3);margin-bottom:8px}
+.toast-bar{height:3px;background:var(--bg5);border-radius:2px;overflow:hidden}
+.toast-fill{height:100%;background:var(--poly);border-radius:2px;transition:width .5s;width:0}
+
+/* ========== BLOCKED TOAST ========== */
+#blockedToast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--red);border-radius:14px;padding:14px 18px;min-width:280px;max-width:340px;z-index:250;opacity:0;pointer-events:none;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+#blockedToast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.bt-close{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px}
+.bt-icon{font-size:22px;margin-bottom:6px}
+.bt-title{font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px}
+.bt-body{font-size:11px;color:var(--text2);margin-bottom:8px}
+.bt-hint{background:rgba(251,78,109,.06);border:1px solid rgba(251,78,109,.15);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.bt-hint .ld-tag{font-size:9px}
+.bt-action{width:100%;padding:10px;background:var(--poly);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+
+/* ========== PROGRESS BAR ========== */
+.prog-track{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--poly);border-radius:3px;transition:width .3s}
+
+/* ========== REFERRAL LINK CARD ========== */
+.ref-link-card{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- ==================== CONNECT SCREEN ==================== -->
+<div id="connectScreen">
+  <div class="cs-logo"><span>Xion</span><span class="t2">NET</span></div>
+  <div class="cs-tag">POLYGON &middot; DeFi Protocol</div>
+  <div class="cs-card">
+    <div class="cs-features">
+      <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(6,214,160,.15)">🔐</div>Smart contract secured funds</div>
+      <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(124,58,237,.15)">⚡</div>Instant USDC payouts to wallet</div>
+      <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(96,165,250,.15)">💵</div>Auto-unlock next level for free</div>
+      <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(245,158,11,.15)">🌐</div>17 levels &middot; Decentralized network</div>
+    </div>
+    <button class="cs-btn" onclick="connectWallet(this)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+      Connect MetaMask
+    </button>
+    <div class="cs-net"><div class="cs-net-dot"></div>Polygon Network Required</div>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="mainApp" style="display:none">
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-logo"><span>Xion</span><span class="t2">NET</span></div>
+    <div class="wallet-pill">
+      <div class="wp-dot"></div>
+      <span class="wp-addr">0x7f3a...4d91</span>
+      <span class="wp-badge">POL</span>
+    </div>
+    <button class="ref-btn" onclick="copyRef(this)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      Ref
+    </button>
+  </div>
+  <nav class="tabs">
+    <button class="tab on" onclick="switchTab(this,'dashboard')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</button>
+    <button class="tab" onclick="switchTab(this,'levels')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 8 12 12 14.5 14.5"/></svg>Levels</button>
+    <button class="tab" onclick="switchTab(this,'history')"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>History</button>
+    <button class="tab" onclick="switchTab(this,'referrals')"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-1.5A5.5 5.5 0 0 1 7.5 14h3A5.5 5.5 0 0 1 16 19.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M21 21v-1a4 4 0 0 0-3-3.87"/></svg>Network</button>
+    <button class="tab" onclick="switchTab(this,'stats')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Stats</button>
+    <button class="tab" onclick="switchTab(this,'faq')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</button>
+  </nav>
+</header>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="screen-dashboard" class="screen on">
+  <div class="stat-grid">
+    <div class="stat-box sb-poly"><div class="stat-lbl">Total Received</div><div class="stat-val" style="color:var(--poly2)">$39.00</div><div class="stat-hint">↑ +$12.00 this week</div></div>
+    <div class="stat-box sb-green"><div class="stat-lbl">Active Levels</div><div class="stat-val" style="color:var(--green)">3 / 17</div><div class="stat-hint">L1 L2 L3 active</div></div>
+    <div class="stat-box sb-orange"><div class="stat-lbl">Total Paid</div><div class="stat-val" style="color:var(--orange)">$23.10</div><div class="stat-hint">Net +$15.90</div></div>
+    <div class="stat-box sb-frozen"><div class="stat-lbl">Frozen</div><div class="stat-val" style="color:var(--frozen)">$12.00</div><div class="stat-hint">Level 4 will open automatically</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
+    <div class="fi-feed">
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 3</div><div class="fi-sub">from 0x9f2c...7a11</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$12.00</div><div class="fi-time">2h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 3</div><div class="fi-sub">Will auto-unlock Level 4</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12.00</div><div class="fi-time">2h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 3 opened automatically</div><div class="fi-sub">No fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">1d ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Received &middot; Level 2</div><div class="fi-sub">from 0x3e8a...bc42</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$6.00</div><div class="fi-time">2d ago</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Referrals</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'referrals')">View</button></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
+      <div style="font-size:28px;font-weight:900;color:var(--poly2)">7</div>
+      <div><div style="font-size:12px">4 active &middot; 3 registered</div></div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" style="width:57%"></div></div>
+    <div style="font-size:10px;color:var(--text3);margin-top:4px">4 have activated levels</div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
+    <div class="lvl-grid" id="dash-lvls"></div>
+  </div>
+</div>
+
+<!-- ==================== LEVELS ==================== -->
+<div id="screen-levels" class="screen">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+    <div style="font-size:14px;font-weight:800">My Levels</div>
+    <div style="font-size:11px;color:var(--text3)">17 levels &middot; auto-purchase always on</div>
+  </div>
+  <div id="lvlDetail"></div>
+  <div class="lvl-grid" id="main-lvls"></div>
+</div>
+
+<!-- ==================== HISTORY ==================== -->
+<div id="screen-history" class="screen">
+  <div class="filter-chips">
+    <button class="chip on" onclick="filterChip(this)">All</button>
+    <button class="chip" onclick="filterChip(this)">💰 Payouts</button>
+    <button class="chip" onclick="filterChip(this)">❄️ Frozen</button>
+    <button class="chip" onclick="filterChip(this)">⬆️ Spillover</button>
+    <button class="chip" onclick="filterChip(this)">🔄 Reactivation</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 3</div><div class="fi-sub">from 0x9f2c...7a11</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$12.00</div><div class="fi-time">Mar 22 14:32</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 3</div><div class="fi-sub">Will auto-unlock Level 4 when ready</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12.00</div><div class="fi-time">Mar 22 14:32</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 3 opened automatically</div><div class="fi-sub">No activation fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">Mar 21 09:14</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Received &middot; Level 2</div><div class="fi-sub">from 0x3e8a...bc42</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$6.00</div><div class="fi-time">Mar 20 18:55</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 2</div><div class="fi-sub">from 0x1a4b...3c88</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$6.00</div><div class="fi-time">Mar 20 11:20</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(245,158,11,.12)">🔄</div><div class="fi-body"><div class="fi-title">Level 1 reset &middot; Cycle 2</div><div class="fi-sub">Ready to receive new members</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">Cycle 2</div><div class="fi-time">Mar 19 22:10</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 1</div><div class="fi-sub">from 0x6d2f...aa01</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$3.00</div><div class="fi-time">Mar 19 22:10</div></div></div>
+    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 1</div><div class="fi-sub">from 0x8c3a...f211</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$3.00</div><div class="fi-time">Mar 18 10:00</div></div></div>
+  </div>
+</div>
+
+<!-- ==================== REFERRALS ==================== -->
+<div id="screen-referrals" class="screen">
+  <div class="ref-stats">
+    <div class="ref-stat"><div class="val" style="color:var(--poly2)">7</div><div class="lbl">Total</div></div>
+    <div class="ref-stat"><div class="val" style="color:var(--green)">4</div><div class="lbl">Active</div></div>
+    <div class="ref-stat"><div class="val" style="color:var(--orange)">$39.00</div><div class="lbl">Earned</div></div>
+  </div>
+  <div class="ref-item"><div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">AL</div><div class="ref-info"><div class="ref-name">0x9f2c...7a11</div><div class="ref-meta">Mar 20 &middot; 3 levels</div><div class="ref-tags"><span class="ld-tag t-active">L3</span><span class="ld-tag t-frozen">❄️ frozen</span></div></div><div class="ref-earned"><div class="val">$18.00</div><div class="lbl">earned you</div></div></div>
+  <div class="ref-item"><div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">BX</div><div class="ref-info"><div class="ref-name">0x3e8a...bc42</div><div class="ref-meta">Mar 19 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div><div class="ref-earned"><div class="val">$9.00</div><div class="lbl">earned you</div></div></div>
+  <div class="ref-item"><div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">CR</div><div class="ref-info"><div class="ref-name">0x1a4b...3c88</div><div class="ref-meta">Mar 18 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div><div class="ref-earned"><div class="val">$6.00</div><div class="lbl">earned you</div></div></div>
+  <div class="ref-item"><div class="ref-avatar" style="background:rgba(56,189,248,.15);color:var(--frozen)">DM</div><div class="ref-info"><div class="ref-name">0x6d2f...aa01</div><div class="ref-meta">Mar 22 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div><div class="ref-earned"><div class="val">$3.00</div><div class="lbl">earned you</div></div></div>
+  <div class="ref-item" style="opacity:.5"><div class="ref-avatar" style="background:var(--bg4);color:var(--text3)">EK</div><div class="ref-info"><div class="ref-name">0x5c11...2b90</div><div class="ref-meta">Mar 22 &middot; no levels yet</div><div class="ref-tags"><span class="ld-tag t-inactive">Pending</span></div></div><div class="ref-earned"><div class="val">$0.00</div><div class="lbl">earned you</div></div></div>
+</div>
+
+<!-- ==================== STATS ==================== -->
+<div id="screen-stats" class="screen">
+  <div class="stat-grid">
+    <div class="stat-box sb-poly"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">1,847</div></div>
+    <div class="stat-box sb-green"><div class="stat-lbl">Total Payouts (USDC)</div><div class="stat-val" style="color:var(--green)">$48.2k</div></div>
+    <div class="stat-box sb-frozen"><div class="stat-lbl">Frozen Now</div><div class="stat-val" style="color:var(--frozen)">$3,842</div></div>
+    <div class="stat-box sb-orange"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$6,240</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:4px">Daily Volume</div>
+    <div class="chart-wrap" id="chart"></div>
+    <div class="chart-labels"><span>Mar 14</span><span>Mar 18</span><span>Mar 22</span></div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:14px 14px 0;font-weight:800;font-size:13px;margin-bottom:6px">Leaderboard</div>
+    <div class="lb-item"><div class="lb-rank" style="color:var(--gold)">1</div><div class="lb-info"><div class="lb-addr">0xf3a1...9c22</div><div class="lb-meta">L17 &middot; 342 refs</div></div><div class="lb-amt">$48.2k</div></div>
+    <div class="lb-item"><div class="lb-rank" style="color:var(--text2)">2</div><div class="lb-info"><div class="lb-addr">0x8b2e...4d11</div><div class="lb-meta">L15 &middot; 189 refs</div></div><div class="lb-amt">$12.8k</div></div>
+    <div class="lb-item"><div class="lb-rank" style="color:#cd7f32">3</div><div class="lb-info"><div class="lb-addr">0x2c9f...7a44</div><div class="lb-meta">L12 &middot; 97 refs</div></div><div class="lb-amt">$4,210</div></div>
+    <div class="lb-item"><div class="lb-rank">4</div><div class="lb-info"><div class="lb-addr">0x6d3b...cc99</div><div class="lb-meta">L10 &middot; 54 refs</div></div><div class="lb-amt">$1,834</div></div>
+    <div class="lb-item" style="background:rgba(124,58,237,0.04)"><div class="lb-rank" style="color:var(--poly2)">★</div><div class="lb-info"><div class="lb-addr">You &middot; 0x7f3a...4d91</div><div class="lb-meta">L3 &middot; 7 refs</div></div><div class="lb-amt">$39.00</div></div>
+  </div>
+</div>
+
+<!-- ==================== FAQ ==================== -->
+<div id="screen-faq" class="screen">
+
+  <div class="faq-section-label">📖 How it works</div>
+
+  <div class="faq-item open">
+    <div class="faq-q" onclick="toggleFaq(this)">What is XionNET?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">How do the 4 slots work?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">
+      Each level has 4 slots that fill in order:
+      <div class="faq-step"><div class="faq-step-num">1</div><div><strong style="color:var(--green)">Slot 1</strong> — Direct payout to your wallet</div></div>
+      <div class="faq-step"><div class="faq-step-num">2</div><div><strong style="color:var(--frozen)">Slot 2</strong> — If next level owned: payout. If not: funds held temporarily for auto-buy</div></div>
+      <div class="faq-step"><div class="faq-step-num">3</div><div><strong style="color:var(--green)">Slot 3</strong> — If funds were held: next level opens automatically (no fee!). Otherwise: direct payout</div></div>
+      <div class="faq-step"><div class="faq-step-num" style="background:var(--poly2)">4</div><div><strong style="color:var(--poly2)">Slot 4</strong> — Level resets for new cycle. Payment moves up the chain (spillover)</div></div>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What is the auto-unlock feature?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">When slot 2 fills and you don't own the next level, your funds are temporarily held. When slot 3 fills, both payments combine to auto-purchase the next level — completely free, no activation fee charged. Two payments at level N = one next level.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What happens when level is full (slot 4)?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">The level resets (cycle count increases, all slots cleared). The slot 4 payment moves up the referral chain (spillover) to the nearest person above you who has that level active. Your level is then ready to accept new members again.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What are the fees?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">
+      <table class="faq-fee-table">
+        <tr><th>Fee type</th><th>Amount</th></tr>
+        <tr><td>Activation fee (manual buy)</td><td style="color:var(--red)">+10% to level price</td></tr>
+        <tr><td>Auto-unlock fee</td><td style="color:var(--green)">$0.00 — Free!</td></tr>
+        <tr><td>Payout fee</td><td style="color:var(--green)">$0.00 — None</td></tr>
+        <tr><td>Polygon gas</td><td style="color:var(--text2)">~$0.0001</td></tr>
+      </table>
+      <div style="margin-top:8px;font-size:11px">Only one fee: 10% when you manually buy a level. Auto-purchases are completely free because the fee was already collected from the original buyers.</div>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Is my money safe?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">All funds are managed by a smart contract on Polygon. No person controls them. What goes in through MetaMask comes out through MetaMask. Temporarily held funds (slot 2) are protected — the admin cannot withdraw frozen user funds.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What is USDC? Do I need POL?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">USDC is a stablecoin pegged to $1. All level prices are in USDC. You also need a tiny amount of POL (Polygon's native token) for gas fees — about $0.0001 per transaction.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Do I need to buy all 17 levels?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">No! Buy levels in order, starting from L1 ($3). Many levels will open automatically through the auto-unlock feature. Sweet spot is L4–L7 for moderate investment. Higher levels are for builders with larger networks.</div>
+  </div>
+
+  <div class="faq-section-label">💰 Potential Earnings</div>
+
+  <div class="scenario-card">
+    <div class="sc-hdr"><div class="sc-title">Scenario: 10 referrals, L1–L5</div><div class="sc-badge" style="color:var(--blue);background:rgba(96,165,250,.15)">Up to Level 5</div></div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Each referral brings 10 people. If N+1 is bought: 3 payouts per level. If not: 1 payout + auto-unlock.</div>
+    <table class="earn-table">
+      <tr><th>Level</th><th>Price</th><th>Payouts (3×)</th></tr>
+      <tr><td class="lvl-cell">L1</td><td>$3</td><td class="amt-cell">$9</td></tr>
+      <tr><td class="lvl-cell">L2</td><td>$6</td><td class="amt-cell">$18</td></tr>
+      <tr><td class="lvl-cell">L3</td><td>$12</td><td class="amt-cell">$36</td></tr>
+      <tr><td class="lvl-cell">L4</td><td>$24</td><td class="amt-cell">$72</td></tr>
+      <tr><td class="lvl-cell">L5</td><td>$48</td><td class="amt-cell">$144</td></tr>
+      <tr class="total-row"><td colspan="2">Total</td><td class="amt-cell">$279</td></tr>
+    </table>
+    <div class="sc-total"><div class="lbl">Total Earnings</div><div class="val">$279</div></div>
+    <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:6px">Investment: $3.30 (L1 only) — Return: ×84.5</div>
+  </div>
+
+  <div class="scenario-card">
+    <div class="sc-hdr"><div class="sc-title">Scenario: 10×10, L1–L9</div><div class="sc-badge" style="color:var(--poly2);background:rgba(124,58,237,.15)">Up to Level 9</div></div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:8px">You have 10 referrals, each has 10. With all levels active: 3 payouts per level per cycle.</div>
+    <table class="earn-table">
+      <tr><th>Level</th><th>Price</th><th>Payouts (23×)</th></tr>
+      <tr><td class="lvl-cell">L1</td><td>$3</td><td class="amt-cell">$69</td></tr>
+      <tr><td class="lvl-cell">L2</td><td>$6</td><td class="amt-cell">$138</td></tr>
+      <tr><td class="lvl-cell">L3</td><td>$12</td><td class="amt-cell">$276</td></tr>
+      <tr><td class="lvl-cell">L4</td><td>$24</td><td class="amt-cell">$552</td></tr>
+      <tr><td class="lvl-cell">L5</td><td>$48</td><td class="amt-cell">$1,104</td></tr>
+      <tr><td class="lvl-cell">L6</td><td>$96</td><td class="amt-cell">$2,208</td></tr>
+      <tr><td class="lvl-cell">L7</td><td>$192</td><td class="amt-cell">$4,416</td></tr>
+      <tr><td class="lvl-cell">L8</td><td>$384</td><td class="amt-cell">$8,832</td></tr>
+      <tr><td class="lvl-cell">L9</td><td>$768</td><td class="amt-cell">$17,664</td></tr>
+      <tr class="total-row"><td colspan="2">Total</td><td class="amt-cell">$35,259</td></tr>
+    </table>
+    <div class="sc-total"><div class="lbl">Total Earnings</div><div class="val">$35,259</div></div>
+    <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:6px">Investment: $3.30 – $844.80 &middot; Return: ×41+</div>
+    <div class="sc-note"><strong style="color:var(--orange)">Note:</strong> Many levels open automatically via auto-unlock. Actual out-of-pocket cost is often just L1 ($3.30).</div>
+  </div>
+
+</div>
+
+</div><!-- /mainApp -->
+
+<!-- ==================== BUY MODAL ==================== -->
+<div id="buyOverlay" class="hidden" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet" style="position:relative">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Buy Level 4</div>
+    <div class="modal-sub" id="modalSub">$24.00 USDC &middot; Polygon</div>
+    <div class="modal-breakdown" id="modalBreakdown">
+      <div class="mb-row"><span>Level 4 price</span><span class="mb-val">$24.00</span></div>
+      <div class="mb-row"><span>Activation fee (10%)</span><span style="color:var(--red)">+ $2.40</span></div>
+      <div class="mb-row mb-total"><span>Approve amount</span><span class="mb-val">$26.40 USDC</span></div>
+    </div>
+    <div class="modal-steps">
+      <div class="m-step" id="mStep1"><div class="m-step-num active" id="ms1n">1</div><div><div class="m-step-text">Approve USDC</div><div class="m-step-sub">Allow contract to spend USDC</div></div></div>
+      <div class="m-step" id="mStep2"><div class="m-step-num" id="ms2n">2</div><div><div class="m-step-text">Activate Level</div><div class="m-step-sub">Confirm purchase transaction</div></div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="ghost-btn" onclick="closeModal()">Cancel</button>
+      <button class="buy-btn" id="modalAction" onclick="doStep()">🦊 Approve USDC</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TX TOAST ==================== -->
+<div id="txToast">
+  <div class="toast-title" id="toastTitle">Processing...</div>
+  <div class="toast-sub" id="toastSub">Please wait</div>
+  <div class="toast-bar"><div class="toast-fill" id="toastFill"></div></div>
+</div>
+
+<!-- ==================== BLOCKED TOAST ==================== -->
+<div id="blockedToast">
+  <button class="bt-close" onclick="closeBlocked()">✕</button>
+  <div class="bt-icon">🔒</div>
+  <div class="bt-title">Level locked</div>
+  <div class="bt-body" id="btBody">Level 5 requires Level 4 to be active first.</div>
+  <div class="bt-hint" id="btHint">Buy first: <span class="ld-tag" style="background:rgba(124,58,237,.15);color:var(--poly2);border:none" id="btBadge">L4</span> <span id="btPrice">$24.00</span></div>
+  <button class="bt-action" id="btAction" onclick="goToPrevLevel()">Go to Level 4</button>
+</div>
+
+<script>
+// ==================== LEVEL DATA ====================
+const LP = {};
+for (let i = 1; i <= 17; i++) LP[i] = +(3 * Math.pow(2, i - 1));
+
+// Sponsor receives full price (10% taken at purchase time, not at payout)
+function sponsorGets(n) { return LP[n]; }
+
+// Purchase cost = price + 10%
+function buyCost(n) { return +(LP[n] * 1.1).toFixed(2); }
+
+// Format USDC
+function f(n) {
+  if (n >= 10000) return '$' + (n / 1000).toFixed(0) + 'k';
+  if (n >= 1000) return '$' + (n / 1000).toFixed(1) + 'k';
+  if (n >= 1) return '$' + n.toFixed(2);
+  return '$' + n.toFixed(4);
+}
+
+// Prototype level states
+const LEVELS = [];
+for (let i = 1; i <= 17; i++) {
+  const lv = { num: i, price: LP[i], active: false, slots: [0,0,0,0], cycle_count: 0, frozenAmt: 0, frzState: false };
+  LEVELS.push(lv);
+}
+// L1: active, 4/4 slots, cycle 1
+LEVELS[0].active = true; LEVELS[0].slots = [1,1,1,1]; LEVELS[0].cycle_count = 1;
+// L2: active, 2/4
+LEVELS[1].active = true; LEVELS[1].slots = [1,1,0,0];
+// L3: active, 2/4, frozen $12
+LEVELS[2].active = true; LEVELS[2].slots = [1,1,0,0]; LEVELS[2].frozenAmt = 12; LEVELS[2].frzState = true;
+
+// ==================== RENDER LEVELS ====================
+function renderLevels(containerId) {
+  const el = document.getElementById(containerId);
+  let html = '';
+  for (let i = 0; i < 17; i++) {
+    const lv = LEVELS[i];
+    const n = i + 1;
+    const filled = lv.slots.reduce((a, b) => a + b, 0);
+    let cls = 'lvl-card';
+    if (lv.frzState) cls += ' lc-frz';
+    else if (lv.active) cls += ' lc-on';
+    else cls += ' lc-dim';
+
+    let pips = '';
+    for (let s = 0; s < 4; s++) {
+      let pc = '';
+      if (lv.slots[s]) {
+        if (s === 1 && lv.frzState) pc = 'p-frz';
+        else if (s === 3) pc = 'p-spill';
+        else pc = 'p-on';
+      }
+      pips += '<div class="lc-pip ' + pc + '"></div>';
+    }
+
+    html += '<div class="' + cls + '" onclick="selectLevel(' + n + ')">';
+    html += '<div class="lc-top"><span class="lc-label">L' + n + '</span>';
+    if (lv.cycle_count > 0) html += '<span class="lc-cycle">×' + lv.cycle_count + '</span>';
+    html += '</div>';
+    html += '<div class="lc-price' + (lv.active ? '' : ' dim') + '">' + f(lv.price) + '</div>';
+    html += '<div class="lc-pips">' + pips + '</div>';
+    html += '<div class="lc-meta">' + filled + '/4 slots</div>';
+    if (lv.frzState) html += '<div class="lc-frozen-badge">❄️ ' + f(lv.frozenAmt) + '</div>';
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ==================== SELECT LEVEL ====================
+let selectedLevel = 0;
+function selectLevel(n) {
+  const panel = document.getElementById('lvlDetail');
+  // switch to levels screen if on dashboard
+  const levelsTab = document.querySelectorAll('.tab')[1];
+  if (!document.getElementById('screen-levels').classList.contains('on')) {
+    switchTab(levelsTab, 'levels');
+  }
+  // toggle
+  if (selectedLevel === n) {
+    panel.classList.remove('show');
+    selectedLevel = 0;
+    document.querySelectorAll('#main-lvls .lvl-card').forEach(c => c.classList.remove('lc-sel'));
+    return;
+  }
+  selectedLevel = n;
+  const lv = LEVELS[n - 1];
+  const filled = lv.slots.reduce((a, b) => a + b, 0);
+  const isLast = n === 17;
+
+  // update card selection
+  document.querySelectorAll('#main-lvls .lvl-card').forEach((c, i) => {
+    c.classList.toggle('lc-sel', i === n - 1);
+  });
+
+  let tags = '';
+  if (lv.active) tags += '<span class="ld-tag t-active">Active</span>';
+  else tags += '<span class="ld-tag t-inactive">Inactive</span>';
+  if (lv.frzState) tags += '<span class="ld-tag t-frozen">❄️ Frozen</span>';
+  if (isLast) tags += '<span class="ld-tag t-last">★ LAST</span>';
+
+  const slotDescs = isLast
+    ? ['Payout to your sponsor', 'Payout (L17 — last level)', 'Payout (L17 — last level)', 'Spillover up the tree']
+    : ['Payout to your sponsor', lv.frzState ? 'Your funds held temporarily' : (lv.active && n < 17 && LEVELS[n] && LEVELS[n].active ? 'Payout (next level owned)' : 'Waiting...'), 'Auto-unlock or payout', 'Level resets — new cycle'];
+
+  const dummyAddrs = ['0x9f2c...7a11','0x3e8a...bc42','0x1a4b...3c88','0x6d2f...aa01'];
+  let slotsHtml = '';
+  for (let s = 0; s < 4; s++) {
+    let sc = 'slot-box';
+    if (lv.slots[s]) {
+      if (s === 1 && lv.frzState) sc += ' s-frz';
+      else if (s === 3) sc += ' s-spill';
+      else sc += ' s-on';
+    }
+    slotsHtml += '<div class="' + sc + '">';
+    slotsHtml += '<div class="slot-num">Slot ' + (s + 1) + '</div>';
+    slotsHtml += '<div class="slot-who">' + (lv.slots[s] ? dummyAddrs[s] : 'Waiting...') + '</div>';
+    slotsHtml += '<div class="slot-desc">' + slotDescs[s] + '</div>';
+    slotsHtml += '</div>';
+  }
+
+  let infoRows = '<div class="ld-row"><span class="lbl">Activation cost</span><span style="color:var(--orange)">' + f(buyCost(n)) + ' USDC</span></div>';
+  infoRows += '<div class="ld-row"><span class="lbl">Your sponsor receives</span><span style="color:var(--green)">' + f(sponsorGets(n)) + '</span></div>';
+  if (!isLast && lv.frzState) {
+    infoRows += '<div class="ld-row"><span class="lbl">Auto-unlocks next level</span><span style="color:var(--frozen)">Level ' + (n + 1) + '</span></div>';
+  }
+  if (isLast) {
+    infoRows += '<div class="ld-row"><span class="lbl">Last level</span><span style="color:var(--gold)">All slots pay out ✓</span></div>';
+  }
+
+  let actions = '';
+  if (!lv.active) {
+    actions = '<button class="buy-btn" onclick="openModal(' + n + ')">🦊 Buy Level ' + n + ' &middot; ' + f(buyCost(n)) + '</button>';
+  } else if (lv.frzState) {
+    actions = '<div style="color:var(--frozen);font-size:12px;font-weight:600;text-align:center;padding:8px">❄️ Waiting slot 3 → will auto-buy Level ' + (n + 1) + '</div>';
+  } else {
+    actions = '<button class="ghost-btn" style="width:100%;padding:10px" onclick="copyRef(this)">🔗 Share ref link</button>';
+  }
+
+  panel.innerHTML = '<div class="ld-hdr">' +
+    '<div class="ld-badge">L' + n + '</div>' +
+    '<div class="ld-info"><div class="ld-title">Level ' + n + '</div><div class="ld-price">Cost to activate: ' + f(buyCost(n)) + ' USDC</div><div class="ld-tags">' + tags + '</div></div></div>' +
+    '<div class="slots-grid">' + slotsHtml + '</div>' +
+    '<div class="ld-info-box">' + infoRows + '</div>' +
+    '<div class="ld-actions">' + actions + '</div>';
+
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ==================== TABS ====================
+function switchTab(el, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('screen-' + id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+// ==================== CONNECT ====================
+function connectWallet(btn) {
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Connecting...';
+  setTimeout(() => {
+    document.getElementById('connectScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    renderLevels('dash-lvls');
+    renderLevels('main-lvls');
+    buildChart();
+  }, 900);
+}
+
+// ==================== COPY REF ====================
+function copyRef(btn) {
+  const orig = btn.innerHTML;
+  navigator.clipboard.writeText('https://xionnet.app?ref=0x7f3a4d91').catch(() => {});
+  btn.innerHTML = '✓ Copied!';
+  setTimeout(() => { btn.innerHTML = orig; }, 1500);
+}
+
+// ==================== BUY MODAL ====================
+let modalLevel = 0;
+let modalStep = 0;
+
+function openModal(n) {
+  if (n > 1 && !LEVELS[n - 2].active) {
+    showBlocked(n);
+    return;
+  }
+  modalLevel = n;
+  modalStep = 0;
+  const price = LP[n];
+  const fee = +(price * 0.1).toFixed(2);
+  const total = buyCost(n);
+
+  document.getElementById('modalTitle').textContent = 'Buy Level ' + n;
+  document.getElementById('modalSub').textContent = f(price) + ' USDC · Polygon';
+  document.getElementById('modalBreakdown').innerHTML =
+    '<div class="mb-row"><span>Level ' + n + ' price</span><span class="mb-val">' + f(price) + '</span></div>' +
+    '<div class="mb-row"><span>Activation fee (10%)</span><span style="color:var(--red)">+ ' + f(fee) + '</span></div>' +
+    '<div class="mb-row mb-total"><span>Approve amount</span><span class="mb-val">' + f(total) + ' USDC</span></div>';
+
+  document.getElementById('ms1n').className = 'm-step-num active';
+  document.getElementById('ms2n').className = 'm-step-num';
+  document.getElementById('modalAction').textContent = '🦊 Approve USDC';
+  document.getElementById('modalAction').disabled = false;
+  document.getElementById('buyOverlay').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('buyOverlay').classList.add('hidden');
+}
+
+function doStep() {
+  const btn = document.getElementById('modalAction');
+  if (modalStep === 0) {
+    btn.disabled = true;
+    btn.textContent = '⏳ Waiting...';
+    toast('Approving USDC...', 'Confirm in MetaMask', 40);
+    setTimeout(() => {
+      document.getElementById('ms1n').className = 'm-step-num done';
+      document.getElementById('ms1n').textContent = '✓';
+      document.getElementById('ms2n').className = 'm-step-num active';
+      btn.textContent = '⚡ Activate Level ' + modalLevel;
+      btn.disabled = false;
+      modalStep = 1;
+      toast('USDC Approved', 'Ready to activate', 70);
+    }, 1800);
+  } else {
+    btn.disabled = true;
+    btn.textContent = '⏳ Activating...';
+    toast('Activating Level ' + modalLevel + '...', 'Confirm in MetaMask', 85);
+    setTimeout(() => {
+      document.getElementById('ms2n').className = 'm-step-num done';
+      document.getElementById('ms2n').textContent = '✓';
+      toast('Level ' + modalLevel + ' Active!', 'Purchase complete', 100);
+      // Update data
+      LEVELS[modalLevel - 1].active = true;
+      renderLevels('dash-lvls');
+      renderLevels('main-lvls');
+      setTimeout(closeModal, 1500);
+    }, 2000);
+  }
+}
+
+// ==================== TOAST ====================
+function toast(title, sub, pct) {
+  const t = document.getElementById('txToast');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  document.getElementById('toastFill').style.width = pct + '%';
+  t.classList.add('show');
+  if (pct >= 100) setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ==================== BLOCKED TOAST ====================
+let blockedTimeout;
+function showBlocked(n) {
+  const prev = n - 1;
+  document.getElementById('btBody').textContent = 'Level ' + n + ' requires Level ' + prev + ' to be active first.';
+  document.getElementById('btBadge').textContent = 'L' + prev;
+  document.getElementById('btPrice').textContent = f(buyCost(prev));
+  document.getElementById('btAction').textContent = 'Go to Level ' + prev;
+  document.getElementById('btAction').onclick = () => { closeBlocked(); selectLevel(prev); };
+  document.getElementById('blockedToast').classList.add('show');
+  clearTimeout(blockedTimeout);
+  blockedTimeout = setTimeout(closeBlocked, 5000);
+}
+function closeBlocked() { document.getElementById('blockedToast').classList.remove('show'); }
+
+// ==================== FAQ ====================
+function toggleFaq(qEl) {
+  const item = qEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ==================== FILTER CHIPS ====================
+function filterChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ==================== CHART ====================
+function buildChart() {
+  const data = [
+    { date: 'Mar 14', usdc: 12.4 },
+    { date: 'Mar 15', usdc: 18.8 },
+    { date: 'Mar 16', usdc: 9.2 },
+    { date: 'Mar 17', usdc: 31.6 },
+    { date: 'Mar 18', usdc: 24.0 },
+    { date: 'Mar 19', usdc: 28.8 },
+    { date: 'Mar 20', usdc: 41.6 },
+    { date: 'Mar 21', usdc: 22.4 },
+    { date: 'Mar 22', usdc: 38.4 },
+  ];
+  const max = Math.max(...data.map(d => d.usdc));
+  const el = document.getElementById('chart');
+  el.innerHTML = data.map(d =>
+    '<div class="chart-bar" style="height:' + (d.usdc / max * 100) + '%">' +
+    '<div class="chart-tooltip"><strong style="color:var(--poly2)">' + f(d.usdc) + ' USDC</strong><br><span style="color:var(--text3)">' + d.date + '</span></div></div>'
+  ).join('');
+}
+</script>
+</body>
+</html>
