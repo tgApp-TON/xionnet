@@ -504,19 +504,19 @@ a{color:var(--poly2);text-decoration:none}
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div class="card-title">My Earnings</div>
-      <div style="display:flex;gap:4px">
-        <button class="chip on" onclick="switchChart(this,'day')" id="chartBtnDay">Day</button>
-        <button class="chip" onclick="switchChart(this,'week')" id="chartBtnWeek">Week</button>
-        <button class="chip" onclick="switchChart(this,'month')" id="chartBtnMonth">Month</button>
-        <button class="chip" onclick="switchChart(this,'year')" id="chartBtnYear">Year</button>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="chip on" onclick="switchChart(this,'all')">All</button>
+        <button class="chip" onclick="switchChart(this,'day')">Today</button>
+        <button class="chip" onclick="switchChart(this,'week')">Week</button>
+        <button class="chip" onclick="switchChart(this,'month')">Month</button>
+        <button class="chip" onclick="switchChart(this,'year')">Year</button>
       </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin:12px 0">
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase" id="chartPeriodLabel">Total Earned</div><div style="font-size:22px;font-weight:900;color:var(--green)" id="chartTotal">$0</div></div>
     </div>
     <div class="chart-wrap" id="chart"></div>
     <div class="chart-labels" id="chartLabels"></div>
-    <div style="display:flex;justify-content:space-between;margin-top:8px">
-      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase">Period Total</div><div style="font-size:16px;font-weight:900;color:var(--green)" id="chartTotal">$0</div></div>
-      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase">Avg/Day</div><div style="font-size:16px;font-weight:900;color:var(--poly2)" id="chartAvg">$0</div></div>
-    </div>
   </div>
 
   <div class="card" style="padding:0;overflow:hidden">
@@ -1887,7 +1887,7 @@ function scrollToBonus() {
 }
 
 // ==================== CHART ====================
-let currentChartPeriod = 'day';
+let currentChartPeriod = 'all';
 let userPayoutCache = [];
 
 async function loadUserPayouts() {
@@ -1909,89 +1909,117 @@ function buildChart() {
   const el = document.getElementById('chart');
   const labelsEl = document.getElementById('chartLabels');
   const totalEl = document.getElementById('chartTotal');
-  const avgEl = document.getElementById('chartAvg');
+  const periodLabel = document.getElementById('chartPeriodLabel');
 
   if (!userPayoutCache.length) {
     el.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px">No earnings yet</div>';
     labelsEl.innerHTML = '';
     totalEl.textContent = '$0';
-    avgEl.textContent = '$0';
     return;
   }
 
-  // Group payouts by period
   const now = new Date();
-  let buckets = {};
-  let labelFormat, bucketCount;
+  const today = now.toISOString().split('T')[0];
+  const dayOfWeek = now.getDay() === 0 ? 7 : now.getDay(); // Mon=1, Sun=7
+  const mondayDate = new Date(now); mondayDate.setDate(now.getDate() - dayOfWeek + 1);
+  const monday = mondayDate.toISOString().split('T')[0];
+  const monthStart = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-01';
+  const yearStart = now.getFullYear() + '-01-01';
 
-  if (currentChartPeriod === 'day') {
-    bucketCount = 14; // last 14 days
-    for (let i = bucketCount - 1; i >= 0; i--) {
-      const d = new Date(now); d.setDate(d.getDate() - i);
-      const key = d.toISOString().split('T')[0];
-      buckets[key] = 0;
-    }
-    labelFormat = (k) => { const d = new Date(k); return d.toLocaleDateString('en', {month:'short', day:'numeric'}); };
+  // Calculate period total
+  let periodTotal = 0;
+  let periodPayouts = [];
+
+  if (currentChartPeriod === 'all') {
+    periodTotal = userPayoutCache.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
+    periodPayouts = userPayoutCache;
+    periodLabel.textContent = 'Total Earned (All Time)';
+  } else if (currentChartPeriod === 'day') {
+    periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] === today);
+    periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
+    periodLabel.textContent = 'Earned Today';
   } else if (currentChartPeriod === 'week') {
-    bucketCount = 12; // last 12 weeks
-    for (let i = bucketCount - 1; i >= 0; i--) {
-      const d = new Date(now); d.setDate(d.getDate() - i * 7);
-      const weekStart = new Date(d); weekStart.setDate(d.getDate() - d.getDay() + 1);
-      const key = weekStart.toISOString().split('T')[0];
-      buckets[key] = 0;
-    }
-    labelFormat = (k) => { const d = new Date(k); return d.toLocaleDateString('en', {month:'short', day:'numeric'}); };
+    periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= monday);
+    periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
+    periodLabel.textContent = 'Earned This Week';
   } else if (currentChartPeriod === 'month') {
-    bucketCount = 12; // last 12 months
-    for (let i = bucketCount - 1; i >= 0; i--) {
+    periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= monthStart);
+    periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
+    periodLabel.textContent = 'Earned This Month';
+  } else if (currentChartPeriod === 'year') {
+    periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= yearStart);
+    periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
+    periodLabel.textContent = 'Earned This Year';
+  }
+
+  totalEl.textContent = f(periodTotal);
+
+  // Build chart buckets
+  let buckets = {};
+  let labelFormat;
+
+  if (currentChartPeriod === 'all' || currentChartPeriod === 'year') {
+    // Group by month for all/year
+    for (let i = 11; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
       buckets[key] = 0;
     }
-    labelFormat = (k) => { const [y,m] = k.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1]; };
-  } else {
-    bucketCount = 5; // last 5 years
-    for (let i = bucketCount - 1; i >= 0; i--) {
-      const key = String(now.getFullYear() - i);
+    labelFormat = (k) => ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(k.split('-')[1])-1];
+  } else if (currentChartPeriod === 'month') {
+    // Group by day for current month
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    for (let i = 1; i <= daysInMonth; i++) {
+      const key = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(i).padStart(2,'0');
       buckets[key] = 0;
     }
-    labelFormat = (k) => k;
+    labelFormat = (k) => parseInt(k.split('-')[2]) + '';
+  } else if (currentChartPeriod === 'week') {
+    // Group by day Mon-Sun
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(mondayDate); d.setDate(mondayDate.getDate() + i);
+      const key = d.toISOString().split('T')[0];
+      buckets[key] = 0;
+    }
+    labelFormat = (k) => ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][new Date(k).getDay() === 0 ? 6 : new Date(k).getDay() - 1];
+  } else if (currentChartPeriod === 'day') {
+    // Group by hour for today
+    for (let i = 0; i < 24; i++) {
+      buckets[String(i).padStart(2,'0')] = 0;
+    }
+    labelFormat = (k) => k + ':00';
   }
 
-  // Fill buckets from payout data
+  // Fill buckets
   userPayoutCache.forEach(p => {
     const d = new Date(p.created_at);
     let key;
-    if (currentChartPeriod === 'day') key = d.toISOString().split('T')[0];
-    else if (currentChartPeriod === 'week') { const ws = new Date(d); ws.setDate(d.getDate() - d.getDay() + 1); key = ws.toISOString().split('T')[0]; }
-    else if (currentChartPeriod === 'month') key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-    else key = String(d.getFullYear());
+    if (currentChartPeriod === 'all' || currentChartPeriod === 'year') {
+      key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    } else if (currentChartPeriod === 'month' || currentChartPeriod === 'week') {
+      key = d.toISOString().split('T')[0];
+    } else {
+      if (d.toISOString().split('T')[0] !== today) return;
+      key = String(d.getHours()).padStart(2,'0');
+    }
     if (key in buckets) buckets[key] += (p.amount || 0) / 1e6;
   });
 
   const keys = Object.keys(buckets);
   const values = keys.map(k => buckets[k]);
   const max = Math.max(...values, 0.01);
-  const total = values.reduce((a,b) => a + b, 0);
-  const avg = currentChartPeriod === 'day' ? total / Math.min(keys.length, 14) :
-              currentChartPeriod === 'week' ? total / Math.min(keys.length, 12) / 7 :
-              currentChartPeriod === 'month' ? total / Math.min(keys.length, 12) / 30 :
-              total / Math.min(keys.length, 5) / 365;
 
   el.innerHTML = values.map((v, i) =>
     '<div class="chart-bar" style="height:' + Math.max(v / max * 100, 2) + '%">' +
     '<div class="chart-tooltip"><strong style="color:var(--poly2)">' + f(v) + ' USDC</strong><br><span style="color:var(--text3)">' + labelFormat(keys[i]) + '</span></div></div>'
   ).join('');
 
-  // Show first, middle, last labels
-  if (keys.length >= 3) {
+  // Labels
+  if (keys.length > 7) {
     labelsEl.innerHTML = '<span>' + labelFormat(keys[0]) + '</span><span>' + labelFormat(keys[Math.floor(keys.length/2)]) + '</span><span>' + labelFormat(keys[keys.length-1]) + '</span>';
-  } else {
+  } else if (keys.length > 0) {
     labelsEl.innerHTML = keys.map(k => '<span>' + labelFormat(k) + '</span>').join('');
   }
-
-  totalEl.textContent = f(total);
-  avgEl.textContent = f(avg);
 }
 
 // ==================== AUTO-REFRESH ====================
