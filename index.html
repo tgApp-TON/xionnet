@@ -1103,11 +1103,6 @@ function checkMasterAccess(wallet) {
   isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
   document.getElementById('statsAdminGrid').style.display = isMasterWallet ? '' : 'none';
   document.getElementById('statsTotalPayoutsCard').style.display = isMasterWallet ? '' : 'none';
-  // Master always sees bonus filter
-  if (isMasterWallet) {
-    const bonusChip = document.getElementById('bonusFilterChip');
-    if (bonusChip) bonusChip.style.display = '';
-  }
 }
 
 // Prototype level states
@@ -1734,14 +1729,26 @@ let bonusInterval = null;
 let bonusClaimed = false;
 
 async function startBonusTimer() {
-  // Try to read registeredAt from contract
+  const timerEl = document.getElementById('bonusTimer');
+  const faqSection = document.getElementById('bonusFaqSection');
+  const faqItem = document.getElementById('bonusFaqItem');
+
+  // Master and owner never see bonus
+  if (isMasterWallet || (connectedWallet && connectedWallet.toLowerCase() === '0xE4c41b544acafF7d6a6f8441690841935Ccc8038'.toLowerCase())) {
+    hideBonus(); return;
+  }
+
+  // Check if L8 already active — bonus already claimed
   if (xionContract && connectedWallet) {
     try {
+      const l8 = await xionContract.getUserLevel(connectedWallet, 8);
+      if (l8.active) { hideBonus(); return; }
+
       const info = await xionContract.getUserInfo(connectedWallet);
       if (info.registered && info.registeredAt > 0) {
-        bonusRegisteredAt = Number(info.registeredAt) * 1000; // unix → ms
+        bonusRegisteredAt = Number(info.registeredAt) * 1000;
       } else {
-        bonusRegisteredAt = Date.now(); // not registered yet, start now
+        bonusRegisteredAt = Date.now();
       }
     } catch (e) {
       bonusRegisteredAt = Date.now();
@@ -1749,8 +1756,21 @@ async function startBonusTimer() {
   } else {
     bonusRegisteredAt = Date.now();
   }
+
   bonusInterval = setInterval(updateBonusTimer, 1000);
   updateBonusTimer();
+}
+
+function hideBonus() {
+  const timerEl = document.getElementById('bonusTimer');
+  const faqSection = document.getElementById('bonusFaqSection');
+  const faqItem = document.getElementById('bonusFaqItem');
+  const bonusChip = document.getElementById('bonusFilterChip');
+  if (timerEl) timerEl.style.display = 'none';
+  if (faqSection) faqSection.style.display = 'none';
+  if (faqItem) faqItem.style.display = 'none';
+  if (bonusChip) bonusChip.style.display = 'none';
+  clearInterval(bonusInterval);
 }
 
 function updateBonusTimer() {
@@ -1762,20 +1782,14 @@ function updateBonusTimer() {
   const faqSection = document.getElementById('bonusFaqSection');
   const faqItem = document.getElementById('bonusFaqItem');
 
-  if (remaining <= 0 && !isMasterWallet) {
-    // Timer expired — hide bonus UI for regular users
-    timerEl.style.display = 'none';
-    if (faqSection) faqSection.style.display = 'none';
-    if (faqItem) faqItem.style.display = 'none';
-    const bonusChip = document.getElementById('bonusFilterChip');
-    if (bonusChip) bonusChip.style.display = 'none';
-    clearInterval(bonusInterval);
+  if (remaining <= 0) {
+    hideBonus();
     return;
   }
 
-  // Show bonus filter chip while timer active (or always for master)
+  // Show bonus filter chip while timer active
   const bonusChip = document.getElementById('bonusFilterChip');
-  if (bonusChip && (remaining > 0 || isMasterWallet)) bonusChip.style.display = '';
+  if (bonusChip) bonusChip.style.display = '';
 
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
