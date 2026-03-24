@@ -470,7 +470,7 @@ a{color:var(--poly2);text-decoration:none}
 <!-- ==================== STATS ==================== -->
 <div id="screen-stats" class="screen">
   <div class="stat-grid">
-    <div class="stat-box sb-poly"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">0</div></div>
+    <div class="stat-box sb-poly" id="participantsBox" style="display:none"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">0</div></div>
     <div class="stat-box sb-frozen"><div class="stat-lbl">Frozen Now</div><div class="stat-val" style="color:var(--frozen)">$0</div></div>
     <div class="stat-box sb-orange" id="systemFeesBox" style="display:none"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$0</div></div>
   </div>
@@ -1025,6 +1025,7 @@ const MASTER_WALLET = ''; // set at deploy time
 function checkMasterAccess(wallet) {
   isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
   document.getElementById('systemFeesBox').style.display = isMasterWallet ? '' : 'none';
+  document.getElementById('participantsBox').style.display = isMasterWallet ? '' : 'none';
   // Master always sees bonus filter
   if (isMasterWallet) {
     const bonusChip = document.getElementById('bonusFilterChip');
