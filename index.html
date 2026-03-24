@@ -282,6 +282,9 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 .setting-label{font-size:13px;font-weight:600}
 .setting-sub{font-size:10px;color:var(--text3)}
 
+/* ========== TREE MODAL ========== */
+#treeModal.hidden{display:none!important}
+
 /* ========== REFERRAL TREE VISUAL ========== */
 .tree-wrap{overflow-x:auto;padding:16px 0;-webkit-overflow-scrolling:touch}
 .tree{display:flex;flex-direction:column;align-items:center;min-width:fit-content}
@@ -532,12 +535,10 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl">Pending</div></div>
     <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl">Earned</div></div>
   </div>
-  <div class="card" id="treeCard" style="display:none">
-    <div class="card-hdr"><span class="card-title">Referral Tree</span></div>
-    <div class="tree-wrap"><div class="tree" id="refTree"></div></div>
-  </div>
-
-  <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:10px 0 6px">Referral List</div>
+  <button class="ghost-btn" id="treeBtn" style="width:100%;padding:10px;margin-bottom:12px;display:none" onclick="openTreeModal()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="6" y1="14" x2="18" y2="14"/><line x1="6" y1="14" x2="6" y2="18"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="18" y1="14" x2="18" y2="18"/><circle cx="6" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+    View Referral Tree
+  </button>
   <div id="refListContainer">
     <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No referrals yet. Share your link!</div>
   </div>
@@ -942,6 +943,18 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       <label class="ab-switch"><input type="checkbox" id="vibroToggle" checked onchange="toggleVibro(this.checked)"><span class="ab-slider"></span></label>
     </div>
   </div>
+</div>
+
+<!-- ==================== TREE FULLSCREEN ==================== -->
+<div id="treeModal" class="hidden" style="position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
+    <div style="font-weight:900;font-size:15px">Referral Tree</div>
+    <button class="modal-close" onclick="closeTreeModal()" style="position:static">✕</button>
+  </div>
+  <div style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:20px;touch-action:pan-x pan-y">
+    <div class="tree" id="refTree" style="min-width:fit-content"></div>
+  </div>
+  <div style="padding:10px 16px;border-top:1px solid var(--border);text-align:center;font-size:10px;color:var(--text3);flex-shrink:0">Scroll to explore · Max 10 direct + 5 subs shown</div>
 </div>
 
 <!-- ==================== PUSH NOTIFICATIONS ==================== -->
@@ -2357,9 +2370,15 @@ async function checkNewEvents() {
 }
 
 // ==================== REFERRAL TREE ====================
+function openTreeModal() { document.getElementById('treeModal').classList.remove('hidden'); loadRefTree(); }
+function closeTreeModal() { document.getElementById('treeModal').classList.add('hidden'); }
+
+const MAX_TREE_DIRECT = 10;
+const MAX_TREE_SUBS = 5;
+
 async function loadRefTree() {
   if (!SUPABASE_URL || !currentWallet) return;
-  const treeCard = document.getElementById('treeCard');
+  const treeBtn = document.getElementById('treeBtn');
   const treeEl = document.getElementById('refTree');
   try {
     const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_referral_tree', {
@@ -2369,11 +2388,14 @@ async function loadRefTree() {
     });
     if (!res.ok) return;
     const data = await res.json();
-    if (!data || !data.length) { treeCard.style.display = 'none'; return; }
+    if (!data || !data.length) { treeBtn.style.display = 'none'; return; }
+    treeBtn.style.display = '';
 
-    // Build tree structure
-    const directs = data.filter(d => d.level === 1);
-    const subs = data.filter(d => d.level === 2);
+    // Build tree structure (limited for performance)
+    const allDirects = data.filter(d => d.level === 1);
+    const allSubs = data.filter(d => d.level === 2);
+    const directs = allDirects.slice(0, MAX_TREE_DIRECT);
+    const subs = allSubs;
 
     // Group subs by their referrer
     const subMap = {};
@@ -2403,7 +2425,9 @@ async function loadRefTree() {
         const avatarColor = isActive ? 'var(--green)' : 'var(--text3)';
         const lvlText = isActive ? 'L' + d.active_levels : '—';
         const lvlColor = isActive ? 'var(--green)' : 'var(--text3)';
-        const mySubs = subMap[d.wallet] || [];
+        const allMySubs = subMap[d.wallet] || [];
+        const mySubs = allMySubs.slice(0, MAX_TREE_SUBS);
+        const moreSubs = allMySubs.length - mySubs.length;
 
         html += '<div class="tree-connector" style="padding-top:20px">';
         html += '<div class="tree-card ' + cls + '"><div class="tree-avatar" style="background:' + avatarBg + ';color:' + avatarColor + '">' + initials + '</div><div class="tree-addr">' + short + '</div><div class="tree-lvl" style="color:' + lvlColor + '">' + lvlText + '</div></div>';
@@ -2424,16 +2448,22 @@ async function loadRefTree() {
             const sLvlColor = sActive ? 'var(--frozen)' : 'var(--text3)';
             html += '<div class="tree-connector" style="padding-top:20px"><div class="tree-card ' + sCls + '"><div class="tree-avatar" style="background:' + sAvBg + ';color:' + sAvColor + '">' + sInitials + '</div><div class="tree-addr">' + sShort + '</div><div class="tree-lvl" style="color:' + sLvlColor + '">' + sLvl + '</div></div></div>';
           });
+          if (moreSubs > 0) {
+            html += '<div class="tree-connector" style="padding-top:20px"><div class="tree-card tc-pending" style="opacity:.7"><div class="tree-avatar" style="background:var(--bg5);color:var(--text3)">+' + moreSubs + '</div><div class="tree-addr">more</div></div></div>';
+          }
           html += '</div>';
         }
         html += '</div>';
       });
+      if (allDirects.length > MAX_TREE_DIRECT) {
+        const moreD = allDirects.length - MAX_TREE_DIRECT;
+        html += '<div class="tree-connector" style="padding-top:20px"><div class="tree-card tc-pending" style="opacity:.7"><div class="tree-avatar" style="background:var(--bg5);color:var(--text3)">+' + moreD + '</div><div class="tree-addr">more</div></div></div>';
+      }
       html += '</div>';
     }
     html += '</div>';
 
     treeEl.innerHTML = html;
-    treeCard.style.display = '';
   } catch(e) { console.warn('Tree load:', e); }
 }
 
@@ -2615,6 +2645,20 @@ function soundError() {
   playTone(330, 0.15, 'square', 0.06);
   setTimeout(() => playTone(262, 0.2, 'square', 0.06), 120);
 }
+
+// ==================== AUTO-CONNECT ====================
+// If wallet was previously connected, auto-reconnect without user click
+(async function autoConnect() {
+  if (!window.ethereum) return;
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' }); // doesn't popup
+    if (accounts && accounts.length > 0) {
+      // Wallet already authorized — auto-connect
+      const btn = document.getElementById('connectBtn');
+      if (btn) connectWallet(btn);
+    }
+  } catch(e) {}
+})();
 
 // ==================== AUTO-REFRESH ====================
 // Refresh when user returns to app (tab focus, MetaMask switch back)
