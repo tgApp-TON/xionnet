@@ -447,7 +447,7 @@ a{color:var(--poly2);text-decoration:none}
     <button class="chip" onclick="filterHistory(this,'frozen')">❄️ Frozen</button>
     <button class="chip" onclick="filterHistory(this,'spillover')">⬆️ Spillover</button>
     <button class="chip" onclick="filterHistory(this,'reactivation')">🔄 Reactivation</button>
-    <button class="chip" onclick="filterHistory(this,'bonus')">🎁 Bonus</button>
+    <button class="chip" onclick="filterHistory(this,'bonus')" id="bonusFilterChip" style="display:none">🎁 Bonus</button>
     <button class="chip" onclick="filterHistory(this,'auto')">⚡ Auto-open</button>
   </div>
   <div class="card" style="padding:0;overflow:hidden" id="historyFeed">
@@ -1020,6 +1020,11 @@ const MASTER_WALLET = ''; // set at deploy time
 function checkMasterAccess(wallet) {
   isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
   document.getElementById('systemFeesBox').style.display = isMasterWallet ? '' : 'none';
+  // Master always sees bonus filter
+  if (isMasterWallet) {
+    const bonusChip = document.getElementById('bonusFilterChip');
+    if (bonusChip) bonusChip.style.display = '';
+  }
 }
 
 // Prototype level states
@@ -1662,14 +1667,20 @@ function updateBonusTimer() {
   const faqSection = document.getElementById('bonusFaqSection');
   const faqItem = document.getElementById('bonusFaqItem');
 
-  if (remaining <= 0) {
-    // Timer expired — hide everything
+  if (remaining <= 0 && !isMasterWallet) {
+    // Timer expired — hide bonus UI for regular users
     timerEl.style.display = 'none';
     if (faqSection) faqSection.style.display = 'none';
     if (faqItem) faqItem.style.display = 'none';
+    const bonusChip = document.getElementById('bonusFilterChip');
+    if (bonusChip) bonusChip.style.display = 'none';
     clearInterval(bonusInterval);
     return;
   }
+
+  // Show bonus filter chip while timer active (or always for master)
+  const bonusChip = document.getElementById('bonusFilterChip');
+  if (bonusChip && (remaining > 0 || isMasterWallet)) bonusChip.style.display = '';
 
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
