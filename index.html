@@ -457,10 +457,11 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
-  <div class="ref-stats" style="grid-template-columns:repeat(3,1fr)">
-    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl">Direct</div></div>
+  <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
+    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl">Total</div></div>
     <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl">Active</div></div>
-    <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--orange)">$0</div><div class="lbl">Earned</div></div>
+    <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl">Pending</div></div>
+    <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl">Earned</div></div>
   </div>
   <div id="refListContainer">
     <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No referrals yet. Share your link!</div>
@@ -908,8 +909,25 @@ async function loadHistory() {
 async function loadReferrals() {
   if (!SUPABASE_URL || !currentWallet) return;
   try {
-    const data = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet.toLowerCase() + '&order=created_at.desc');
-    if (data) updateReferralsUI(data);
+    // Get referral links
+    const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet.toLowerCase() + '&order=created_at.desc');
+    if (!refs || !refs.length) return;
+
+    // Get user details for each referral
+    const wallets = refs.map(r => r.referred_wallet);
+    const users = await sbFetch('/rest/v1/users?wallet=in.(' + wallets.join(',') + ')&select=wallet,active_levels,total_received,registered_at');
+
+    const userMap = {};
+    if (users) users.forEach(u => userMap[u.wallet] = u);
+
+    const enriched = refs.map(r => ({
+      ...r,
+      active_levels: userMap[r.referred_wallet]?.active_levels || 0,
+      total_received: userMap[r.referred_wallet]?.total_received || 0,
+      registered_at: userMap[r.referred_wallet]?.registered_at || r.created_at,
+    }));
+
+    updateReferralsUI(enriched);
   } catch (e) { console.warn('Referrals load failed:', e); }
 }
 
@@ -993,18 +1011,65 @@ function updateReferralsUI(data) {
   const container = document.getElementById('refListContainer');
   if (!container) return;
 
-  let html = '';
+  let totalCount = data.length;
+  let activeCount = 0;
+  let pendingCount = 0;
+  let totalEarned = 0;
+
+  let activeHtml = '';
+  let pendingHtml = '';
+
   data.forEach(ref => {
     const short = ref.referred_wallet.slice(0,6) + '...' + ref.referred_wallet.slice(-4);
     const initials = ref.referred_wallet.slice(2,4).toUpperCase();
-    html += '<div class="ref-item">' +
-      '<div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">' + initials + '</div>' +
-      '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
-      '<div class="ref-meta">' + new Date(ref.created_at).toLocaleDateString('en',{month:'short',day:'numeric'}) + '</div></div>' +
-      '<div class="ref-earned"><div class="val">—</div><div class="lbl">referral</div></div></div>';
+    const isActive = ref.active_levels > 0;
+    const date = new Date(ref.registered_at).toLocaleDateString('en',{month:'short',day:'numeric'});
+    const earned = (ref.total_received || 0) / 1e6;
+
+    if (isActive) {
+      activeCount++;
+      activeHtml += '<div class="ref-item">' +
+        '<div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">' + initials + '</div>' +
+        '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
+        '<div class="ref-meta">' + date + ' · ' + ref.active_levels + ' level' + (ref.active_levels > 1 ? 's' : '') + '</div>' +
+        '<div class="ref-tags"><span class="ld-tag t-active">L' + ref.active_levels + '</span></div></div>' +
+        '<div class="ref-earned"><div class="val" style="color:var(--green)">' + f(earned) + '</div><div class="lbl">earned</div></div></div>';
+    } else {
+      pendingCount++;
+      pendingHtml += '<div class="ref-item" style="opacity:.6">' +
+        '<div class="ref-avatar" style="background:var(--bg4);color:var(--text3)">' + initials + '</div>' +
+        '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
+        '<div class="ref-meta">' + date + ' · registered</div>' +
+        '<div class="ref-tags"><span class="ld-tag t-inactive">Pending</span></div></div>' +
+        '<div class="ref-earned"><div class="val" style="color:var(--text3)">$0</div><div class="lbl">waiting</div></div></div>';
+    }
   });
-  // Keep hardcoded data as fallback if no Supabase data
-  if (html) container.innerHTML = html;
+
+  // Update stats
+  document.getElementById('refStatDirect').textContent = totalCount;
+  document.getElementById('refStatActive').textContent = activeCount;
+  document.getElementById('refStatPending').textContent = pendingCount;
+
+  let html = '';
+  if (activeHtml) {
+    html += '<div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 0 6px">Active (' + activeCount + ')</div>' + activeHtml;
+  }
+  if (pendingHtml) {
+    html += '<div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;padding:12px 0 6px">Pending — waiting to buy first level (' + pendingCount + ')</div>' + pendingHtml;
+  }
+  if (!html) html = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No referrals yet. Share your link!</div>';
+
+  container.innerHTML = html;
+
+  // Update dashboard network card
+  const dashNet = document.getElementById('dashNetworkCard');
+  if (dashNet && totalCount > 0) {
+    dashNet.innerHTML = '<div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">' +
+      '<div style="font-size:28px;font-weight:900;color:var(--poly2)">' + totalCount + '</div>' +
+      '<div><div style="font-size:12px">' + activeCount + ' active · ' + pendingCount + ' pending</div></div></div>' +
+      '<div class="prog-track"><div class="prog-fill" style="width:' + (totalCount > 0 ? Math.round(activeCount/totalCount*100) : 0) + '%"></div></div>' +
+      '<div style="font-size:10px;color:var(--text3);margin-top:4px">' + activeCount + ' have activated levels</div>';
+  }
 }
 
 // Supabase Realtime subscription
@@ -1255,6 +1320,7 @@ async function connectWallet(btn) {
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
     loadUserPayouts().then(buildChart);
+    loadReferrals(); // load network data for dashboard
     startBonusTimer();
     refreshData(true);
     subscribeRealtime();
