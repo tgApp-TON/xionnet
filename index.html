@@ -1512,6 +1512,7 @@ async function doStep() {
           await loadUserData();
           renderLevels('dash-lvls');
           renderLevels('main-lvls');
+          selectedLevel = 0;
           return;
         }
       }
@@ -1520,8 +1521,21 @@ async function doStep() {
       await loadUserData();
       renderLevels('dash-lvls');
       renderLevels('main-lvls');
+      // Re-render detail panel with updated data
+      const boughtLevel = modalLevel;
       refreshData(true);
-      setTimeout(closeModal, 1500);
+      setTimeout(() => {
+        closeModal();
+        // Reopen detail for next level to buy
+        const nextLevel = boughtLevel + 1;
+        if (nextLevel <= 17 && !LEVELS[nextLevel - 1].active) {
+          selectedLevel = 0; // reset so selectLevel opens fresh
+          selectLevel(nextLevel);
+        } else {
+          selectedLevel = 0;
+          selectLevel(boughtLevel); // show bought level as active
+        }
+      }, 1500);
     } catch (err) {
       console.error('Activate failed:', err);
       btn.textContent = '⚡ Activate Level ' + modalLevel;
