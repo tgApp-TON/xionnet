@@ -207,7 +207,21 @@ async function updateMonitor(block: number, txHash: string) {
 
 // ==================== EVENT PROCESSOR ====================
 
+const processedLogs = new Set<string>();
+
 async function processLog(contract: ethers.Contract, log: ethers.Log) {
+  // Deduplicate: tx_hash + logIndex is unique per event
+  const logKey = log.transactionHash + ':' + log.index;
+  if (processedLogs.has(logKey)) return;
+  processedLogs.add(logKey);
+  // Keep set from growing forever
+  if (processedLogs.size > 10000) {
+    const arr = Array.from(processedLogs);
+    arr.splice(0, 5000);
+    processedLogs.clear();
+    arr.forEach(k => processedLogs.add(k));
+  }
+
   const parsed = contract.interface.parseLog({ topics: log.topics as string[], data: log.data });
   if (!parsed) return;
 
