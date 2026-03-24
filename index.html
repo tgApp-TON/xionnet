@@ -18,8 +18,10 @@
   --text:#f0f2f8;--text2:#9099b0;--text3:#424d68;
   --border:rgba(124,58,237,0.14);--border2:rgba(124,58,237,0.28);--border3:rgba(124,58,237,0.45);
 }
-html{scroll-behavior:smooth}
-body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;overscroll-behavior:none}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;position:fixed;width:100%;height:100%;overflow:hidden}
+#connectScreen{overflow-y:auto;height:100%}
+#mainApp{overflow-y:auto;height:100%;-webkit-overflow-scrolling:touch}
 ::-webkit-scrollbar{width:0;height:0}
 a{color:var(--poly2);text-decoration:none}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -309,16 +311,17 @@ a{color:var(--poly2);text-decoration:none}
       <span class="wp-addr">0x7f3a...4d91</span>
       <span class="wp-badge">POL</span>
     </div>
-    <a class="bonus-timer" id="bonusTimer" onclick="switchTab(document.querySelectorAll('.tab')[5],'faq');scrollToBonus()">
-      <span class="bt-icon">🎁</span>
-      <span>L8 free in</span>
-      <span class="bt-time" id="bonusTime">179:59</span>
-    </a>
     <button class="ref-btn" onclick="copyRef(this)">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       Ref
     </button>
   </div>
+  <a class="bonus-timer" id="bonusTimer" onclick="switchTab(document.querySelectorAll('.tab')[5],'faq');scrollToBonus()" style="margin:0 0 10px;display:inline-flex">
+    <span class="bt-icon">🎁</span>
+    <span>Buy 7 levels in</span>
+    <span class="bt-time" id="bonusTime">179:59</span>
+    <span>→ L8 FREE</span>
+  </a>
   <nav class="tabs">
     <button class="tab on" onclick="switchTab(this,'dashboard')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</button>
     <button class="tab" onclick="switchTab(this,'levels')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 8 12 12 14.5 14.5"/></svg>Levels</button>
