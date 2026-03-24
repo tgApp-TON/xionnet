@@ -112,6 +112,9 @@ a{color:var(--poly2);text-decoration:none}
 .lvl-card.lc-on{border-color:rgba(6,214,160,.35);background:rgba(6,214,160,.03)}
 .lvl-card.lc-frz{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.04)}
 .lvl-card.lc-dim{opacity:.32}
+.lvl-card.lc-next{border-color:rgba(252,211,77,.5);background:rgba(252,211,77,.04);animation:nextGlow 2s ease-in-out infinite}
+.lvl-card.lc-next::before{background:linear-gradient(90deg,var(--gold),var(--orange))}
+@keyframes nextGlow{0%,100%{box-shadow:0 0 6px rgba(252,211,77,.15)}50%{box-shadow:0 0 14px rgba(252,211,77,.3)}}
 .lvl-card.lc-sel{border-color:var(--poly);box-shadow:0 0 0 1px var(--poly),0 0 16px rgba(124,58,237,0.15)}
 .lvl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .lvl-card.lc-on::before{background:linear-gradient(90deg,var(--green),var(--green2))}
@@ -342,17 +345,12 @@ a{color:var(--poly2);text-decoration:none}
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
-    <div class="fi-feed">
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 3</div><div class="fi-sub">from 0x9f2c...7a11</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$12.00</div><div class="fi-time">2h ago</div></div></div>
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 3</div><div class="fi-sub">Will auto-unlock Level 4</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12.00</div><div class="fi-time">2h ago</div></div></div>
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 3 opened automatically</div><div class="fi-sub">No fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">1d ago</div></div></div>
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Received &middot; Level 2</div><div class="fi-sub">from 0x3e8a...bc42</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$6.00</div><div class="fi-time">2d ago</div></div></div>
-    </div>
+    <div class="card-hdr"><span class="card-title">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
+    <div class="lvl-grid" id="dash-lvls"></div>
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Referrals</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'referrals')">View</button></div>
+    <div class="card-hdr"><span class="card-title">Network</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'referrals')">View</button></div>
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
       <div style="font-size:28px;font-weight:900;color:var(--poly2)">7</div>
       <div><div style="font-size:12px">4 active &middot; 3 registered</div></div>
@@ -362,8 +360,13 @@ a{color:var(--poly2);text-decoration:none}
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
-    <div class="lvl-grid" id="dash-lvls"></div>
+    <div class="card-hdr"><span class="card-title">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
+    <div class="fi-feed">
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 3</div><div class="fi-sub">from 0x9f2c...7a11</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$12.00</div><div class="fi-time">2h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 3</div><div class="fi-sub">Will auto-unlock Level 4</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12.00</div><div class="fi-time">2h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 3 opened automatically</div><div class="fi-sub">No fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">1d ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Received &middot; Level 2</div><div class="fi-sub">from 0x3e8a...bc42</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$6.00</div><div class="fi-time">2d ago</div></div></div>
+    </div>
   </div>
 </div>
 
@@ -418,7 +421,7 @@ a{color:var(--poly2);text-decoration:none}
     <div class="stat-box sb-poly"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">1,847</div></div>
     <div class="stat-box sb-green"><div class="stat-lbl">Total Payouts (USDC)</div><div class="stat-val" style="color:var(--green)">$48.2k</div></div>
     <div class="stat-box sb-frozen"><div class="stat-lbl">Frozen Now</div><div class="stat-val" style="color:var(--frozen)">$3,842</div></div>
-    <div class="stat-box sb-orange"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$6,240</div></div>
+    <div class="stat-box sb-orange" id="systemFeesBox" style="display:none"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$6,240</div></div>
   </div>
 
   <div class="card">
@@ -664,6 +667,15 @@ function f(n) {
   return '$' + n.toFixed(4);
 }
 
+// Master wallet check (for admin-only UI elements)
+let isMasterWallet = false;
+const MASTER_WALLET = ''; // set at deploy time
+
+function checkMasterAccess(wallet) {
+  isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
+  document.getElementById('systemFeesBox').style.display = isMasterWallet ? '' : 'none';
+}
+
 // Prototype level states
 const LEVELS = [];
 for (let i = 1; i <= 17; i++) {
@@ -685,8 +697,11 @@ function renderLevels(containerId) {
     const lv = LEVELS[i];
     const n = i + 1;
     const filled = lv.slots.reduce((a, b) => a + b, 0);
+    // Determine if this is the next level to buy
+    const isNext = !lv.active && (i === 0 || LEVELS[i - 1].active);
     let cls = 'lvl-card';
-    if (lv.frzState) cls += ' lc-frz';
+    if (isNext) cls += ' lc-next';
+    else if (lv.frzState) cls += ' lc-frz';
     else if (lv.active) cls += ' lc-on';
     else cls += ' lc-dim';
 
