@@ -430,22 +430,6 @@ const T = {
     en: 'Auto-buy Level', ru: 'Автопокупка уровня', ua: 'Автокупівля рівня', es: 'Compra automática del nivel', pt: 'Compra automática do nível', fr: 'Achat automatique du niveau',
     de: 'Automatischer Kauf der Stufe', pl: 'Automatyczny zakup poziomu', vi: 'Tự động mua cấp', ko: '레벨 자동 구매', ja: 'レベル自動購入', hi: 'स्तर ऑटो-खरीद', zh: '自动购买级别', tr: 'Seviye Otomatik Satın Al',
   },
-};
-
-// Get translation for current language
-let currentLang = localStorage.getItem('xn_lang') || 'en';
-
-function t(key) {
-  const entry = T[key];
-  if (!entry) return key;
-  return entry[currentLang] || entry.en || key;
-}
-
-function setLang(lang) {
-  currentLang = lang;
-  localStorage.setItem('xn_lang', lang);
-  applyTranslations();
-}
 
   // ==================== FAQ ====================
   faq_bonus_title: {
@@ -590,6 +574,21 @@ function setLang(lang) {
     ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
   },
 };
+
+// Get translation for current language
+let currentLang = localStorage.getItem('xn_lang') || 'en';
+
+function t(key) {
+  const entry = T[key];
+  if (!entry) return key;
+  return entry[currentLang] || entry.en || key;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('xn_lang', lang);
+  applyTranslations();
+}
 
 function applyTranslations() {
   // Update all elements with data-t attribute (textContent)
