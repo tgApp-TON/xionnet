@@ -1419,9 +1419,11 @@ async function connectWallet(btn) {
         const regTx = await xionContract.register(ref);
         await regTx.wait();
         btn.innerHTML = connectCheckIcon + ' Welcome!';
+        soundBonus();
       } else {
         btn.className = 'cs-btn cs-registering';
         btn.innerHTML = connectCheckIcon + ' Connected!';
+        soundSuccess();
       }
     } catch (e) {
       console.warn('Auto-register:', e.reason || e.message);
