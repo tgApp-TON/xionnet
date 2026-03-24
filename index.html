@@ -951,10 +951,19 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div style="font-weight:900;font-size:15px">Referral Tree</div>
     <button class="modal-close" onclick="closeTreeModal()" style="position:static">✕</button>
   </div>
-  <div style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:20px;touch-action:pan-x pan-y">
-    <div class="tree" id="refTree" style="min-width:fit-content"></div>
+  <div id="treeZoomWrap" style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:20px;touch-action:manipulation">
+    <div id="treeZoomInner" style="transform-origin:0 0;transition:transform .1s;min-width:fit-content">
+      <div class="tree" id="refTree" style="min-width:fit-content"></div>
+    </div>
   </div>
-  <div style="padding:10px 16px;border-top:1px solid var(--border);text-align:center;font-size:10px;color:var(--text3);flex-shrink:0">Scroll to explore · Max 10 direct + 5 subs shown</div>
+  <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <span style="font-size:10px;color:var(--text3)">Pinch to zoom</span>
+    <div style="display:flex;gap:8px">
+      <button class="ghost-btn" onclick="treeZoom(-0.2)" style="padding:4px 10px;font-size:14px">−</button>
+      <button class="ghost-btn" onclick="treeZoomReset()" style="padding:4px 10px;font-size:10px">Reset</button>
+      <button class="ghost-btn" onclick="treeZoom(0.2)" style="padding:4px 10px;font-size:14px">+</button>
+    </div>
+  </div>
 </div>
 
 <!-- ==================== PUSH NOTIFICATIONS ==================== -->
@@ -1104,6 +1113,14 @@ async function loadReferrals() {
     const wallets = refs.map(r => r.referred_wallet);
     const users = await sbFetch('/rest/v1/users?wallet=in.(' + wallets.join(',') + ')&select=wallet,active_levels,total_received,registered_at');
 
+    // Get how much I earned from each referral (payouts where sender = referral)
+    const myPayouts = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + currentWallet.toLowerCase() + '&select=sender_wallet,amount');
+    const earnedFromMap = {};
+    if (myPayouts) myPayouts.forEach(p => {
+      const sw = p.sender_wallet;
+      earnedFromMap[sw] = (earnedFromMap[sw] || 0) + (p.amount || 0);
+    });
+
     const userMap = {};
     if (users) users.forEach(u => userMap[u.wallet] = u);
 
@@ -1111,6 +1128,7 @@ async function loadReferrals() {
       ...r,
       active_levels: userMap[r.referred_wallet]?.active_levels || 0,
       total_received: userMap[r.referred_wallet]?.total_received || 0,
+      earned_from: earnedFromMap[r.referred_wallet] || 0,
       registered_at: userMap[r.referred_wallet]?.registered_at || r.created_at,
     }));
 
@@ -1245,7 +1263,7 @@ function updateReferralsUI(data) {
     const initials = ref.referred_wallet.slice(2,4).toUpperCase();
     const isActive = ref.active_levels > 0;
     const date = new Date(ref.registered_at).toLocaleDateString('en',{month:'short',day:'numeric'});
-    const earned = (ref.total_received || 0) / 1e6;
+    const earnedFrom = (ref.earned_from || 0) / 1e6;
 
     const wallet = ref.referred_wallet;
     const refId = 'subs-' + wallet.slice(2,10);
@@ -1257,7 +1275,7 @@ function updateReferralsUI(data) {
         '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
         '<div class="ref-meta">' + date + ' · ' + ref.active_levels + ' level' + (ref.active_levels > 1 ? 's' : '') + '</div>' +
         '<div class="ref-tags"><span class="ld-tag t-active">L' + ref.active_levels + '</span></div></div>' +
-        '<div class="ref-earned"><div class="val" style="color:var(--green)">' + f(earned) + '</div><div class="lbl">earned</div></div>' +
+        '<div class="ref-earned"><div class="val" style="color:var(--green)">' + (earnedFrom > 0 ? '+' + f(earnedFrom) : '$0') + '</div><div class="lbl">earned you</div></div>' +
         '<div class="ri-expand">▾</div></div>' +
         '<div class="ref-subs" id="' + refId + '"></div></div>';
     } else {
@@ -1273,7 +1291,7 @@ function updateReferralsUI(data) {
 
   // Calculate total earned by referrals
   data.forEach(ref => {
-    totalEarned += (ref.total_received || 0) / 1e6;
+    totalEarned += (ref.earned_from || 0) / 1e6;
   });
 
   // Update stats
@@ -2433,8 +2451,12 @@ function timeAgo(date) {
 }
 
 // ==================== REFERRAL TREE ====================
-function openTreeModal() { document.getElementById('treeModal').classList.remove('hidden'); loadRefTree(); }
+let treeScale = 1;
+function openTreeModal() { document.getElementById('treeModal').classList.remove('hidden'); treeScale = 1; applyTreeZoom(); loadRefTree(); }
 function closeTreeModal() { document.getElementById('treeModal').classList.add('hidden'); }
+function treeZoom(delta) { treeScale = Math.max(0.3, Math.min(2, treeScale + delta)); applyTreeZoom(); }
+function treeZoomReset() { treeScale = 1; applyTreeZoom(); }
+function applyTreeZoom() { const el = document.getElementById('treeZoomInner'); if (el) el.style.transform = 'scale(' + treeScale + ')'; }
 
 const MAX_TREE_DIRECT = 10;
 const MAX_TREE_SUBS = 5;
