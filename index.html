@@ -834,7 +834,9 @@ function renderLevels(containerId) {
       pips += '<div class="lc-pip ' + pc + '"></div>';
     }
 
-    html += '<div class="' + cls + '" onclick="selectLevel(' + n + ')">';
+    // L16 and L17 span full width (3 columns)
+    const wide = (n >= 16) ? ' style="grid-column:span 3"' : '';
+    html += '<div class="' + cls + '"' + wide + ' onclick="selectLevel(' + n + ')">';
     html += '<div class="lc-top"><span class="lc-label">L' + n + '</span>';
     if (lv.cycle_count > 0) html += '<span class="lc-cycle">×' + lv.cycle_count + '</span>';
     html += '</div>';
