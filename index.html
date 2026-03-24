@@ -266,6 +266,19 @@ a{color:var(--poly2);text-decoration:none}
 .sc-total .lbl{font-size:10px;color:var(--text3);margin-bottom:4px}
 .sc-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:var(--text2)}
 
+/* ========== PUSH NOTIFICATIONS ========== */
+#notifContainer{position:fixed;top:12px;right:12px;left:12px;z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.notif{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;pointer-events:auto;animation:notifIn .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);backdrop-filter:blur(12px);transition:all .3s}
+.notif.notif-out{opacity:0;transform:translateX(100px);pointer-events:none}
+@keyframes notifIn{from{opacity:0;transform:translateY(-20px) scale(.95)}to{opacity:1;transform:none}}
+.notif-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-icon svg{width:18px;height:18px}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:12px;font-weight:700}
+.notif-sub{font-size:10px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.notif-amt{font-size:14px;font-weight:900;font-family:'DM Mono',monospace;flex-shrink:0}
+.notif-close{width:20px;height:20px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:10px;flex-shrink:0;border:none}
+
 /* ========== BUY MODAL ========== */
 #buyOverlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
 #buyOverlay.hidden{display:none}
@@ -806,6 +819,9 @@ a{color:var(--poly2);text-decoration:none}
     </div>
   </div>
 </div>
+
+<!-- ==================== PUSH NOTIFICATIONS ==================== -->
+<div id="notifContainer"></div>
 
 <!-- ==================== TX TOAST ==================== -->
 <div id="txToast">
@@ -2097,6 +2113,92 @@ function buildChart() {
   }
 }
 
+// ==================== PUSH NOTIFICATIONS ====================
+const notifSVGs = {
+  payout: { bg: 'rgba(6,214,160,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>' },
+  slot: { bg: 'rgba(124,58,237,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--poly2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>' },
+  referral: { bg: 'rgba(96,165,250,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-1.5A5.5 5.5 0 0 1 7.5 14h3A5.5 5.5 0 0 1 16 19.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M21 21v-1a4 4 0 0 0-3-3.87"/></svg>' },
+  frozen: { bg: 'rgba(56,189,248,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--frozen)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07"/></svg>' },
+  level: { bg: 'rgba(252,211,77,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>' },
+  spillover: { bg: 'rgba(124,58,237,.12)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--poly2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>' },
+};
+
+let lastNotifCheck = null;
+const MAX_NOTIFS = 3;
+
+function showNotif(type, title, sub, amount) {
+  const container = document.getElementById('notifContainer');
+  if (!container) return;
+  const s = notifSVGs[type] || notifSVGs.slot;
+  const amtColor = type === 'payout' || type === 'spillover' ? 'var(--green)' :
+                   type === 'frozen' ? 'var(--frozen)' : 'var(--poly2)';
+
+  const div = document.createElement('div');
+  div.className = 'notif';
+  div.innerHTML = '<div class="notif-icon" style="background:' + s.bg + '">' + s.svg + '</div>' +
+    '<div class="notif-body"><div class="notif-title">' + title + '</div>' +
+    '<div class="notif-sub">' + sub + '</div></div>' +
+    (amount ? '<div class="notif-amt" style="color:' + amtColor + '">' + amount + '</div>' : '') +
+    '<button class="notif-close" onclick="this.parentElement.classList.add(\'notif-out\');setTimeout(()=>this.parentElement.remove(),300)">✕</button>';
+
+  container.appendChild(div);
+
+  // Remove oldest if too many
+  while (container.children.length > MAX_NOTIFS) {
+    container.children[0].classList.add('notif-out');
+    setTimeout(() => { if (container.children[0]) container.children[0].remove(); }, 300);
+  }
+
+  // Auto dismiss after 6s
+  setTimeout(() => {
+    if (div.parentElement) {
+      div.classList.add('notif-out');
+      setTimeout(() => div.remove(), 300);
+    }
+  }, 6000);
+}
+
+async function checkNewEvents() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  const wallet = currentWallet.toLowerCase();
+  const since = lastNotifCheck || new Date(Date.now() - 30000).toISOString();
+  lastNotifCheck = new Date().toISOString();
+
+  try {
+    // Check new payouts
+    const payouts = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
+    if (payouts) payouts.forEach(p => {
+      showNotif('payout', 'Payout received · L' + p.level_num,
+        'from ' + p.sender_wallet.slice(0,6) + '...' + p.sender_wallet.slice(-4),
+        '+' + f(p.amount / 1e6));
+    });
+
+    // Check new slot fills on my levels
+    const slots = await sbFetch('/rest/v1/slot_events?owner_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
+    if (slots) slots.forEach(s => {
+      // Skip if already showed payout for same tx
+      if (payouts && payouts.find(p => p.tx_hash === s.tx_hash)) return;
+      showNotif('slot', 'Slot ' + s.slot_num + ' filled · L' + s.level_num,
+        s.source_wallet.slice(0,6) + '...' + s.source_wallet.slice(-4) + ' joined', null);
+    });
+
+    // Check new referrals
+    const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
+    if (refs) refs.forEach(r => {
+      showNotif('referral', 'New referral!',
+        r.referred_wallet.slice(0,6) + '...' + r.referred_wallet.slice(-4) + ' joined your network', null);
+    });
+
+    // Check spillovers to me
+    const spills = await sbFetch('/rest/v1/spillovers?to_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
+    if (spills) spills.forEach(s => {
+      showNotif('spillover', 'Spillover · L' + s.level_num,
+        s.hops + ' hops from ' + s.from_wallet.slice(0,6) + '...',
+        '+' + f(s.amount / 1e6));
+    });
+  } catch (e) { /* silent */ }
+}
+
 // ==================== AUTO-REFRESH ====================
 // Refresh when user returns to app (tab focus, MetaMask switch back)
 document.addEventListener('visibilitychange', () => {
@@ -2106,8 +2208,9 @@ document.addEventListener('visibilitychange', () => {
 // Refresh on window focus (MetaMask browser back)
 window.addEventListener('focus', () => refreshData(true));
 
-// Periodic background refresh every 30s
+// Periodic background refresh every 30s + check notifications every 15s
 setInterval(() => { if (!document.hidden) refreshData(); }, 30000);
+setInterval(() => { if (!document.hidden) checkNewEvents(); }, 15000);
 </script>
 </body>
 </html>
