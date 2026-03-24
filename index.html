@@ -1080,11 +1080,8 @@ function buyCost(n) { return +(LP[n] * 1.1).toFixed(2); }
 // Format USDC
 function f(n) {
   if (n === 0) return '$0';
-  if (n >= 100000) return '$' + (n / 1000).toFixed(0) + 'k';
-  if (n >= 10000) return '$' + (n / 1000).toFixed(1) + 'k';
-  if (n >= 1000) return '$' + Math.round(n).toLocaleString();
+  if (Number.isInteger(n)) return '$' + n;
   if (n >= 1) return '$' + (+n.toFixed(2));
-  if (n >= 0.01) return '$' + (+n.toFixed(2));
   return '$' + (+n.toFixed(4));
 }
 
