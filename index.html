@@ -203,6 +203,7 @@ a{color:var(--poly2);text-decoration:none}
 .ref-sub-item .rs-name{font-family:'DM Mono',monospace;font-size:10px;font-weight:600}
 .ref-sub-item .rs-meta{font-size:9px;color:var(--text3)}
 .ref-sub-count{font-size:9px;color:var(--poly2);font-weight:700;margin-left:4px}
+.ref-load-more{display:block}
 
 /* ========== STATS ========== */
 .chart-wrap{position:relative;height:100px;display:flex;align-items:flex-end;gap:3px;margin:14px 0 8px}
@@ -429,36 +430,45 @@ a{color:var(--poly2);text-decoration:none}
     <div class="ref-stat"><div class="val" style="color:var(--green)">4</div><div class="lbl">Active</div></div>
     <div class="ref-stat"><div class="val" style="color:var(--orange)">$39.00</div><div class="lbl">Earned</div></div>
   </div>
-  <!-- Referral AL — has 3 sub-referrals -->
+  <!-- Referral AL — has 3 direct + 2 deep -->
   <div>
     <div class="ref-item" onclick="toggleSubs('subs-al',this)">
       <div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">AL</div>
-      <div class="ref-info"><div class="ref-name">0x9f2c...7a11 <span class="ref-sub-count">+3 refs</span></div><div class="ref-meta">Mar 20 &middot; 3 levels</div><div class="ref-tags"><span class="ld-tag t-active">L3</span><span class="ld-tag t-frozen">❄️ frozen</span></div></div>
+      <div class="ref-info"><div class="ref-name">0x9f2c...7a11 <span class="ref-sub-count">+5 refs</span></div><div class="ref-meta">Mar 20 &middot; 3 levels</div><div class="ref-tags"><span class="ld-tag t-active">L3</span><span class="ld-tag t-frozen">❄️ frozen</span></div></div>
       <div class="ref-earned"><div class="val">$18.00</div><div class="lbl">earned you</div></div>
       <div class="ri-expand">▾</div>
     </div>
     <div class="ref-subs" id="subs-al">
-      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">F1</div><div class="rs-info"><div class="rs-name">0xa1b2...c3d4</div><div class="rs-meta">Mar 21 &middot; L2 active</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (3)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">F1</div><div class="rs-info"><div class="rs-name">0xa1b2...c3d4</div><div class="rs-meta">Mar 21 &middot; L2 active</div></div></div>
       <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">G2</div><div class="rs-info"><div class="rs-name">0xe5f6...7890</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
-      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(245,158,11,.1);color:var(--orange)">H3</div><div class="rs-info"><div class="rs-name">0x1234...abcd</div><div class="rs-meta">Mar 22 &middot; pending</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H3</div><div class="rs-info"><div class="rs-name">0x1234...abcd</div><div class="rs-meta">Mar 22 &middot; pending</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--poly2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px 4px;margin-left:18px">Their referrals (2)</div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">P1</div><div class="rs-info"><div class="rs-name">0xaaaa...1111</div><div class="rs-meta">via F1 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">Q2</div><div class="rs-info"><div class="rs-name">0xbbbb...2222</div><div class="rs-meta">via G2 &middot; pending</div></div></div>
+      <div class="ref-more" id="more-al" style="display:none"></div>
+      <button class="ghost-btn ref-load-more" id="btn-more-al" style="margin:8px 0 8px 20px;font-size:10px;display:none" onclick="loadMoreSubs('al',20)">Show more...</button>
     </div>
   </div>
 
-  <!-- Referral BX — has 2 sub-referrals -->
+  <!-- Referral BX — has 2 direct + 1 deep -->
   <div>
     <div class="ref-item" onclick="toggleSubs('subs-bx',this)">
       <div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">BX</div>
-      <div class="ref-info"><div class="ref-name">0x3e8a...bc42 <span class="ref-sub-count">+2 refs</span></div><div class="ref-meta">Mar 19 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div>
+      <div class="ref-info"><div class="ref-name">0x3e8a...bc42 <span class="ref-sub-count">+3 refs</span></div><div class="ref-meta">Mar 19 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div>
       <div class="ref-earned"><div class="val">$9.00</div><div class="lbl">earned you</div></div>
       <div class="ri-expand">▾</div>
     </div>
     <div class="ref-subs" id="subs-bx">
-      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(56,189,248,.1);color:var(--frozen)">J4</div><div class="rs-info"><div class="rs-name">0x5678...ef01</div><div class="rs-meta">Mar 20 &middot; L1 active</div></div></div>
-      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(252,211,77,.1);color:var(--gold)">K5</div><div class="rs-info"><div class="rs-name">0x9abc...2345</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (2)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J4</div><div class="rs-info"><div class="rs-name">0x5678...ef01</div><div class="rs-meta">Mar 20 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K5</div><div class="rs-info"><div class="rs-name">0x9abc...2345</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--poly2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px 4px;margin-left:18px">Their referrals (1)</div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">R3</div><div class="rs-info"><div class="rs-name">0xcccc...3333</div><div class="rs-meta">via J4 &middot; L1 active</div></div></div>
     </div>
   </div>
 
-  <!-- Referral CR — has 1 sub-referral -->
+  <!-- Referral CR — has 1 direct, no deep -->
   <div>
     <div class="ref-item" onclick="toggleSubs('subs-cr',this)">
       <div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">CR</div>
@@ -467,6 +477,7 @@ a{color:var(--poly2);text-decoration:none}
       <div class="ri-expand">▾</div>
     </div>
     <div class="ref-subs" id="subs-cr">
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (1)</div>
       <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">M6</div><div class="rs-info"><div class="rs-name">0xdef0...6789</div><div class="rs-meta">Mar 19 &middot; pending</div></div></div>
     </div>
   </div>
@@ -1168,10 +1179,24 @@ function toggleSubs(id, itemEl) {
   }
 }
 
+const SUB_PAGE_SIZE = 20;
+const subOffsets = {}; // track pagination per referral
+
 async function loadSubReferrals(refId) {
   if (!SUPABASE_URL) return; // prototype mode — use hardcoded data
-  // Will fetch: /rest/v1/referrals?referrer_wallet=eq.{refWallet}&order=created_at.desc
-  // Then build sub-referral HTML dynamically
+  // Production flow:
+  // 1. Get direct referrals of this referral
+  // 2. Get their referrals (2nd tier) with LIMIT 20
+  // 3. Show "Show more" if more exist
+}
+
+async function loadMoreSubs(refKey, limit) {
+  if (!SUPABASE_URL) return;
+  const offset = subOffsets[refKey] || 0;
+  // Fetch next batch: /rest/v1/referrals?...&offset={offset}&limit={limit}
+  // Append to #more-{refKey}
+  // Hide button if no more results
+  subOffsets[refKey] = offset + limit;
 }
 
 // ==================== FILTER CHIPS ====================
