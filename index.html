@@ -422,7 +422,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <header class="hdr">
   <div class="hdr-top">
     <div class="hdr-logo"><span>Xion</span><span class="t2">NET</span></div>
-    <div class="wallet-pill">
+    <div class="wallet-pill" onclick="showWalletAddress()" style="cursor:pointer">
       <div class="wp-dot"></div>
       <span class="wp-addr">Connect...</span>
       <span class="wp-badge">POL</span>
@@ -2311,6 +2311,20 @@ async function checkNewEvents() {
         '+' + f(s.amount / 1e6));
     });
   } catch (e) { /* silent */ }
+}
+
+// ==================== WALLET ADDRESS ====================
+function showWalletAddress() {
+  if (!connectedWallet) return;
+  const short = connectedWallet.slice(0, 6) + '...' + connectedWallet.slice(-4);
+  showNotif('slot', short, connectedWallet, null);
+  navigator.clipboard.writeText(connectedWallet).catch(() => {});
+  // Change pill text temporarily
+  const addr = document.querySelector('.wp-addr');
+  const orig = addr.textContent;
+  addr.textContent = 'Copied!';
+  vibrate(50);
+  setTimeout(() => { addr.textContent = orig; }, 1500);
 }
 
 // ==================== EARNINGS CALCULATOR ====================
