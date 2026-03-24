@@ -1580,6 +1580,7 @@ async function connectWallet(btn) {
     loadReferrals();
     loadRefTree();
     loadLeaderboard();
+    loadRecentActivity();
     startBonusTimer();
     refreshData(true);
     subscribeRealtime();
@@ -2367,6 +2368,68 @@ async function checkNewEvents() {
         '+' + f(s.amount / 1e6));
     });
   } catch (e) { /* silent */ }
+}
+
+// ==================== RECENT ACTIVITY (DASHBOARD) ====================
+async function loadRecentActivity() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  const feed = document.getElementById('dashRecentFeed');
+  if (!feed) return;
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_user_history', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_wallet: currentWallet.toLowerCase(), page_limit: 10, page_offset: 0 })
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.length) return;
+
+    const icons = {
+      payout: ['$','rgba(6,214,160,.12)','var(--green)'],
+      frozen: ['*','rgba(56,189,248,.12)','var(--frozen)'],
+      spillover: ['^','rgba(124,58,237,.12)','var(--poly2)'],
+      reactivation: ['~','rgba(245,158,11,.12)','var(--poly2)'],
+      auto_open: ['!','rgba(6,214,160,.12)','var(--green)'],
+      bonus: ['#','rgba(252,211,77,.12)','var(--gold)'],
+      activation: ['+','rgba(6,214,160,.12)','var(--green)'],
+    };
+
+    let html = '';
+    data.slice(0, 10).forEach(ev => {
+      const [, bg, color] = icons[ev.event_type] || ['●','var(--bg4)','var(--text2)'];
+      const amt = ev.amount > 0 ? '+' + f(ev.amount / 1e6) : (ev.event_type === 'bonus' ? 'FREE' : '');
+      const addr = ev.counterparty ? ev.counterparty.slice(0,6) + '...' + ev.counterparty.slice(-4) : '';
+      const title = ev.event_type === 'payout' ? 'Received · L' + ev.level_num :
+                    ev.event_type === 'frozen' ? 'Frozen · L' + ev.level_num :
+                    ev.event_type === 'spillover' ? 'Spillover · L' + ev.level_num :
+                    ev.event_type === 'reactivation' ? 'Reset · L' + ev.level_num :
+                    ev.event_type === 'auto_open' ? 'Auto-open L' + ev.level_num :
+                    ev.event_type === 'bonus' ? 'Bonus L' + ev.level_num :
+                    'Level ' + ev.level_num;
+      const svgIcon = ev.event_type === 'payout' || ev.event_type === 'spillover'
+        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'
+        : ev.event_type === 'frozen'
+        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>'
+        : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+      const time = ev.created_at ? timeAgo(new Date(ev.created_at)) : '';
+
+      html += '<div class="feed-item"><div class="fi-icon" style="background:' + bg + '">' + svgIcon + '</div>' +
+        '<div class="fi-body"><div class="fi-title">' + title + '</div>' +
+        '<div class="fi-sub">' + (addr ? 'from ' + addr : ev.details || '') + '</div></div>' +
+        '<div class="fi-right"><div class="fi-amt" style="color:' + color + '">' + amt + '</div>' +
+        '<div class="fi-time">' + time + '</div></div></div>';
+    });
+    feed.innerHTML = html;
+  } catch(e) { console.warn('Recent activity:', e); }
+}
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
 }
 
 // ==================== REFERRAL TREE ====================
