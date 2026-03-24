@@ -47,9 +47,14 @@ a{color:var(--poly2);text-decoration:none}
 .cs-features{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
 .cs-feat{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text2)}
 .cs-feat-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.cs-btn{width:100%;padding:15px;background:var(--poly);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
-.cs-btn:hover{background:var(--poly2);transform:translateY(-1px)}
-.cs-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.cs-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--poly),var(--poly2));color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(124,58,237,.3)}
+.cs-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(124,58,237,.45)}
+.cs-btn:disabled{opacity:.8;cursor:not-allowed;transform:none;box-shadow:none}
+.cs-btn .btn-svg svg{width:20px;height:20px}
+.cs-btn.cs-connecting{background:linear-gradient(135deg,var(--bg4),var(--bg5));box-shadow:0 0 20px rgba(124,58,237,.2)}
+.cs-btn.cs-connecting .btn-svg svg{animation:spinSlow 1s linear infinite}
+.cs-btn.cs-registering{background:linear-gradient(135deg,var(--green2),var(--green));color:#001a10;box-shadow:0 0 24px rgba(6,214,160,.3)}
+@keyframes connectGlow{0%,100%{box-shadow:0 4px 20px rgba(124,58,237,.3)}50%{box-shadow:0 4px 30px rgba(124,58,237,.5)}}
 .cs-net{display:flex;align-items:center;gap:6px;justify-content:center;margin-top:14px;font-size:11px;color:var(--text3)}
 .cs-net-dot{width:6px;height:6px;border-radius:50%;background:var(--poly2)}
 
@@ -366,8 +371,8 @@ a{color:var(--poly2);text-decoration:none}
       <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(96,165,250,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>Auto-unlock next level for free</div>
       <div class="cs-feat"><div class="cs-feat-icon" style="background:rgba(245,158,11,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>17 levels &middot; Decentralized network</div>
     </div>
-    <button class="cs-btn" onclick="connectWallet(this)">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+    <button class="cs-btn" id="connectBtn" onclick="connectWallet(this)" style="animation:connectGlow 2s ease-in-out infinite">
+      <span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>
       Connect MetaMask
     </button>
     <div class="cs-net"><div class="cs-net-dot"></div>Polygon Network Required</div>
@@ -1274,11 +1279,18 @@ function switchTab(el, id) {
 }
 
 // ==================== CONNECT ====================
+const connectSpinner = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10" stroke-dasharray="30"/></svg></span>';
+const connectWalletIcon = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>';
+const connectCheckIcon = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>';
+const connectShieldIcon = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span>';
+
 async function connectWallet(btn) {
   btn.disabled = true;
-  btn.innerHTML = '⏳ Connecting...';
+  btn.style.animation = 'none';
+  btn.className = 'cs-btn cs-connecting';
+  btn.innerHTML = connectSpinner + ' Connecting...';
   try {
-    if (!window.ethereum) { alert('MetaMask not found!'); btn.disabled = false; btn.innerHTML = 'Connect MetaMask'; return; }
+    if (!window.ethereum) { alert('MetaMask not found!'); btn.disabled = false; btn.className = 'cs-btn'; btn.innerHTML = connectWalletIcon + ' Connect MetaMask'; return; }
 
     // Request accounts
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -1318,15 +1330,21 @@ async function connectWallet(btn) {
     try {
       const info = await xionContract.getUserInfo(connectedWallet);
       if (!info.registered) {
+        btn.className = 'cs-btn cs-registering';
+        btn.innerHTML = connectShieldIcon + ' Registering...';
         const urlParams = new URLSearchParams(window.location.search);
         const ref = urlParams.get('ref') || ethers.ZeroAddress;
-        toast('Registering...', 'One-time setup', 50);
         const regTx = await xionContract.register(ref);
         await regTx.wait();
-        toast('Registered!', 'Welcome to XionNET', 100);
+        btn.innerHTML = connectCheckIcon + ' Welcome!';
+      } else {
+        btn.className = 'cs-btn cs-registering';
+        btn.innerHTML = connectCheckIcon + ' Connected!';
       }
     } catch (e) {
       console.warn('Auto-register:', e.reason || e.message);
+      btn.className = 'cs-btn cs-registering';
+      btn.innerHTML = connectCheckIcon + ' Connected!';
     }
 
     // Load real data from contract
@@ -1350,7 +1368,9 @@ async function connectWallet(btn) {
   } catch (err) {
     console.error('Connect failed:', err);
     btn.disabled = false;
-    btn.innerHTML = 'Connect MetaMask';
+    btn.className = 'cs-btn';
+    btn.style.animation = 'connectGlow 2s ease-in-out infinite';
+    btn.innerHTML = connectWalletIcon + ' Connect MetaMask';
     alert('Connection failed: ' + (err.message || err));
   }
 }
