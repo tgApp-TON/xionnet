@@ -485,6 +485,7 @@ a{color:var(--poly2);text-decoration:none}
       <div class="card-title">My Earnings</div>
       <div style="display:flex;gap:4px">
         <button class="chip on" onclick="switchChart(this,'day')" id="chartBtnDay">Day</button>
+        <button class="chip" onclick="switchChart(this,'week')" id="chartBtnWeek">Week</button>
         <button class="chip" onclick="switchChart(this,'month')" id="chartBtnMonth">Month</button>
         <button class="chip" onclick="switchChart(this,'year')" id="chartBtnYear">Year</button>
       </div>
@@ -1787,6 +1788,15 @@ function buildChart() {
       buckets[key] = 0;
     }
     labelFormat = (k) => { const d = new Date(k); return d.toLocaleDateString('en', {month:'short', day:'numeric'}); };
+  } else if (currentChartPeriod === 'week') {
+    bucketCount = 12; // last 12 weeks
+    for (let i = bucketCount - 1; i >= 0; i--) {
+      const d = new Date(now); d.setDate(d.getDate() - i * 7);
+      const weekStart = new Date(d); weekStart.setDate(d.getDate() - d.getDay() + 1);
+      const key = weekStart.toISOString().split('T')[0];
+      buckets[key] = 0;
+    }
+    labelFormat = (k) => { const d = new Date(k); return d.toLocaleDateString('en', {month:'short', day:'numeric'}); };
   } else if (currentChartPeriod === 'month') {
     bucketCount = 12; // last 12 months
     for (let i = bucketCount - 1; i >= 0; i--) {
@@ -1809,6 +1819,7 @@ function buildChart() {
     const d = new Date(p.created_at);
     let key;
     if (currentChartPeriod === 'day') key = d.toISOString().split('T')[0];
+    else if (currentChartPeriod === 'week') { const ws = new Date(d); ws.setDate(d.getDate() - d.getDay() + 1); key = ws.toISOString().split('T')[0]; }
     else if (currentChartPeriod === 'month') key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
     else key = String(d.getFullYear());
     if (key in buckets) buckets[key] += (p.amount || 0) / 1e6;
@@ -1819,6 +1830,7 @@ function buildChart() {
   const max = Math.max(...values, 0.01);
   const total = values.reduce((a,b) => a + b, 0);
   const avg = currentChartPeriod === 'day' ? total / Math.min(keys.length, 14) :
+              currentChartPeriod === 'week' ? total / Math.min(keys.length, 12) / 7 :
               currentChartPeriod === 'month' ? total / Math.min(keys.length, 12) / 30 :
               total / Math.min(keys.length, 5) / 365;
 
