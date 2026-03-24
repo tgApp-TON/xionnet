@@ -1076,8 +1076,8 @@ const LP = {};
 for (let i = 1; i <= 17; i++) LP[i] = +(3 * Math.pow(2, i - 1));
 
 // ==================== SUPABASE DATA LAYER ====================
-const SUPABASE_URL = '';  // set at deploy: https://xxx.supabase.co
-const SUPABASE_KEY = '';  // set at deploy: anon key
+const SUPABASE_URL = 'https://klnnojrhyblrauclwivp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtsbm5vanJoeWJscmF1Y2x3aXZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzI3NDYsImV4cCI6MjA4OTk0ODc0Nn0.F9MOlU3vtY_u4GbJhrEsHwoDCvuWtUhbBEJ7FFLo-kU';
 
 let currentWallet = null;
 let lastDataFetch = 0;
@@ -1119,12 +1119,23 @@ async function sbFetch(path) {
   return res.json();
 }
 
-// Load history from Supabase
+// Load history from Supabase (uses RPC for combined feed)
 async function loadHistory() {
   if (!SUPABASE_URL || !currentWallet) return;
   try {
-    const data = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + currentWallet + '&order=created_at.desc&limit=20');
-    if (data) updateHistoryUI(data);
+    const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_user_history', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user_wallet: currentWallet.toLowerCase(), page_limit: 20, page_offset: 0 })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length) updateHistoryUI(data);
+    }
   } catch (e) { console.warn('History load failed:', e); }
 }
 
@@ -1132,7 +1143,7 @@ async function loadHistory() {
 async function loadReferrals() {
   if (!SUPABASE_URL || !currentWallet) return;
   try {
-    const data = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet + '&order=created_at.desc');
+    const data = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet.toLowerCase() + '&order=created_at.desc');
     if (data) updateReferralsUI(data);
   } catch (e) { console.warn('Referrals load failed:', e); }
 }
@@ -1165,22 +1176,78 @@ function updateLevelsFromDB(levels) {
 }
 
 function updateGlobalStats(stats) {
-  // Will update Stats screen from DB
+  if (!stats) return;
+  const boxes = document.querySelectorAll('#screen-stats .stat-box');
+  if (boxes[0]) boxes[0].querySelector('.stat-val').textContent = f(stats.total_users || 0);
+  if (boxes[1]) boxes[1].querySelector('.stat-val').textContent = f((stats.total_payouts || 0) / 1e6);
+  if (boxes[2]) boxes[2].querySelector('.stat-val').textContent = f((stats.total_frozen || 0) / 1e6);
 }
 
 function updateHistoryUI(data) {
-  // Will build history feed from DB
+  if (!data || !data.length) return;
+  const container = document.querySelector('#screen-history .card');
+  if (!container) return;
+
+  const icons = {
+    payout: ['💰','rgba(6,214,160,.12)','var(--green)'],
+    frozen: ['❄️','rgba(56,189,248,.12)','var(--frozen)'],
+    spillover: ['⬆️','rgba(124,58,237,.12)','var(--poly2)'],
+    reactivation: ['🔄','rgba(245,158,11,.12)','var(--poly2)'],
+    auto_open: ['⚡','rgba(6,214,160,.12)','var(--green)'],
+    bonus: ['🎁','rgba(252,211,77,.12)','var(--gold)'],
+    activation: ['🟢','rgba(6,214,160,.12)','var(--green)'],
+  };
+
+  let html = '';
+  data.forEach(ev => {
+    const [icon, bg, color] = icons[ev.event_type] || ['●','var(--bg4)','var(--text2)'];
+    const amt = ev.amount > 0 ? f(ev.amount / 1e6) : (ev.event_type === 'bonus' ? 'FREE' : '—');
+    const addr = ev.counterparty ? ev.counterparty.slice(0,6) + '...' + ev.counterparty.slice(-4) : '';
+    const title = ev.event_type === 'payout' ? 'Received · Level ' + ev.level_num :
+                  ev.event_type === 'frozen' ? 'Frozen · Level ' + ev.level_num :
+                  ev.event_type === 'spillover' ? 'Spillover · Level ' + ev.level_num :
+                  ev.event_type === 'reactivation' ? 'Reset · Level ' + ev.level_num :
+                  ev.event_type === 'auto_open' ? 'Auto-opened Level ' + ev.level_num :
+                  ev.event_type === 'bonus' ? 'Bonus! Level ' + ev.level_num :
+                  'Level ' + ev.level_num + ' activated';
+    const time = ev.created_at ? new Date(ev.created_at).toLocaleDateString('en', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+
+    html += '<div class="feed-item" data-type="' + ev.event_type + '">' +
+      '<div class="fi-icon" style="background:' + bg + '">' + icon + '</div>' +
+      '<div class="fi-body"><div class="fi-title">' + title + '</div>' +
+      '<div class="fi-sub">' + (addr ? 'from ' + addr : ev.details || '') + '</div></div>' +
+      '<div class="fi-right"><div class="fi-amt" style="color:' + color + '">' + (ev.amount > 0 ? '+' : '') + amt + '</div>' +
+      '<div class="fi-time">' + time + '</div></div></div>';
+  });
+  container.innerHTML = html || '<div style="padding:20px;text-align:center;color:var(--text3)">No activity yet</div>';
 }
 
 function updateReferralsUI(data) {
-  // Will build referrals list from DB
+  if (!data) return;
+  const container = document.getElementById('refListContainer');
+  if (!container) return;
+
+  let html = '';
+  data.forEach(ref => {
+    const short = ref.referred_wallet.slice(0,6) + '...' + ref.referred_wallet.slice(-4);
+    const initials = ref.referred_wallet.slice(2,4).toUpperCase();
+    html += '<div class="ref-item">' +
+      '<div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">' + initials + '</div>' +
+      '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
+      '<div class="ref-meta">' + new Date(ref.created_at).toLocaleDateString('en',{month:'short',day:'numeric'}) + '</div></div>' +
+      '<div class="ref-earned"><div class="val">—</div><div class="lbl">referral</div></div></div>';
+  });
+  // Keep hardcoded data as fallback if no Supabase data
+  if (html) container.innerHTML = html;
 }
 
 // Supabase Realtime subscription
 function subscribeRealtime() {
   if (!SUPABASE_URL || !currentWallet) return;
-  // Will use Supabase Realtime WebSocket when configured
-  // supabase.channel('user_levels').on('postgres_changes', ...).subscribe()
+  // Subscribe to user_levels changes for live updates
+  const channel = new EventSource(SUPABASE_URL + '/realtime/v1/channel?apikey=' + SUPABASE_KEY);
+  // Simplified: poll every 30s (full Realtime needs supabase-js client)
+  // The 30s interval in auto-refresh section handles this
 }
 
 // Sponsor receives full price (10% taken at purchase time, not at payout)
@@ -1509,18 +1576,27 @@ async function mintTestUSDC() {
 }
 
 // ==================== AUTO-BUY TOGGLE ====================
-function toggleAutoBuy(levelNum, enabled) {
+async function toggleAutoBuy(levelNum, enabled) {
   LEVELS[levelNum - 1].autoBuy = enabled;
-  // Will call contract: setAutoBuy(levelNum, enabled)
-  // For now, update UI
   const hint = enabled ? 'Slot 2 will freeze for auto-purchase' : 'All slots pay out directly';
   const hintEl = document.querySelector('.autobuy-toggle .ab-hint');
   if (hintEl) hintEl.textContent = hint;
-  toast(
-    enabled ? 'Auto-buy ON for L' + (levelNum + 1) : 'Auto-buy OFF for L' + levelNum,
-    enabled ? 'Takes effect next cycle' : 'All slots will pay out',
-    100
-  );
+
+  if (xionContract) {
+    try {
+      toast(enabled ? 'Enabling auto-buy...' : 'Disabling auto-buy...', 'Confirm in MetaMask', 50);
+      const tx = await xionContract.setAutoBuy(levelNum, enabled);
+      await tx.wait();
+      toast(
+        enabled ? 'Auto-buy ON for L' + (levelNum + 1) : 'Auto-buy OFF for L' + levelNum,
+        enabled ? 'Takes effect next cycle' : 'All slots will pay out',
+        100
+      );
+    } catch (err) {
+      LEVELS[levelNum - 1].autoBuy = !enabled;
+      toast('Failed', err.reason || err.message, 0);
+    }
+  }
 }
 
 // ==================== REF SHARE MODAL ====================
@@ -1822,9 +1898,22 @@ let bonusRegisteredAt = null;
 let bonusInterval = null;
 let bonusClaimed = false;
 
-function startBonusTimer() {
-  // Simulate: user registered "just now" for prototype
-  bonusRegisteredAt = Date.now();
+async function startBonusTimer() {
+  // Try to read registeredAt from contract
+  if (xionContract && connectedWallet) {
+    try {
+      const info = await xionContract.getUserInfo(connectedWallet);
+      if (info.registered && info.registeredAt > 0) {
+        bonusRegisteredAt = Number(info.registeredAt) * 1000; // unix → ms
+      } else {
+        bonusRegisteredAt = Date.now(); // not registered yet, start now
+      }
+    } catch (e) {
+      bonusRegisteredAt = Date.now();
+    }
+  } else {
+    bonusRegisteredAt = Date.now();
+  }
   bonusInterval = setInterval(updateBonusTimer, 1000);
   updateBonusTimer();
 }
