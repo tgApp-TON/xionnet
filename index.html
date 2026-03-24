@@ -1728,8 +1728,25 @@ const spinnerSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" s
 const checkSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>';
 let modalStep = 0;
 
-function openModal(n) {
-  refreshData(); // sync with Supabase before purchase
+async function openModal(n) {
+  // Check contract directly — is level already bought?
+  if (xionContract && connectedWallet) {
+    try {
+      const lv = await xionContract.getUserLevel(connectedWallet, n);
+      if (lv.active) {
+        // Level already active — refresh UI and show next
+        await loadUserData();
+        renderLevels('dash-lvls');
+        renderLevels('main-lvls');
+        toast('Level ' + n + ' already active', 'Data refreshed', 100);
+        soundNotif();
+        selectedLevel = 0;
+        if (n < 17) selectLevel(n + 1);
+        return;
+      }
+    } catch(e) {}
+  }
+  refreshData();
   if (n > 1 && !LEVELS[n - 2].active) {
     showBlocked(n);
     return;
@@ -1807,7 +1824,7 @@ async function doStep() {
       toast('Level ' + modalLevel + ' Active!', 'Purchase complete', 100);
       soundSuccess();
 
-      // Reload data from contract
+      // Reload data from contract (instant, no Supabase delay)
       const boughtLevel = modalLevel;
       await loadUserData();
       renderLevels('dash-lvls');
@@ -1815,6 +1832,10 @@ async function doStep() {
       selectedLevel = 0;
       document.getElementById('lvlDetail').classList.remove('show');
       refreshData(true);
+      // Trigger edge function to sync Supabase faster
+      fetch(SUPABASE_URL + '/functions/v1/process-events', {
+        method: 'POST', headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      }).catch(() => {});
 
       // Check if bonus L8 was activated
       if (boughtLevel === 7) {
@@ -2495,11 +2516,11 @@ function soundError() {
 // ==================== AUTO-REFRESH ====================
 // Refresh when user returns to app (tab focus, MetaMask switch back)
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) refreshData(true);
+  if (!document.hidden) { refreshData(true); loadUserData().then(() => { renderLevels('dash-lvls'); renderLevels('main-lvls'); }); }
 });
 
 // Refresh on window focus (MetaMask browser back)
-window.addEventListener('focus', () => refreshData(true));
+window.addEventListener('focus', () => { refreshData(true); loadUserData().then(() => { renderLevels('dash-lvls'); renderLevels('main-lvls'); }); });
 
 // Periodic background refresh every 30s + check notifications every 15s
 setInterval(() => { if (!document.hidden) refreshData(); }, 30000);
