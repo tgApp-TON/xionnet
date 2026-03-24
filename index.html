@@ -1500,40 +1500,33 @@ async function doStep() {
       document.getElementById('ms2n').textContent = '✓';
       toast('Level ' + modalLevel + ' Active!', 'Purchase complete', 100);
 
+      // Reload data from contract
+      const boughtLevel = modalLevel;
+      await loadUserData();
+      renderLevels('dash-lvls');
+      renderLevels('main-lvls');
+      selectedLevel = 0;
+      document.getElementById('lvlDetail').classList.remove('show');
+      refreshData(true);
+
       // Check if bonus L8 was activated
-      if (modalLevel === 7) {
+      if (boughtLevel === 7) {
         const l8 = await xionContract.getUserLevel(connectedWallet, 8);
         if (l8.active) {
-          // Show congrats!
           setTimeout(() => {
             closeModal();
             showCongrats();
           }, 800);
-          await loadUserData();
-          renderLevels('dash-lvls');
-          renderLevels('main-lvls');
-          selectedLevel = 0;
           return;
         }
       }
 
-      // Reload data from contract
-      await loadUserData();
-      renderLevels('dash-lvls');
-      renderLevels('main-lvls');
-      // Re-render detail panel with updated data
-      const boughtLevel = modalLevel;
-      refreshData(true);
       setTimeout(() => {
         closeModal();
-        // Reopen detail for next level to buy
+        // Open next level to buy
         const nextLevel = boughtLevel + 1;
         if (nextLevel <= 17 && !LEVELS[nextLevel - 1].active) {
-          selectedLevel = 0; // reset so selectLevel opens fresh
           selectLevel(nextLevel);
-        } else {
-          selectedLevel = 0;
-          selectLevel(boughtLevel); // show bought level as active
         }
       }, 1500);
     } catch (err) {
