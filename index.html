@@ -349,8 +349,15 @@ a{color:var(--poly2);text-decoration:none}
 .congrats-value .cv-label{font-size:10px;color:var(--text3);margin-bottom:4px}
 .congrats-value .cv-amount{font-size:28px;font-weight:900;color:var(--green)}
 .congrats-value .cv-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.congrats-btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .15s}
+.congrats-btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .congrats-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(252,211,77,.3)}
+@keyframes flameOuter{0%{d:path("M80 55 C85 22 90 7 100 2 C110 7 115 22 120 55")}100%{d:path("M78 55 C84 18 91 3 100 0 C109 3 116 18 122 55")}}
+@keyframes flameMiddle{0%{transform:scaleY(1)}100%{transform:scaleY(1.15) translateY(-2px)}}
+@keyframes flameInner{0%{transform:scaleY(1) scaleX(1)}100%{transform:scaleY(1.2) scaleX(.9) translateY(-3px)}}
+@keyframes spark1{0%{transform:translate(0,0);opacity:1}100%{transform:translate(-20px,-40px);opacity:0}}
+@keyframes spark2{0%{transform:translate(0,0);opacity:1}100%{transform:translate(15px,-35px);opacity:0}}
+@keyframes spark3{0%{transform:translate(0,0);opacity:0}50%{opacity:1}100%{transform:translate(-30px,-30px);opacity:0}}
+@keyframes spark4{0%{transform:translate(0,0);opacity:0}50%{opacity:1}100%{transform:translate(25px,-25px);opacity:0}}
 
 /* ========== MINT BUTTON (testnet only) ========== */
 .mint-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--green2),var(--green));color:#001a10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
@@ -720,12 +727,26 @@ a{color:var(--poly2);text-decoration:none}
     </div>
     <div class="congrats-title">Level 8 Unlocked FREE!</div>
     <div class="congrats-sub">You bought 7 levels within 180 minutes and earned a free Level 8 activation. Your sponsor received nothing for this — it's pure bonus for you!</div>
-    <div class="congrats-value">
-      <div class="cv-label">You saved</div>
-      <div class="cv-amount">$422.40</div>
-      <div class="cv-sub">Level 8 ($384) + 10% fee ($38.40)</div>
+    <div class="congrats-value" style="position:relative;overflow:hidden;padding:20px 14px">
+      <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%)">
+        <svg width="200" height="60" viewBox="0 0 200 60" fill="none">
+          <path d="M80 55 C85 20 90 5 100 0 C110 5 115 20 120 55" fill="rgba(6,214,160,.12)" style="animation:flameOuter 1.5s ease-in-out infinite alternate"/>
+          <path d="M85 55 C89 25 94 10 100 5 C106 10 111 25 115 55" fill="rgba(6,214,160,.2)" style="animation:flameMiddle 1.2s ease-in-out infinite alternate"/>
+          <path d="M90 55 C93 30 97 18 100 12 C103 18 107 30 110 55" fill="rgba(6,214,160,.35)" style="animation:flameInner .9s ease-in-out infinite alternate"/>
+          <circle cx="60" cy="10" r="2" fill="var(--gold)" style="animation:spark1 2s ease-out infinite"/>
+          <circle cx="140" cy="15" r="2" fill="var(--gold)" style="animation:spark2 2.3s ease-out infinite"/>
+          <circle cx="45" cy="25" r="1.5" fill="var(--green)" style="animation:spark3 1.8s ease-out infinite"/>
+          <circle cx="155" cy="20" r="1.5" fill="var(--poly2)" style="animation:spark4 2.1s ease-out infinite"/>
+        </svg>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">You saved</div>
+      <div style="font-size:48px;font-weight:900;color:var(--green);letter-spacing:-2px;line-height:1;text-shadow:0 0 30px rgba(6,214,160,.4),0 0 60px rgba(6,214,160,.2)">$422.40</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:10px">
+        <div style="background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--green)">$384 Level 8</div>
+        <div style="background:rgba(252,211,77,.08);border:1px solid rgba(252,211,77,.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--gold)">$38.40 Fee</div>
+      </div>
     </div>
-    <button class="congrats-btn" onclick="closeCongrats()">LET'S GO! 🚀</button>
+    <button class="congrats-btn" onclick="closeCongrats()"><span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> LET'S GO!</button>
   </div>
 </div>
 
