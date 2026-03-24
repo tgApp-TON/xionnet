@@ -2248,8 +2248,10 @@ function soundBuy() {
 }
 
 function soundNotif() {
-  // Soft ping: single high tone
-  playTone(880, 0.12, 'sine', 0.08);
+  // Quick swoosh: rising tone
+  playTone(400, 0.08, 'sine', 0.1);
+  setTimeout(() => playTone(800, 0.1, 'sine', 0.12), 50);
+  setTimeout(() => playTone(1200, 0.08, 'sine', 0.08), 100);
 }
 
 function soundSuccess() {
