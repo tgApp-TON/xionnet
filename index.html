@@ -302,6 +302,23 @@ a{color:var(--poly2);text-decoration:none}
 /* ========== REFERRAL LINK CARD ========== */
 .ref-link-card{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 
+/* ========== REF SHARE MODAL ========== */
+#refModal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+#refModal.hidden{display:none}
+.ref-sheet{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px 20px 36px;animation:slideUp .25s ease;position:relative}
+.ref-sheet .modal-handle{width:40px;height:4px;background:var(--bg5);border-radius:2px;margin:0 auto 16px}
+.ref-sheet .modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;background:var(--bg4);border:none;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:14px}
+.ref-qr{display:flex;justify-content:center;margin:16px 0}
+.ref-qr canvas{border-radius:12px;border:3px solid #fff}
+.ref-url-box{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.ref-url-box .ref-url-text{flex:1;font-family:'DM Mono',monospace;font-size:10px;color:var(--text2);word-break:break-all}
+.ref-url-box .ref-copy-btn{background:var(--poly);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;cursor:pointer;flex-shrink:0}
+.ref-share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.ref-share-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .15s;text-decoration:none}
+.ref-share-btn:hover{border-color:var(--border2);transform:translateY(-1px)}
+.ref-share-btn .rs-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ref-share-btn .rs-label{font-size:9px;font-weight:600;color:var(--text2)}
+
 /* ========== MINT BUTTON (testnet only) ========== */
 .mint-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--green2),var(--green));color:#001a10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
 .mint-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(6,214,160,.3)}
@@ -872,6 +889,40 @@ a{color:var(--poly2);text-decoration:none}
 
 </div><!-- /mainApp -->
 
+<!-- ==================== REF SHARE MODAL ==================== -->
+<div id="refModal" class="hidden" onclick="if(event.target===this)closeRefModal()">
+  <div class="ref-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeRefModal()">✕</button>
+    <div style="text-align:center;font-weight:900;font-size:16px;margin-bottom:4px">Share Referral Link</div>
+    <div style="text-align:center;font-size:11px;color:var(--text3);margin-bottom:8px">Invite friends and earn from their activity</div>
+    <div class="ref-qr"><canvas id="qrCanvas"></canvas></div>
+    <div class="ref-url-box">
+      <div class="ref-url-text" id="refUrlText">https://xionnet.vercel.app?ref=0x...</div>
+      <button class="ref-copy-btn" onclick="copyRefLink(this)">Copy</button>
+    </div>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Share via</div>
+    <div class="ref-share-grid">
+      <a class="ref-share-btn" id="shareTelegram" target="_blank">
+        <div class="rs-icon" style="background:rgba(0,136,204,.15);color:#0088cc">✈️</div>
+        <div class="rs-label">Telegram</div>
+      </a>
+      <a class="ref-share-btn" id="shareWhatsapp" target="_blank">
+        <div class="rs-icon" style="background:rgba(37,211,102,.15);color:#25d366">💬</div>
+        <div class="rs-label">WhatsApp</div>
+      </a>
+      <a class="ref-share-btn" id="shareEmail" target="_blank">
+        <div class="rs-icon" style="background:rgba(96,165,250,.15);color:var(--blue)">📧</div>
+        <div class="rs-label">Email</div>
+      </a>
+      <a class="ref-share-btn" id="shareSMS" target="_blank">
+        <div class="rs-icon" style="background:rgba(6,214,160,.15);color:var(--green)">💬</div>
+        <div class="rs-label">SMS</div>
+      </a>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== BUY MODAL ==================== -->
 <div id="buyOverlay" class="hidden" onclick="if(event.target===this)closeModal()">
   <div class="modal-sheet" style="position:relative">
@@ -1411,12 +1462,70 @@ function toggleAutoBuy(levelNum, enabled) {
   );
 }
 
-// ==================== COPY REF ====================
+// ==================== REF SHARE MODAL ====================
+function getRefUrl() {
+  const wallet = connectedWallet || '0x0000';
+  return 'https://xionnet.vercel.app?ref=' + wallet;
+}
+
 function copyRef(btn) {
-  const orig = btn.innerHTML;
-  navigator.clipboard.writeText('https://xionnet.app?ref=0x7f3a4d91').catch(() => {});
-  btn.innerHTML = '✓ Copied!';
-  setTimeout(() => { btn.innerHTML = orig; }, 1500);
+  openRefModal();
+}
+
+function openRefModal() {
+  const url = getRefUrl();
+  document.getElementById('refUrlText').textContent = url;
+
+  // Generate QR code on canvas
+  generateQR(url);
+
+  // Set share links
+  const text = 'Join XionNET — Polygon DeFi Protocol! ' + url;
+  document.getElementById('shareTelegram').href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent('Join XionNET — Polygon DeFi Protocol!');
+  document.getElementById('shareWhatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+  document.getElementById('shareEmail').href = 'mailto:?subject=' + encodeURIComponent('Join XionNET') + '&body=' + encodeURIComponent(text);
+  document.getElementById('shareSMS').href = 'sms:?body=' + encodeURIComponent(text);
+
+  document.getElementById('refModal').classList.remove('hidden');
+}
+
+function closeRefModal() {
+  document.getElementById('refModal').classList.add('hidden');
+}
+
+function copyRefLink(btn) {
+  navigator.clipboard.writeText(getRefUrl()).catch(() => {});
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+}
+
+// Simple QR code generator using canvas
+function generateQR(text) {
+  const canvas = document.getElementById('qrCanvas');
+  const size = 180;
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Use QR code API as image
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.drawImage(img, 0, 0, size, size);
+  };
+  img.onerror = function() {
+    // Fallback: show text
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = '12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('QR Code', size/2, size/2 - 10);
+    ctx.fillText(text.slice(-20), size/2, size/2 + 10);
+  };
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text) + '&bgcolor=ffffff&color=7c3aed';
 }
 
 // ==================== BUY MODAL ====================
