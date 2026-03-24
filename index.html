@@ -388,7 +388,7 @@ a{color:var(--poly2);text-decoration:none}
     <div class="hdr-logo"><span>Xion</span><span class="t2">NET</span></div>
     <div class="wallet-pill">
       <div class="wp-dot"></div>
-      <span class="wp-addr">0x7f3a...4d91</span>
+      <span class="wp-addr">Connect...</span>
       <span class="wp-badge">POL</span>
     </div>
     <button class="ref-btn" onclick="copyRef(this)">
@@ -397,7 +397,7 @@ a{color:var(--poly2);text-decoration:none}
     </button>
   </div>
   <a class="bonus-timer" id="bonusTimer" onclick="switchTab(document.querySelectorAll('.tab')[5],'faq');scrollToBonus()" style="margin:0 0 10px;display:flex;width:100%;justify-content:center">
-    <span class="bt-icon">🎁</span>
+    <span class="bt-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="14" rx="2"/><path d="M12 8V2"/><path d="M2 12h20"/><path d="M12 12v10"/><path d="M8 2c0 3 4 6 4 6s4-3 4-6"/></svg></span>
     <span>Buy 7 levels in</span>
     <span class="bt-time" id="bonusTime">179:59</span>
     <span>→ L8 FREE</span>
@@ -414,7 +414,7 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== DASHBOARD ==================== -->
 <div id="screen-dashboard" class="screen on">
-  <button class="mint-btn" id="mintBtn" onclick="mintTestUSDC()" style="display:none">💰 Mint $10,000 Test USDC</button>
+  <button class="mint-btn" id="mintBtn" onclick="mintTestUSDC()" style="display:none"><span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span> Mint $10,000 Test USDC</button>
   <div class="stat-grid">
     <div class="stat-box sb-poly"><div class="stat-lbl">Total Received</div><div class="stat-val" style="color:var(--poly2)">$0</div><div class="stat-hint"></div></div>
     <div class="stat-box sb-green"><div class="stat-lbl">Active Levels</div><div class="stat-val" style="color:var(--green)">0 / 17</div><div class="stat-hint"></div></div>
@@ -1244,7 +1244,7 @@ function selectLevel(n) {
 
   let actions = '';
   if (!lv.active) {
-    actions = '<button class="buy-btn" onclick="openModal(' + n + ')">🦊 Buy Level ' + n + ' &middot; ' + f(buyCost(n)) + '</button>';
+    actions = '<button class="buy-btn" onclick="openModal(' + n + ')">' + walletSVG + ' Buy Level ' + n + ' &middot; ' + f(buyCost(n)) + '</button>';
   } else if (lv.frzState) {
     actions = '<div style="color:var(--frozen);font-size:12px;font-weight:600;text-align:center;padding:8px">❄️ Waiting slot 3 → will auto-buy Level ' + (n + 1) + '</div>';
   } else {
