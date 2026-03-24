@@ -2149,13 +2149,13 @@ function showNotif(type, title, sub, amount) {
     setTimeout(() => { if (container.children[0]) container.children[0].remove(); }, 300);
   }
 
-  // Auto dismiss after 8s
+  // Auto dismiss after 3s
   setTimeout(() => {
     if (div.parentElement) {
       div.classList.add('notif-out');
       setTimeout(() => div.remove(), 300);
     }
-  }, 8000);
+  }, 3000);
 }
 
 async function checkNewEvents() {
