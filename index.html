@@ -653,6 +653,114 @@ a{color:var(--poly2);text-decoration:none}
 const LP = {};
 for (let i = 1; i <= 17; i++) LP[i] = +(3 * Math.pow(2, i - 1));
 
+// ==================== SUPABASE DATA LAYER ====================
+const SUPABASE_URL = '';  // set at deploy: https://xxx.supabase.co
+const SUPABASE_KEY = '';  // set at deploy: anon key
+
+let currentWallet = null;
+let lastDataFetch = 0;
+const FETCH_COOLDOWN = 2000; // min 2s between fetches to avoid spam
+
+// Central data refresh — called on every user interaction
+async function refreshData(force) {
+  if (!currentWallet) return;
+  const now = Date.now();
+  if (!force && now - lastDataFetch < FETCH_COOLDOWN) return;
+  lastDataFetch = now;
+
+  if (!SUPABASE_URL) return; // skip if not configured (prototype mode)
+
+  try {
+    const [userRes, levelsRes, statsRes] = await Promise.all([
+      sbFetch('/rest/v1/users?wallet=eq.' + currentWallet),
+      sbFetch('/rest/v1/user_levels?wallet=eq.' + currentWallet + '&order=level_num'),
+      sbFetch('/rest/v1/system_stats?limit=1'),
+    ]);
+
+    if (userRes && userRes[0]) updateUserUI(userRes[0]);
+    if (levelsRes) updateLevelsFromDB(levelsRes);
+    if (statsRes && statsRes[0]) updateGlobalStats(statsRes[0]);
+  } catch (e) {
+    console.warn('Data refresh failed:', e);
+  }
+}
+
+// Supabase REST fetch helper
+async function sbFetch(path) {
+  const res = await fetch(SUPABASE_URL + path, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY
+    }
+  });
+  if (!res.ok) throw new Error(res.status);
+  return res.json();
+}
+
+// Load history from Supabase
+async function loadHistory() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  try {
+    const data = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + currentWallet + '&order=created_at.desc&limit=20');
+    if (data) updateHistoryUI(data);
+  } catch (e) { console.warn('History load failed:', e); }
+}
+
+// Load referrals from Supabase
+async function loadReferrals() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  try {
+    const data = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet + '&order=created_at.desc');
+    if (data) updateReferralsUI(data);
+  } catch (e) { console.warn('Referrals load failed:', e); }
+}
+
+// Update UI from DB data
+function updateUserUI(user) {
+  // Will be connected to real UI elements when Supabase is live
+  // user: { wallet, total_received, total_paid, active_levels, is_master }
+}
+
+function updateLevelsFromDB(levels) {
+  // Update LEVELS array from DB, then re-render
+  levels.forEach(dbLv => {
+    const idx = dbLv.level_num - 1;
+    if (idx >= 0 && idx < LEVELS.length) {
+      LEVELS[idx].active = dbLv.active;
+      LEVELS[idx].slots = [
+        dbLv.slot1_wallet ? 1 : 0,
+        dbLv.slot2_wallet ? 1 : 0,
+        dbLv.slot3_wallet ? 1 : 0,
+        dbLv.slot4_wallet ? 1 : 0
+      ];
+      LEVELS[idx].cycle_count = dbLv.cycle_count || 0;
+      LEVELS[idx].frozenAmt = dbLv.frozen_amount ? dbLv.frozen_amount / 1e6 : 0;
+      LEVELS[idx].frzState = dbLv.is_frozen || false;
+    }
+  });
+  renderLevels('dash-lvls');
+  renderLevels('main-lvls');
+}
+
+function updateGlobalStats(stats) {
+  // Will update Stats screen from DB
+}
+
+function updateHistoryUI(data) {
+  // Will build history feed from DB
+}
+
+function updateReferralsUI(data) {
+  // Will build referrals list from DB
+}
+
+// Supabase Realtime subscription
+function subscribeRealtime() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  // Will use Supabase Realtime WebSocket when configured
+  // supabase.channel('user_levels').on('postgres_changes', ...).subscribe()
+}
+
 // Sponsor receives full price (10% taken at purchase time, not at payout)
 function sponsorGets(n) { return LP[n]; }
 
@@ -732,6 +840,7 @@ function renderLevels(containerId) {
 // ==================== SELECT LEVEL ====================
 let selectedLevel = 0;
 function selectLevel(n) {
+  refreshData(); // sync with Supabase
   const panel = document.getElementById('lvlDetail');
   // switch to levels screen if on dashboard
   const levelsTab = document.querySelectorAll('.tab')[1];
@@ -816,7 +925,12 @@ function switchTab(el, id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   el.classList.add('on');
   document.getElementById('screen-' + id).classList.add('on');
-  window.scrollTo(0, 0);
+  document.getElementById('mainApp').scrollTo(0, 0);
+  // Refresh data from Supabase on every tab switch
+  refreshData();
+  // Load tab-specific data
+  if (id === 'history') loadHistory();
+  if (id === 'referrals') loadReferrals();
 }
 
 // ==================== CONNECT ====================
@@ -824,12 +938,16 @@ function connectWallet(btn) {
   btn.disabled = true;
   btn.innerHTML = '⏳ Connecting...';
   setTimeout(() => {
+    currentWallet = '0x7f3a4d91'; // will be replaced by real MetaMask wallet
     document.getElementById('connectScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
+    checkMasterAccess(currentWallet);
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
     buildChart();
     startBonusTimer();
+    refreshData(true); // force initial load from Supabase
+    subscribeRealtime(); // start listening for live updates
   }, 900);
 }
 
@@ -846,6 +964,7 @@ let modalLevel = 0;
 let modalStep = 0;
 
 function openModal(n) {
+  refreshData(); // sync with Supabase before purchase
   if (n > 1 && !LEVELS[n - 2].active) {
     showBlocked(n);
     return;
@@ -901,6 +1020,7 @@ function doStep() {
       LEVELS[modalLevel - 1].active = true;
       renderLevels('dash-lvls');
       renderLevels('main-lvls');
+      refreshData(true); // force sync after purchase
       setTimeout(closeModal, 1500);
     }, 2000);
   }
@@ -1027,6 +1147,18 @@ function buildChart() {
     '<div class="chart-tooltip"><strong style="color:var(--poly2)">' + f(d.usdc) + ' USDC</strong><br><span style="color:var(--text3)">' + d.date + '</span></div></div>'
   ).join('');
 }
+
+// ==================== AUTO-REFRESH ====================
+// Refresh when user returns to app (tab focus, MetaMask switch back)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) refreshData(true);
+});
+
+// Refresh on window focus (MetaMask browser back)
+window.addEventListener('focus', () => refreshData(true));
+
+// Periodic background refresh every 30s
+setInterval(() => { if (!document.hidden) refreshData(); }, 30000);
 </script>
 </body>
 </html>
