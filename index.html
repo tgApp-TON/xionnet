@@ -193,6 +193,16 @@ a{color:var(--poly2);text-decoration:none}
 .ref-earned{text-align:right;flex-shrink:0}
 .ref-earned .val{font-size:14px;font-weight:900;color:var(--green)}
 .ref-earned .lbl{font-size:9px;color:var(--text3)}
+.ref-item .ri-expand{width:20px;height:20px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);flex-shrink:0;transition:all .2s;cursor:pointer;border:1px solid var(--border)}
+.ref-item .ri-expand.open{background:var(--poly);color:#fff;transform:rotate(180deg)}
+.ref-subs{display:none;padding:0 0 0 20px;margin-top:0}
+.ref-subs.show{display:block}
+.ref-sub-item{display:flex;gap:10px;padding:8px 12px;border-left:2px solid var(--border2);margin-left:18px;align-items:center;background:var(--bg3);border-radius:0 10px 10px 0;margin-bottom:4px}
+.ref-sub-item .rs-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;flex-shrink:0}
+.ref-sub-item .rs-info{flex:1;min-width:0}
+.ref-sub-item .rs-name{font-family:'DM Mono',monospace;font-size:10px;font-weight:600}
+.ref-sub-item .rs-meta{font-size:9px;color:var(--text3)}
+.ref-sub-count{font-size:9px;color:var(--poly2);font-weight:700;margin-left:4px}
 
 /* ========== STATS ========== */
 .chart-wrap{position:relative;height:100px;display:flex;align-items:flex-end;gap:3px;margin:14px 0 8px}
@@ -413,15 +423,58 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
-  <div class="ref-stats">
-    <div class="ref-stat"><div class="val" style="color:var(--poly2)">7</div><div class="lbl">Total</div></div>
+  <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
+    <div class="ref-stat"><div class="val" style="color:var(--poly2)">5</div><div class="lbl">Direct</div></div>
+    <div class="ref-stat"><div class="val" style="color:var(--frozen)">6</div><div class="lbl">2nd tier</div></div>
     <div class="ref-stat"><div class="val" style="color:var(--green)">4</div><div class="lbl">Active</div></div>
     <div class="ref-stat"><div class="val" style="color:var(--orange)">$39.00</div><div class="lbl">Earned</div></div>
   </div>
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">AL</div><div class="ref-info"><div class="ref-name">0x9f2c...7a11</div><div class="ref-meta">Mar 20 &middot; 3 levels</div><div class="ref-tags"><span class="ld-tag t-active">L3</span><span class="ld-tag t-frozen">❄️ frozen</span></div></div><div class="ref-earned"><div class="val">$18.00</div><div class="lbl">earned you</div></div></div>
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">BX</div><div class="ref-info"><div class="ref-name">0x3e8a...bc42</div><div class="ref-meta">Mar 19 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div><div class="ref-earned"><div class="val">$9.00</div><div class="lbl">earned you</div></div></div>
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">CR</div><div class="ref-info"><div class="ref-name">0x1a4b...3c88</div><div class="ref-meta">Mar 18 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div><div class="ref-earned"><div class="val">$6.00</div><div class="lbl">earned you</div></div></div>
+  <!-- Referral AL — has 3 sub-referrals -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-al',this)">
+      <div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">AL</div>
+      <div class="ref-info"><div class="ref-name">0x9f2c...7a11 <span class="ref-sub-count">+3 refs</span></div><div class="ref-meta">Mar 20 &middot; 3 levels</div><div class="ref-tags"><span class="ld-tag t-active">L3</span><span class="ld-tag t-frozen">❄️ frozen</span></div></div>
+      <div class="ref-earned"><div class="val">$18.00</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-al">
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">F1</div><div class="rs-info"><div class="rs-name">0xa1b2...c3d4</div><div class="rs-meta">Mar 21 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">G2</div><div class="rs-info"><div class="rs-name">0xe5f6...7890</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(245,158,11,.1);color:var(--orange)">H3</div><div class="rs-info"><div class="rs-name">0x1234...abcd</div><div class="rs-meta">Mar 22 &middot; pending</div></div></div>
+    </div>
+  </div>
+
+  <!-- Referral BX — has 2 sub-referrals -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-bx',this)">
+      <div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">BX</div>
+      <div class="ref-info"><div class="ref-name">0x3e8a...bc42 <span class="ref-sub-count">+2 refs</span></div><div class="ref-meta">Mar 19 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div>
+      <div class="ref-earned"><div class="val">$9.00</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-bx">
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(56,189,248,.1);color:var(--frozen)">J4</div><div class="rs-info"><div class="rs-name">0x5678...ef01</div><div class="rs-meta">Mar 20 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(252,211,77,.1);color:var(--gold)">K5</div><div class="rs-info"><div class="rs-name">0x9abc...2345</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+    </div>
+  </div>
+
+  <!-- Referral CR — has 1 sub-referral -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-cr',this)">
+      <div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">CR</div>
+      <div class="ref-info"><div class="ref-name">0x1a4b...3c88 <span class="ref-sub-count">+1 ref</span></div><div class="ref-meta">Mar 18 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div>
+      <div class="ref-earned"><div class="val">$6.00</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-cr">
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">M6</div><div class="rs-info"><div class="rs-name">0xdef0...6789</div><div class="rs-meta">Mar 19 &middot; pending</div></div></div>
+    </div>
+  </div>
+
+  <!-- Referral DM — no sub-referrals -->
   <div class="ref-item"><div class="ref-avatar" style="background:rgba(56,189,248,.15);color:var(--frozen)">DM</div><div class="ref-info"><div class="ref-name">0x6d2f...aa01</div><div class="ref-meta">Mar 22 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div><div class="ref-earned"><div class="val">$3.00</div><div class="lbl">earned you</div></div></div>
+
+  <!-- Referral EK — pending, no levels -->
   <div class="ref-item" style="opacity:.5"><div class="ref-avatar" style="background:var(--bg4);color:var(--text3)">EK</div><div class="ref-info"><div class="ref-name">0x5c11...2b90</div><div class="ref-meta">Mar 22 &middot; no levels yet</div><div class="ref-tags"><span class="ld-tag t-inactive">Pending</span></div></div><div class="ref-earned"><div class="val">$0.00</div><div class="lbl">earned you</div></div></div>
 </div>
 
@@ -1095,6 +1148,30 @@ function toggleFaq(qEl) {
   const wasOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!wasOpen) item.classList.add('open');
+}
+
+// ==================== REFERRAL SUB-TREE ====================
+function toggleSubs(id, itemEl) {
+  const subs = document.getElementById(id);
+  if (!subs) return;
+  const isOpen = subs.classList.contains('show');
+  // Close all open
+  document.querySelectorAll('.ref-subs.show').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.ri-expand.open').forEach(e => e.classList.remove('open'));
+  // Toggle clicked
+  if (!isOpen) {
+    subs.classList.add('show');
+    const expandBtn = itemEl.querySelector('.ri-expand');
+    if (expandBtn) expandBtn.classList.add('open');
+    // In production: load sub-referrals from Supabase
+    loadSubReferrals(id);
+  }
+}
+
+async function loadSubReferrals(refId) {
+  if (!SUPABASE_URL) return; // prototype mode — use hardcoded data
+  // Will fetch: /rest/v1/referrals?referrer_wallet=eq.{refWallet}&order=created_at.desc
+  // Then build sub-referral HTML dynamically
 }
 
 // ==================== FILTER CHIPS ====================
