@@ -130,6 +130,7 @@ a{color:var(--poly2);text-decoration:none}
 .lc-pip.p-on{background:var(--green)}
 .lc-pip.p-frz{background:var(--frozen)}
 .lc-pip.p-spill{background:var(--poly2)}
+.lc-pip.p-reset{background:var(--text3)}
 .lc-meta{font-size:9px;color:var(--text3)}
 .lc-frozen-badge{font-size:9px;font-weight:700;color:var(--frozen);margin-top:4px}
 
@@ -359,9 +360,9 @@ a{color:var(--poly2);text-decoration:none}
 <!-- ==================== DASHBOARD ==================== -->
 <div id="screen-dashboard" class="screen on">
   <div class="stat-grid">
-    <div class="stat-box sb-poly"><div class="stat-lbl">Total Received</div><div class="stat-val" style="color:var(--poly2)">$18.4k</div><div class="stat-hint">↑ +$2,304 this week</div></div>
+    <div class="stat-box sb-poly"><div class="stat-lbl">Total Received</div><div class="stat-val" style="color:var(--poly2)">$16.7k</div><div class="stat-hint">↑ +$2,304 this week</div></div>
     <div class="stat-box sb-green"><div class="stat-lbl">Active Levels</div><div class="stat-val" style="color:var(--green)">12 / 17</div><div class="stat-hint">L1–L12 active</div></div>
-    <div class="stat-box sb-orange"><div class="stat-lbl">Total Paid</div><div class="stat-val" style="color:var(--orange)">$1,350</div><div class="stat-hint">Net +$17.1k</div></div>
+    <div class="stat-box sb-orange"><div class="stat-lbl">Total Paid</div><div class="stat-val" style="color:var(--orange)">$415.80</div><div class="stat-hint">Net +$16.3k</div></div>
     <div class="stat-box sb-frozen"><div class="stat-lbl">Frozen</div><div class="stat-val" style="color:var(--frozen)">$12,288</div><div class="stat-hint">Level 13 will open automatically</div></div>
   </div>
 
@@ -383,10 +384,10 @@ a{color:var(--poly2);text-decoration:none}
   <div class="card">
     <div class="card-hdr"><span class="card-title">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
     <div class="fi-feed">
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 10</div><div class="fi-sub">from 0xbc05...1067</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$1,536</div><div class="fi-time">1h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 10</div><div class="fi-sub">from 0xbc05...1067 (KP)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$1,536</div><div class="fi-time">1h ago</div></div></div>
       <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 12</div><div class="fi-sub">Will auto-unlock Level 13</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12,288</div><div class="fi-time">3h ago</div></div></div>
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 8</div><div class="fi-sub">from 0xdd05...e505 via network</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$384</div><div class="fi-time">5h ago</div></div></div>
-      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 7</div><div class="fi-sub">from 0xab04...ef56</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$192</div><div class="fi-time">8h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 9</div><div class="fi-sub">from 0x120b...76cd (RW)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$768</div><div class="fi-time">5h ago</div></div></div>
+      <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 8</div><div class="fi-sub">from 0xdd05...e505 via KP</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$384</div><div class="fi-time">14h ago</div></div></div>
     </div>
   </div>
 </div>
@@ -434,7 +435,7 @@ a{color:var(--poly2);text-decoration:none}
     <div class="ref-stat"><div class="val" style="color:var(--poly2)">20</div><div class="lbl">Direct</div></div>
     <div class="ref-stat"><div class="val" style="color:var(--frozen)">230</div><div class="lbl">2nd tier</div></div>
     <div class="ref-stat"><div class="val" style="color:var(--green)">187</div><div class="lbl">Active</div></div>
-    <div class="ref-stat"><div class="val" style="color:var(--orange)">$18.4k</div><div class="lbl">Earned</div></div>
+    <div class="ref-stat"><div class="val" style="color:var(--orange)">$16.7k</div><div class="lbl">Earned</div></div>
   </div>
   <div id="refListContainer">
   <!-- Referral AL — has 3 direct + 2 deep -->
@@ -558,13 +559,111 @@ a{color:var(--poly2);text-decoration:none}
   <!-- Referral FL — no subs at all -->
   <div class="ref-item"><div class="ref-avatar" style="background:rgba(245,158,11,.15);color:var(--orange)">FL</div><div class="ref-info"><div class="ref-name">0x7f01...ab12</div><div class="ref-meta">Mar 23 &middot; 2 levels</div><div class="ref-tags"><span class="ld-tag t-active">L2</span></div></div><div class="ref-earned"><div class="val">$9.00</div><div class="lbl">earned you</div></div></div>
 
-  <!-- Referral GN -->
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">GN</div><div class="ref-info"><div class="ref-name">0x8f02...cd34</div><div class="ref-meta">Mar 24 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div><div class="ref-earned"><div class="val">$3.00</div><div class="lbl">earned you</div></div></div>
+  <!-- Referral GN — 4 refs -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-gn',this)">
+      <div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">GN</div>
+      <div class="ref-info"><div class="ref-name">0x8f02...cd34 <span class="ref-sub-count">+4 refs</span></div><div class="ref-meta">Mar 18 &middot; 1 level</div><div class="ref-tags"><span class="ld-tag t-active">L1</span></div></div>
+      <div class="ref-earned"><div class="val">$3.00</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-gn">
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (4)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">N1</div><div class="rs-info"><div class="rs-name">0xf101...1a01</div><div class="rs-meta">Mar 19 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">N2</div><div class="rs-info"><div class="rs-name">0xf102...2b02</div><div class="rs-meta">Mar 20 &middot; pending</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">N3</div><div class="rs-info"><div class="rs-name">0xf103...3c03</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">N4</div><div class="rs-info"><div class="rs-name">0xf104...4d04</div><div class="rs-meta">Mar 22 &middot; L2 active</div></div></div>
+    </div>
+  </div>
 
-  <!-- Referrals 8-10 -->
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">HK</div><div class="ref-info"><div class="ref-name">0x9a03...de45 <span class="ref-sub-count">+8 refs</span></div><div class="ref-meta">Mar 20 &middot; 5 levels</div><div class="ref-tags"><span class="ld-tag t-active">L5</span></div></div><div class="ref-earned"><div class="val">$420</div><div class="lbl">earned you</div></div></div>
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">JM</div><div class="ref-info"><div class="ref-name">0xab04...ef56 <span class="ref-sub-count">+14 refs</span></div><div class="ref-meta">Mar 19 &middot; 7 levels</div><div class="ref-tags"><span class="ld-tag t-active">L7</span><span class="ld-tag t-last">🎁 L8</span></div></div><div class="ref-earned"><div class="val">$1,280</div><div class="lbl">earned you</div></div></div>
-  <div class="ref-item"><div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">KP</div><div class="ref-info"><div class="ref-name">0xbc05...1067 <span class="ref-sub-count">+22 refs</span></div><div class="ref-meta">Mar 18 &middot; 9 levels</div><div class="ref-tags"><span class="ld-tag t-active">L9</span></div></div><div class="ref-earned"><div class="val">$3,840</div><div class="lbl">earned you</div></div></div>
+  <!-- Referral HK — 8 refs -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-hk',this)">
+      <div class="ref-avatar" style="background:rgba(124,58,237,.15);color:var(--poly2)">HK</div>
+      <div class="ref-info"><div class="ref-name">0x9a03...de45 <span class="ref-sub-count">+8 refs</span></div><div class="ref-meta">Mar 17 &middot; 5 levels</div><div class="ref-tags"><span class="ld-tag t-active">L5</span></div></div>
+      <div class="ref-earned"><div class="val">$420</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-hk">
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (5)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H1</div><div class="rs-info"><div class="rs-name">0xf201...aa11</div><div class="rs-meta">Mar 18 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H2</div><div class="rs-info"><div class="rs-name">0xf202...bb22</div><div class="rs-meta">Mar 18 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H3</div><div class="rs-info"><div class="rs-name">0xf203...cc33</div><div class="rs-meta">Mar 19 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H4</div><div class="rs-info"><div class="rs-name">0xf204...dd44</div><div class="rs-meta">Mar 20 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">H5</div><div class="rs-info"><div class="rs-name">0xf205...ee55</div><div class="rs-meta">Mar 21 &middot; pending</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--poly2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px 4px;margin-left:18px">Their referrals (3)</div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">HA</div><div class="rs-info"><div class="rs-name">0xf301...1122</div><div class="rs-meta">via H1 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">HB</div><div class="rs-info"><div class="rs-name">0xf302...3344</div><div class="rs-meta">via H1 &middot; pending</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">HC</div><div class="rs-info"><div class="rs-name">0xf303...5566</div><div class="rs-meta">via H2 &middot; L1 active</div></div></div>
+    </div>
+  </div>
+
+  <!-- Referral JM — 14 refs -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-jm',this)">
+      <div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">JM</div>
+      <div class="ref-info"><div class="ref-name">0xab04...ef56 <span class="ref-sub-count">+14 refs</span></div><div class="ref-meta">Mar 17 &middot; 7 levels</div><div class="ref-tags"><span class="ld-tag t-active">L7</span><span class="ld-tag t-last">🎁 L8</span></div></div>
+      <div class="ref-earned"><div class="val">$1,280</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-jm">
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (8)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J1</div><div class="rs-info"><div class="rs-name">0xf401...a1a1</div><div class="rs-meta">Mar 17 &middot; L5 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J2</div><div class="rs-info"><div class="rs-name">0xf402...b2b2</div><div class="rs-meta">Mar 18 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J3</div><div class="rs-info"><div class="rs-name">0xf403...c3c3</div><div class="rs-meta">Mar 18 &middot; L4 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J4</div><div class="rs-info"><div class="rs-name">0xf404...d4d4</div><div class="rs-meta">Mar 19 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J5</div><div class="rs-info"><div class="rs-name">0xf405...e5e5</div><div class="rs-meta">Mar 20 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J6</div><div class="rs-info"><div class="rs-name">0xf406...f6f6</div><div class="rs-meta">Mar 21 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J7</div><div class="rs-info"><div class="rs-name">0xf407...7777</div><div class="rs-meta">Mar 22 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">J8</div><div class="rs-info"><div class="rs-name">0xf408...8888</div><div class="rs-meta">Mar 23 &middot; pending</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--poly2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px 4px;margin-left:18px">Their referrals (6)</div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JA</div><div class="rs-info"><div class="rs-name">0xf501...1a2b</div><div class="rs-meta">via J1 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JB</div><div class="rs-info"><div class="rs-name">0xf502...3c4d</div><div class="rs-meta">via J1 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JC</div><div class="rs-info"><div class="rs-name">0xf503...5e6f</div><div class="rs-meta">via J2 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JD</div><div class="rs-info"><div class="rs-name">0xf504...7a8b</div><div class="rs-meta">via J3 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JE</div><div class="rs-info"><div class="rs-name">0xf505...9c0d</div><div class="rs-meta">via J3 &middot; pending</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">JF</div><div class="rs-info"><div class="rs-name">0xf506...be1f</div><div class="rs-meta">via J5 &middot; L1 active</div></div></div>
+    </div>
+  </div>
+
+  <!-- Referral KP — 22 refs -->
+  <div>
+    <div class="ref-item" onclick="toggleSubs('subs-kp',this)">
+      <div class="ref-avatar" style="background:rgba(252,211,77,.15);color:var(--gold)">KP</div>
+      <div class="ref-info"><div class="ref-name">0xbc05...1067 <span class="ref-sub-count">+22 refs</span></div><div class="ref-meta">Mar 17 &middot; 9 levels</div><div class="ref-tags"><span class="ld-tag t-active">L9</span></div></div>
+      <div class="ref-earned"><div class="val">$3,840</div><div class="lbl">earned you</div></div>
+      <div class="ri-expand">▾</div>
+    </div>
+    <div class="ref-subs" id="subs-kp">
+      <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px;margin-left:18px">Direct referrals (10)</div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K1</div><div class="rs-info"><div class="rs-name">0xf601...a111</div><div class="rs-meta">Mar 17 &middot; L7 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K2</div><div class="rs-info"><div class="rs-name">0xf602...b222</div><div class="rs-meta">Mar 18 &middot; L5 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K3</div><div class="rs-info"><div class="rs-name">0xf603...c333</div><div class="rs-meta">Mar 18 &middot; L4 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K4</div><div class="rs-info"><div class="rs-name">0xf604...d444</div><div class="rs-meta">Mar 19 &middot; L6 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K5</div><div class="rs-info"><div class="rs-name">0xf605...e555</div><div class="rs-meta">Mar 19 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K6</div><div class="rs-info"><div class="rs-name">0xf606...f666</div><div class="rs-meta">Mar 20 &middot; L5 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K7</div><div class="rs-info"><div class="rs-name">0xf607...7777</div><div class="rs-meta">Mar 21 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K8</div><div class="rs-info"><div class="rs-name">0xf608...8888</div><div class="rs-meta">Mar 22 &middot; L4 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">K9</div><div class="rs-info"><div class="rs-name">0xf609...9999</div><div class="rs-meta">Mar 23 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item"><div class="rs-avatar" style="background:rgba(6,214,160,.1);color:var(--green)">KA</div><div class="rs-info"><div class="rs-name">0xf60a...aaaa</div><div class="rs-meta">Mar 23 &middot; pending</div></div></div>
+      <div style="font-size:9px;font-weight:700;color:var(--poly2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px 4px;margin-left:18px">Their referrals (12)</div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KX</div><div class="rs-info"><div class="rs-name">0xf701...1122</div><div class="rs-meta">via K1 &middot; L4 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KY</div><div class="rs-info"><div class="rs-name">0xf702...3344</div><div class="rs-meta">via K1 &middot; L3 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KZ</div><div class="rs-info"><div class="rs-name">0xf703...5566</div><div class="rs-meta">via K2 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KB</div><div class="rs-info"><div class="rs-name">0xf704...7788</div><div class="rs-meta">via K2 &middot; L1 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KC</div><div class="rs-info"><div class="rs-name">0xf705...99aa</div><div class="rs-meta">via K3 &middot; L2 active</div></div></div>
+      <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KD</div><div class="rs-info"><div class="rs-name">0xf706...bbcc</div><div class="rs-meta">via K4 &middot; L3 active</div></div></div>
+      <div id="kp-deep-more" style="display:none">
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KE</div><div class="rs-info"><div class="rs-name">0xf707...ddee</div><div class="rs-meta">via K4 &middot; L1 active</div></div></div>
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KF</div><div class="rs-info"><div class="rs-name">0xf708...ff00</div><div class="rs-meta">via K5 &middot; pending</div></div></div>
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KG</div><div class="rs-info"><div class="rs-name">0xf709...1234</div><div class="rs-meta">via K6 &middot; L2 active</div></div></div>
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KH</div><div class="rs-info"><div class="rs-name">0xf70a...5678</div><div class="rs-meta">via K6 &middot; L1 active</div></div></div>
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KI</div><div class="rs-info"><div class="rs-name">0xf70b...9abc</div><div class="rs-meta">via K7 &middot; pending</div></div></div>
+        <div class="ref-sub-item" style="border-color:var(--poly3);background:rgba(124,58,237,.03)"><div class="rs-avatar" style="background:rgba(124,58,237,.1);color:var(--poly2)">KJ</div><div class="rs-info"><div class="rs-name">0xf70c...def0</div><div class="rs-meta">via K8 &middot; L1 active</div></div></div>
+      </div>
+      <button class="ghost-btn" id="btn-kp-deep" style="margin:6px 0 6px 20px;font-size:10px" onclick="showMoreDeep('kp')">Show 6 more...</button>
+    </div>
+  </div>
 
   <!-- Hidden: referrals 11-20 -->
   <div id="moreDirectRefs" style="display:none">
@@ -607,7 +706,7 @@ a{color:var(--poly2);text-decoration:none}
     <div class="lb-item"><div class="lb-rank" style="color:var(--text2)">2</div><div class="lb-info"><div class="lb-addr">0x8b2e...4d11</div><div class="lb-meta">L15 &middot; 189 refs</div></div><div class="lb-amt">$12.8k</div></div>
     <div class="lb-item"><div class="lb-rank" style="color:#cd7f32">3</div><div class="lb-info"><div class="lb-addr">0x2c9f...7a44</div><div class="lb-meta">L12 &middot; 97 refs</div></div><div class="lb-amt">$4,210</div></div>
     <div class="lb-item"><div class="lb-rank">4</div><div class="lb-info"><div class="lb-addr">0x6d3b...cc99</div><div class="lb-meta">L10 &middot; 54 refs</div></div><div class="lb-amt">$1,834</div></div>
-    <div class="lb-item" style="background:rgba(124,58,237,0.04)"><div class="lb-rank" style="color:var(--poly2)">★</div><div class="lb-info"><div class="lb-addr">You &middot; 0x7f3a...4d91</div><div class="lb-meta">L12 &middot; 250 refs</div></div><div class="lb-amt">$18.4k</div></div>
+    <div class="lb-item" style="background:rgba(124,58,237,0.04)"><div class="lb-rank" style="color:var(--poly2)">★</div><div class="lb-info"><div class="lb-addr">You &middot; 0x7f3a...4d91</div><div class="lb-meta">L12 &middot; 250 refs</div></div><div class="lb-amt">$16.7k</div></div>
   </div>
 </div>
 
@@ -962,14 +1061,16 @@ for (let i = 1; i <= 17; i++) {
   LEVELS.push(lv);
 }
 // 12 active levels with realistic data
-LEVELS[0].active=true; LEVELS[0].slots=[1,1,1,1]; LEVELS[0].cycle_count=5;  // L1: 5 cycles
-LEVELS[1].active=true; LEVELS[1].slots=[1,1,1,1]; LEVELS[1].cycle_count=4;  // L2: 4 cycles
-LEVELS[2].active=true; LEVELS[2].slots=[1,1,1,1]; LEVELS[2].cycle_count=3;  // L3: 3 cycles
-LEVELS[3].active=true; LEVELS[3].slots=[1,1,1,1]; LEVELS[3].cycle_count=3;  // L4: 3 cycles
-LEVELS[4].active=true; LEVELS[4].slots=[1,1,1,1]; LEVELS[4].cycle_count=2;  // L5: 2 cycles
-LEVELS[5].active=true; LEVELS[5].slots=[1,1,1,0]; LEVELS[5].cycle_count=2;  // L6: 3/4
-LEVELS[6].active=true; LEVELS[6].slots=[1,1,1,0]; LEVELS[6].cycle_count=1;  // L7: 3/4
-LEVELS[7].active=true; LEVELS[7].slots=[1,1,0,0]; LEVELS[7].cycle_count=1;  // L8: 2/4 (bonus!)
+// After slot 4 fills → reactivation → slots reset to 0/4, cycle++
+// So levels with cycles show current cycle progress, not 4/4
+LEVELS[0].active=true; LEVELS[0].slots=[1,1,0,0]; LEVELS[0].cycle_count=5;  // L1: cycle 5, 2/4
+LEVELS[1].active=true; LEVELS[1].slots=[1,1,1,0]; LEVELS[1].cycle_count=4;  // L2: cycle 4, 3/4
+LEVELS[2].active=true; LEVELS[2].slots=[1,0,0,0]; LEVELS[2].cycle_count=3;  // L3: cycle 3, 1/4
+LEVELS[3].active=true; LEVELS[3].slots=[1,1,1,0]; LEVELS[3].cycle_count=3;  // L4: cycle 3, 3/4
+LEVELS[4].active=true; LEVELS[4].slots=[1,1,0,0]; LEVELS[4].cycle_count=2;  // L5: cycle 2, 2/4
+LEVELS[5].active=true; LEVELS[5].slots=[1,1,1,0]; LEVELS[5].cycle_count=2;  // L6: cycle 2, 3/4
+LEVELS[6].active=true; LEVELS[6].slots=[1,1,0,0]; LEVELS[6].cycle_count=1;  // L7: cycle 1, 2/4
+LEVELS[7].active=true; LEVELS[7].slots=[1,1,0,0]; LEVELS[7].cycle_count=1;  // L8: cycle 1, 2/4 (bonus!)
 LEVELS[8].active=true; LEVELS[8].slots=[1,1,0,0]; LEVELS[8].cycle_count=0;  // L9: 2/4
 LEVELS[9].active=true; LEVELS[9].slots=[1,0,0,0]; LEVELS[9].cycle_count=0;  // L10: 1/4
 LEVELS[10].active=true; LEVELS[10].slots=[1,0,0,0]; LEVELS[10].cycle_count=0; // L11: 1/4
@@ -996,7 +1097,7 @@ function renderLevels(containerId) {
       let pc = '';
       if (lv.slots[s]) {
         if (s === 1 && lv.frzState) pc = 'p-frz';
-        else if (s === 3) pc = 'p-spill';
+        else if (s === 3) pc = 'p-reset'; // slot 4 = reset, never "earned"
         else pc = 'p-on';
       }
       pips += '<div class="lc-pip ' + pc + '"></div>';
