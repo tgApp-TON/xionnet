@@ -301,6 +301,11 @@ a{color:var(--poly2);text-decoration:none}
 
 /* ========== REFERRAL LINK CARD ========== */
 .ref-link-card{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+
+/* ========== MINT BUTTON (testnet only) ========== */
+.mint-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--green2),var(--green));color:#001a10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.mint-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(6,214,160,.3)}
+.mint-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 </style>
 </head>
 <body>
@@ -359,6 +364,7 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== DASHBOARD ==================== -->
 <div id="screen-dashboard" class="screen on">
+  <button class="mint-btn" id="mintBtn" onclick="mintTestUSDC()" style="display:none">💰 Mint $10,000 Test USDC</button>
   <div class="stat-grid">
     <div class="stat-box sb-poly"><div class="stat-lbl">Total Received</div><div class="stat-val" style="color:var(--poly2)">$16.7k</div><div class="stat-hint">↑ +$2,304 this week</div></div>
     <div class="stat-box sb-green"><div class="stat-lbl">Active Levels</div><div class="stat-val" style="color:var(--green)">12 / 17</div><div class="stat-hint">L1–L12 active</div></div>
@@ -906,7 +912,53 @@ a{color:var(--poly2);text-decoration:none}
   <button class="bt-action" id="btAction" onclick="goToPrevLevel()">Go to Level 4</button>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
+// ==================== CONTRACT CONFIG ====================
+const CONTRACT_ADDRESS = '0x14160fC843204507E224552D0141B34B975f0850';
+const USDC_ADDRESS     = '0xba7e3dF16aA202ab0A0d0DE982b8D240E1d3e54E';
+const CHAIN_ID         = 11155111; // Sepolia testnet
+const CHAIN_NAME       = 'Sepolia';
+const CHAIN_RPC        = 'https://ethereum-sepolia-rpc.publicnode.com';
+const IS_TESTNET       = true;
+
+const XION_ABI = [
+  'function register(address referrer) external',
+  'function activateLevel(uint8 level) external',
+  'function setAutoBuy(uint8 level, bool enabled) external',
+  'function getUserInfo(address user) view returns (bool registered, address referrer, bool isMaster, uint32 registeredAt, uint256 totalReceived, uint256 totalPaid)',
+  'function getUserLevel(address user, uint8 level) view returns (bool active, uint8 filledSlots, uint32 cycleCount, uint32 activatedAt, uint256 frozenAmount, address s1, address s2, address s3, address s4)',
+  'function getReferrer(address user) view returns (address)',
+  'function getLevelPrice(uint8 level) view returns (uint256)',
+  'function getRequiredApprove(uint8 level) view returns (uint256)',
+  'function checkAllowance(address user, uint8 level) view returns (bool sufficient, uint256 required, uint256 current)',
+  'function getAutoBuy(address user, uint8 level) view returns (bool)',
+  'function getTotalFrozen() view returns (uint256)',
+  'event UserRegistered(address indexed user, address indexed referrer, uint32 timestamp)',
+  'event LevelActivated(address indexed user, uint8 level, uint256 price, uint8 actType, uint32 timestamp)',
+  'event SlotFilled(address indexed owner, address indexed source, uint8 level, uint8 slot, uint256 amount, uint8 srcType, uint32 timestamp)',
+  'event PayoutSent(address indexed receiver, address indexed sender, uint8 level, uint8 slot, uint256 amount, uint32 timestamp)',
+  'event FundsFrozen(address indexed user, uint8 level, uint256 amount, uint32 timestamp)',
+  'event FundsUnfrozen(address indexed user, uint8 level, uint256 amount, bool autoActivated, uint32 timestamp)',
+  'event SpilloverSent(address indexed from, address indexed to, uint8 level, uint256 amount, uint16 hops, uint32 timestamp)',
+  'event LevelReactivated(address indexed user, uint8 level, uint32 cycleCount, uint32 timestamp)',
+  'event AutoBuyToggled(address indexed user, uint8 level, bool enabled)',
+];
+
+const USDC_ABI = [
+  'function approve(address spender, uint256 amount) returns (bool)',
+  'function allowance(address owner, address spender) view returns (uint256)',
+  'function balanceOf(address account) view returns (uint256)',
+  'function mint(address to, uint256 amount) external',
+  'function decimals() view returns (uint8)',
+];
+
+let provider = null;
+let signer = null;
+let xionContract = null;
+let usdcContract = null;
+let connectedWallet = null;
+
 // ==================== LEVEL DATA ====================
 const LP = {};
 for (let i = 1; i <= 17; i++) LP[i] = +(3 * Math.pow(2, i - 1));
@@ -1214,21 +1266,134 @@ function switchTab(el, id) {
 }
 
 // ==================== CONNECT ====================
-function connectWallet(btn) {
+async function connectWallet(btn) {
   btn.disabled = true;
   btn.innerHTML = '⏳ Connecting...';
-  setTimeout(() => {
-    currentWallet = '0x7f3a4d91'; // will be replaced by real MetaMask wallet
+  try {
+    if (!window.ethereum) { alert('MetaMask not found!'); btn.disabled = false; btn.innerHTML = 'Connect MetaMask'; return; }
+
+    // Request accounts
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    connectedWallet = accounts[0];
+    currentWallet = connectedWallet;
+
+    // Check/switch network
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    if (parseInt(chainId, 16) !== CHAIN_ID) {
+      try {
+        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x' + CHAIN_ID.toString(16) }] });
+      } catch (e) {
+        await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{
+          chainId: '0x' + CHAIN_ID.toString(16),
+          chainName: CHAIN_NAME,
+          rpcUrls: [CHAIN_RPC],
+          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 }
+        }]});
+      }
+    }
+
+    // Setup ethers
+    provider = new ethers.BrowserProvider(window.ethereum);
+    signer = await provider.getSigner();
+    xionContract = new ethers.Contract(CONTRACT_ADDRESS, XION_ABI, signer);
+    usdcContract = new ethers.Contract(USDC_ADDRESS, USDC_ABI, signer);
+
+    // Update UI
+    const short = connectedWallet.slice(0, 6) + '...' + connectedWallet.slice(-4);
+    document.querySelector('.wp-addr').textContent = short;
+    document.querySelector('.wp-badge').textContent = CHAIN_NAME;
+
+    // Show mint button on testnet
+    if (IS_TESTNET) document.getElementById('mintBtn').style.display = 'flex';
+
+    // Load real data from contract
+    await loadUserData();
+
     document.getElementById('connectScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
-    checkMasterAccess(currentWallet);
+    checkMasterAccess(connectedWallet);
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
     buildChart();
     startBonusTimer();
-    refreshData(true); // force initial load from Supabase
-    subscribeRealtime(); // start listening for live updates
-  }, 900);
+    refreshData(true);
+    subscribeRealtime();
+
+    // Listen for account/chain changes
+    window.ethereum.on('accountsChanged', () => location.reload());
+    window.ethereum.on('chainChanged', () => location.reload());
+
+  } catch (err) {
+    console.error('Connect failed:', err);
+    btn.disabled = false;
+    btn.innerHTML = 'Connect MetaMask';
+    alert('Connection failed: ' + (err.message || err));
+  }
+}
+
+// Load user data from contract
+async function loadUserData() {
+  if (!xionContract || !connectedWallet) return;
+  try {
+    const info = await xionContract.getUserInfo(connectedWallet);
+
+    // Update levels from contract
+    for (let i = 1; i <= 17; i++) {
+      const lv = await xionContract.getUserLevel(connectedWallet, i);
+      const idx = i - 1;
+      LEVELS[idx].active = lv.active;
+      LEVELS[idx].slots = [
+        lv.s1 !== ethers.ZeroAddress ? 1 : 0,
+        lv.s2 !== ethers.ZeroAddress ? 1 : 0,
+        lv.s3 !== ethers.ZeroAddress ? 1 : 0,
+        lv.s4 !== ethers.ZeroAddress ? 1 : 0,
+      ];
+      LEVELS[idx].cycle_count = Number(lv.cycleCount);
+      LEVELS[idx].frozenAmt = Number(lv.frozenAmount) / 1e6;
+      LEVELS[idx].frzState = lv.frozenAmount > 0;
+      LEVELS[idx].autoBuy = await xionContract.getAutoBuy(connectedWallet, i).catch(() => false);
+    }
+
+    // Update dashboard stats
+    const received = Number(info.totalReceived) / 1e6;
+    const paid = Number(info.totalPaid) / 1e6;
+    const activeLevels = LEVELS.filter(l => l.active).length;
+    const frozenTotal = LEVELS.reduce((sum, l) => sum + l.frozenAmt, 0);
+
+    document.querySelector('.stat-box.sb-poly .stat-val').textContent = f(received);
+    document.querySelector('.stat-box.sb-green .stat-val').textContent = activeLevels + ' / 17';
+    document.querySelector('.stat-box.sb-orange .stat-val').textContent = f(paid);
+    document.querySelector('.stat-box.sb-frozen .stat-val').textContent = f(frozenTotal);
+
+    // USDC balance
+    const usdcBal = await usdcContract.balanceOf(connectedWallet);
+    console.log('USDC balance:', Number(usdcBal) / 1e6);
+  } catch (err) {
+    console.warn('loadUserData error:', err);
+  }
+}
+
+// Mint test USDC (testnet only)
+async function mintTestUSDC() {
+  if (!usdcContract || !connectedWallet) return;
+  const btn = document.getElementById('mintBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Minting...';
+  try {
+    const amount = ethers.parseUnits('10000', 6); // $10,000
+    const tx = await usdcContract.mint(connectedWallet, amount);
+    toast('Minting USDC...', 'Confirm in MetaMask', 50);
+    await tx.wait();
+    const bal = await usdcContract.balanceOf(connectedWallet);
+    toast('Minted!', '$' + (Number(bal) / 1e6).toLocaleString() + ' USDC total', 100);
+    btn.textContent = '💰 Mint $10,000 Test USDC';
+    btn.disabled = false;
+  } catch (err) {
+    console.error('Mint failed:', err);
+    btn.textContent = '💰 Mint $10,000 Test USDC';
+    btn.disabled = false;
+    alert('Mint failed: ' + (err.reason || err.message));
+  }
 }
 
 // ==================== AUTO-BUY TOGGLE ====================
