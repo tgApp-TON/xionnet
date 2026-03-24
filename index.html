@@ -171,6 +171,9 @@ a{color:var(--poly2);text-decoration:none}
 .ab-switch input:checked+.ab-slider::before{transform:translateX(18px);background:#fff}
 .buy-btn{width:100%;padding:12px;background:var(--poly);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s}
 .buy-btn:hover{background:var(--poly2);transform:translateY(-1px)}
+.buy-btn.btn-ready{background:var(--green);color:#001a10;box-shadow:0 0 16px rgba(6,214,160,.3);animation:readyPulse 1.5s ease-in-out infinite}
+.buy-btn.btn-ready:hover{background:var(--green2);transform:translateY(-1px)}
+@keyframes readyPulse{0%,100%{box-shadow:0 0 8px rgba(6,214,160,.2)}50%{box-shadow:0 0 20px rgba(6,214,160,.4)}}
 
 /* ========== HISTORY ========== */
 .filter-chips{display:flex;overflow-x:auto;gap:6px;margin-bottom:12px;scrollbar-width:none}
@@ -1529,6 +1532,7 @@ function openModal(n) {
   document.getElementById('ms1n').className = 'm-step-num active';
   document.getElementById('ms2n').className = 'm-step-num';
   document.getElementById('modalAction').textContent = '🦊 Approve USDC';
+  document.getElementById('modalAction').className = 'buy-btn';
   document.getElementById('modalAction').disabled = false;
   document.getElementById('buyOverlay').classList.remove('hidden');
 }
@@ -1555,6 +1559,7 @@ async function doStep() {
       document.getElementById('ms1n').textContent = '✓';
       document.getElementById('ms2n').className = 'm-step-num active';
       btn.textContent = '⚡ Activate Level ' + modalLevel;
+      btn.className = 'buy-btn btn-ready';
       btn.disabled = false;
       modalStep = 1;
       toast('USDC Approved', 'Ready to activate', 70);
