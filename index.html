@@ -1118,10 +1118,16 @@ function updateReferralsUI(data) {
     }
   });
 
+  // Calculate total earned by referrals
+  data.forEach(ref => {
+    totalEarned += (ref.total_received || 0) / 1e6;
+  });
+
   // Update stats
   document.getElementById('refStatDirect').textContent = totalCount;
   document.getElementById('refStatActive').textContent = activeCount;
   document.getElementById('refStatPending').textContent = pendingCount;
+  document.getElementById('refStatEarned').textContent = f(totalEarned);
 
   let html = '';
   if (activeHtml) {
@@ -1818,11 +1824,13 @@ async function loadSubRefs(wallet, containerId, offset) {
       const avatarBg = isActive ? 'rgba(6,214,160,.1)' : 'var(--bg4)';
       const avatarColor = isActive ? 'var(--green)' : 'var(--text3)';
       const meta = isActive ? date + ' · L' + info.active_levels : date + ' · pending';
+      const earned = (info.total_received || 0) / 1e6;
 
       html += '<div class="ref-sub-item" style="border-color:' + borderColor + '">' +
         '<div class="rs-avatar" style="background:' + avatarBg + ';color:' + avatarColor + '">' + initials + '</div>' +
         '<div class="rs-info"><div class="rs-name">' + short + '</div>' +
-        '<div class="rs-meta">' + meta + '</div></div></div>';
+        '<div class="rs-meta">' + meta + '</div></div>' +
+        '<div style="text-align:right;flex-shrink:0"><div style="font-size:11px;font-weight:800;color:' + (earned > 0 ? 'var(--green)' : 'var(--text3)') + '">' + f(earned) + '</div></div></div>';
     });
 
     // Show more button if got full page
