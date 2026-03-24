@@ -174,6 +174,11 @@ a{color:var(--poly2);text-decoration:none}
 .buy-btn.btn-ready{background:var(--green);color:#001a10;box-shadow:0 0 16px rgba(6,214,160,.3);animation:readyPulse 1.5s ease-in-out infinite}
 .buy-btn.btn-ready:hover{background:var(--green2);transform:translateY(-1px)}
 @keyframes readyPulse{0%,100%{box-shadow:0 0 8px rgba(6,214,160,.2)}50%{box-shadow:0 0 20px rgba(6,214,160,.4)}}
+@keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes dashMove{to{stroke-dashoffset:0}}
+.btn-svg{display:inline-flex;vertical-align:middle;margin-right:6px}
+.btn-svg svg{width:18px;height:18px}
+.btn-waiting .btn-svg svg{animation:spinSlow 1.2s linear infinite}
 
 /* ========== HISTORY ========== */
 .filter-chips{display:flex;overflow-x:auto;gap:6px;margin-bottom:12px;scrollbar-width:none}
@@ -771,7 +776,7 @@ a{color:var(--poly2);text-decoration:none}
     </div>
     <div class="modal-btns">
       <button class="ghost-btn" onclick="closeModal()">Cancel</button>
-      <button class="buy-btn" id="modalAction" onclick="doStep()">🦊 Approve USDC</button>
+      <button class="buy-btn" id="modalAction" onclick="doStep()"><span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Approve USDC</button>
     </div>
   </div>
 </div>
@@ -1508,6 +1513,12 @@ function generateQR(text) {
 
 // ==================== BUY MODAL ====================
 let modalLevel = 0;
+
+// SVG icons for buy modal buttons
+const walletSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>';
+const boltSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>';
+const spinnerSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10" stroke-dasharray="30" stroke-dashoffset="0"/></svg></span>';
+const checkSVG = '<span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>';
 let modalStep = 0;
 
 function openModal(n) {
@@ -1531,7 +1542,7 @@ function openModal(n) {
 
   document.getElementById('ms1n').className = 'm-step-num active';
   document.getElementById('ms2n').className = 'm-step-num';
-  document.getElementById('modalAction').textContent = '🦊 Approve USDC';
+  document.getElementById('modalAction').innerHTML = walletSVG + ' Approve USDC';
   document.getElementById('modalAction').className = 'buy-btn';
   document.getElementById('modalAction').disabled = false;
   document.getElementById('buyOverlay').classList.remove('hidden');
@@ -1547,7 +1558,8 @@ async function doStep() {
   if (modalStep === 0) {
     // Step 1: Approve USDC
     btn.disabled = true;
-    btn.textContent = '⏳ Waiting...';
+    btn.className = 'buy-btn btn-waiting';
+    btn.innerHTML = spinnerSVG + ' Approving...';
     toast('Approving USDC...', 'Confirm in MetaMask', 30);
     try {
       const required = await xionContract.getRequiredApprove(modalLevel);
@@ -1558,21 +1570,23 @@ async function doStep() {
       document.getElementById('ms1n').className = 'm-step-num done';
       document.getElementById('ms1n').textContent = '✓';
       document.getElementById('ms2n').className = 'm-step-num active';
-      btn.textContent = '⚡ Activate Level ' + modalLevel;
+      btn.innerHTML = boltSVG + ' Activate Level ' + modalLevel;
       btn.className = 'buy-btn btn-ready';
       btn.disabled = false;
       modalStep = 1;
       toast('USDC Approved', 'Ready to activate', 70);
     } catch (err) {
       console.error('Approve failed:', err);
-      btn.textContent = '🦊 Approve USDC';
+      btn.innerHTML = walletSVG + ' Approve USDC';
+      btn.className = 'buy-btn';
       btn.disabled = false;
       toast('Approve failed', err.reason || 'User rejected', 0);
     }
   } else {
     // Step 2: Activate Level
     btn.disabled = true;
-    btn.textContent = '⏳ Activating...';
+    btn.className = 'buy-btn btn-waiting';
+    btn.innerHTML = spinnerSVG + ' Activating...';
     toast('Activating Level ' + modalLevel + '...', 'Confirm in MetaMask', 80);
     try {
       const tx = await xionContract.activateLevel(modalLevel);
@@ -1614,7 +1628,8 @@ async function doStep() {
       }, 1500);
     } catch (err) {
       console.error('Activate failed:', err);
-      btn.textContent = '⚡ Activate Level ' + modalLevel;
+      btn.innerHTML = boltSVG + ' Activate Level ' + modalLevel;
+      btn.className = 'buy-btn btn-ready';
       btn.disabled = false;
       toast('Activation failed', err.reason || err.message || 'Transaction reverted', 0);
     }
