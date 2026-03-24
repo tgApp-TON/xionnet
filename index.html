@@ -631,7 +631,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <div class="faq-section-label" id="bonusFaqSection">🎁 Bonus Program</div>
 
   <div class="faq-item open" id="bonusFaqItem">
-    <div class="faq-q" onclick="toggleFaq(this)">How do I get Level 8 for free?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_bonus_title">How do I get Level 8 for free?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">
       <div style="background:rgba(252,211,77,.06);border:1px solid rgba(252,211,77,.2);border-radius:10px;padding:14px;margin-bottom:12px">
         <div style="font-size:15px;font-weight:900;color:var(--gold);margin-bottom:6px">🎁 Buy 7 levels in 180 minutes → Level 8 is FREE</div>
@@ -657,15 +657,15 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     </div>
   </div>
 
-  <div class="faq-section-label">📖 How it works</div>
+  <div class="faq-section-label" data-t="faq_how_works">📖 How it works</div>
 
   <div class="faq-item open">
-    <div class="faq-q" onclick="toggleFaq(this)">What is XionNET?<div class="faq-arrow">▾</div></div>
-    <div class="faq-a">Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.</div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_what_is">What is XionNET?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-t="faq_what_is_a">Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">How do the 4 slots work?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_slots">How do the 4 slots work?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">
       Each level has 4 slots that fill in order:
       <div class="faq-step"><div class="faq-step-num">1</div><div><strong style="color:var(--green)">Slot 1</strong> — Direct payout to your wallet</div></div>
@@ -676,17 +676,17 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">What is the auto-unlock feature?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_autounlock">What is the auto-unlock feature?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">When slot 2 fills and you don't own the next level, your funds are temporarily held. When slot 3 fills, both payments combine to auto-purchase the next level — completely free, no activation fee charged. Two payments at level N = one next level.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">What happens when level is full (slot 4)?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_slot4_q">What happens when level is full (slot 4)?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">The level resets (cycle count increases, all slots cleared). The slot 4 payment moves up the referral chain (spillover) to the nearest person above you who has that level active. Your level is then ready to accept new members again.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">What are the fees?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_fees_q">What are the fees?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">
       <table class="faq-fee-table">
         <tr><th>Fee type</th><th>Amount</th></tr>
@@ -700,22 +700,22 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">Is my money safe?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_safe_q">Is my money safe?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">All funds are managed by a smart contract on Polygon. No person controls them. What goes in through MetaMask comes out through MetaMask. Temporarily held funds (slot 2) are protected — the admin cannot withdraw frozen user funds.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">What is USDC? Do I need POL?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_usdc_q">What is USDC? Do I need POL?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">USDC is a stablecoin pegged to $1. All level prices are in USDC. You also need a tiny amount of POL (Polygon's native token) for gas fees — about $0.0001 per transaction.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">Do I need to buy all 17 levels?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_alllevels_q">Do I need to buy all 17 levels?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">No! Buy levels in order, starting from L1 ($3). Many levels will open automatically through the auto-unlock feature. Sweet spot is L4–L7 for moderate investment. Higher levels are for builders with larger networks.</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="toggleFaq(this)">Something not working?<div class="faq-arrow">▾</div></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_trouble_q">Something not working?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">
       <strong>Try these steps:</strong><br><br>
       1. <strong>Refresh the page</strong> — pull down or tap the refresh button in your browser<br>
@@ -727,7 +727,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     </div>
   </div>
 
-  <div class="faq-section-label">💰 Potential Earnings</div>
+  <div class="faq-section-label" data-t="faq_earnings">💰 Potential Earnings</div>
 
   <!-- SCENARIO 1: 10 referrals buy L1-L7 -->
   <div class="scenario-card">

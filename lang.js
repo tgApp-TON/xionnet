@@ -3,7 +3,7 @@
 
 const LANGS = {
   en: { name: 'English', flag: '🇬🇧' },
-  ru: { name: 'Русский', flag: '🇷🇺' },
+  ru: { name: 'Русский', flag: '🇧🇾' },
   ua: { name: 'Українська', flag: '🇺🇦' },
   es: { name: 'Español', flag: '🇪🇸' },
   pt: { name: 'Português', flag: '🇧🇷' },
@@ -447,11 +447,161 @@ function setLang(lang) {
   applyTranslations();
 }
 
+  // ==================== FAQ ====================
+  faq_bonus_title: {
+    en: 'How do I get Level 8 for free?', ru: 'Как получить Уровень 8 бесплатно?', ua: 'Як отримати Рівень 8 безкоштовно?',
+    es: '¿Cómo obtengo el Nivel 8 gratis?', pt: 'Como obter o Nível 8 de graça?', fr: 'Comment obtenir le Niveau 8 gratuitement ?',
+    de: 'Wie bekomme ich Stufe 8 kostenlos?', pl: 'Jak zdobyć Poziom 8 za darmo?', vi: 'Làm sao để nhận Cấp 8 miễn phí?',
+    ko: '레벨 8을 무료로 받는 방법은?', ja: 'レベル8を無料で入手するには？', hi: 'लेवल 8 मुफ्त में कैसे पाएं?',
+    zh: '如何免费获得第8级？', tr: 'Seviye 8\'i ücretsiz nasıl alırım?',
+  },
+  faq_bonus_headline: {
+    en: 'Buy 7 levels in 180 minutes → Level 8 is FREE', ru: 'Купите 7 уровней за 180 минут → Уровень 8 БЕСПЛАТНО',
+    ua: 'Купіть 7 рівнів за 180 хвилин → Рівень 8 БЕЗКОШТОВНО', es: 'Compra 7 niveles en 180 minutos → ¡Nivel 8 GRATIS!',
+    pt: 'Compre 7 níveis em 180 minutos → Nível 8 GRÁTIS', fr: 'Achetez 7 niveaux en 180 minutes → Niveau 8 GRATUIT',
+    de: 'Kaufen Sie 7 Stufen in 180 Minuten → Stufe 8 KOSTENLOS', pl: 'Kup 7 poziomów w 180 minut → Poziom 8 ZA DARMO',
+    vi: 'Mua 7 cấp trong 180 phút → Cấp 8 MIỄN PHÍ', ko: '180분 안에 7레벨 구매 → 레벨 8 무료',
+    ja: '180分以内に7レベル購入 → レベル8無料', hi: '180 मिनट में 7 लेवल खरीदें → लेवल 8 मुफ्त',
+    zh: '180分钟内购买7个级别 → 第8级免费', tr: '180 dakikada 7 seviye al → Seviye 8 ÜCRETSİZ',
+  },
+  faq_what_is: {
+    en: 'What is XionNET?', ru: 'Что такое XionNET?', ua: 'Що таке XionNET?', es: '¿Qué es XionNET?', pt: 'O que é XionNET?',
+    fr: "Qu'est-ce que XionNET ?", de: 'Was ist XionNET?', pl: 'Czym jest XionNET?', vi: 'XionNET là gì?',
+    ko: 'XionNET이란?', ja: 'XionNETとは？', hi: 'XionNET क्या है?', zh: '什么是XionNET？', tr: 'XionNET nedir?',
+  },
+  faq_what_is_a: {
+    en: 'Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.',
+    ru: 'Децентрализованный протокол на блокчейне Polygon. Все платежи в USDC идут напрямую на ваш кошелёк через смарт-контракт — без посредников и центрального управления. Контракт автоматически и прозрачно распределяет все средства.',
+    ua: 'Децентралізований протокол на блокчейні Polygon. Всі платежі в USDC йдуть прямо на ваш гаманець через смарт-контракт — без посередників та центрального управління.',
+    es: 'Protocolo descentralizado en la blockchain Polygon. Todos los pagos en USDC van directamente a tu wallet a través de un contrato inteligente — sin intermediarios.',
+    pt: 'Protocolo descentralizado na blockchain Polygon. Todos os pagamentos em USDC vão diretamente para sua carteira através de um contrato inteligente.',
+    fr: 'Protocole décentralisé sur la blockchain Polygon. Tous les paiements en USDC vont directement dans votre portefeuille via un contrat intelligent.',
+    de: 'Dezentrales Protokoll auf der Polygon-Blockchain. Alle USDC-Zahlungen gehen direkt über einen Smart Contract an Ihr Wallet.',
+    pl: 'Zdecentralizowany protokół na blockchainie Polygon. Wszystkie płatności USDC trafiają bezpośrednio na twój portfel przez smart kontrakt.',
+    vi: 'Giao thức phi tập trung trên blockchain Polygon. Tất cả thanh toán USDC đi thẳng đến ví của bạn qua hợp đồng thông minh.',
+    ko: 'Polygon 블록체인의 탈중앙화 프로토콜. 모든 USDC 결제가 스마트 컨트랙트를 통해 직접 지갑으로 전송됩니다.',
+    ja: 'Polygonブロックチェーン上の分散型プロトコル。すべてのUSDC支払いがスマートコントラクトを通じて直接ウォレットに送られます。',
+    hi: 'Polygon ब्लॉकचेन पर विकेंद्रीकृत प्रोटोकॉल। सभी USDC भुगतान स्मार्ट कॉन्ट्रैक्ट के माध्यम से सीधे आपके वॉलेट में जाते हैं।',
+    zh: 'Polygon区块链上的去中心化协议。所有USDC支付通过智能合约直接到达您的钱包。',
+    tr: 'Polygon blok zincirinde merkeziyetsiz protokol. Tüm USDC ödemeleri akıllı sözleşme aracılığıyla doğrudan cüzdanınıza gider.',
+  },
+  faq_slots: {
+    en: 'How do the 4 slots work?', ru: 'Как работают 4 слота?', ua: 'Як працюють 4 слоти?', es: '¿Cómo funcionan los 4 espacios?',
+    pt: 'Como funcionam os 4 espaços?', fr: 'Comment fonctionnent les 4 emplacements ?', de: 'Wie funktionieren die 4 Plätze?',
+    pl: 'Jak działają 4 sloty?', vi: '4 ô hoạt động như thế nào?', ko: '4개 슬롯은 어떻게 작동하나요?',
+    ja: '4つのスロットはどう機能しますか？', hi: '4 स्लॉट कैसे काम करते हैं?', zh: '4个插槽如何工作？', tr: '4 slot nasıl çalışır?',
+  },
+  faq_slot1: {
+    en: 'Slot 1 — Direct payout to your wallet', ru: 'Слот 1 — Прямая выплата на ваш кошелёк', ua: 'Слот 1 — Пряма виплата на ваш гаманець',
+    es: 'Espacio 1 — Pago directo a tu wallet', pt: 'Espaço 1 — Pagamento direto para sua carteira', fr: 'Emplacement 1 — Paiement direct dans votre portefeuille',
+    de: 'Platz 1 — Direktauszahlung an Ihr Wallet', pl: 'Slot 1 — Bezpośrednia wypłata na portfel', vi: 'Ô 1 — Thanh toán trực tiếp vào ví',
+    ko: '슬롯 1 — 지갑으로 직접 지급', ja: 'スロット1 — ウォレットへの直接支払い', hi: 'स्लॉट 1 — वॉलेट में सीधा भुगतान',
+    zh: '插槽1 — 直接支付到钱包', tr: 'Slot 1 — Cüzdana doğrudan ödeme',
+  },
+  faq_slot2: {
+    en: 'Slot 2 — If next level owned: payout. If not: funds held temporarily for auto-buy', ru: 'Слот 2 — Если следующий уровень куплен: выплата. Если нет: средства временно заморожены для автопокупки',
+    ua: 'Слот 2 — Якщо наступний рівень куплений: виплата. Якщо ні: кошти тимчасово заморожені', es: 'Espacio 2 — Si tienes el siguiente nivel: pago. Si no: fondos retenidos para compra automática',
+    pt: 'Espaço 2 — Se o próximo nível comprado: pagamento. Se não: fundos retidos para compra automática', fr: 'Emplacement 2 — Si niveau suivant acheté: paiement. Sinon: fonds retenus pour achat automatique',
+    de: 'Platz 2 — Wenn nächste Stufe vorhanden: Auszahlung. Wenn nicht: Gelder für Autokauf einbehalten', pl: 'Slot 2 — Jeśli masz kolejny poziom: wypłata. Jeśli nie: środki zamrożone do autokupna',
+    vi: 'Ô 2 — Nếu có cấp tiếp: thanh toán. Nếu không: giữ để tự động mua', ko: '슬롯 2 — 다음 레벨 보유시: 지급. 아닐시: 자동구매용 보류',
+    ja: 'スロット2 — 次レベル所有時: 支払い。未所有時: 自動購入用に保留', hi: 'स्लॉट 2 — अगला स्तर है: भुगतान। नहीं: ऑटो-खरीद के लिए रोक',
+    zh: '插槽2 — 有下一级：支付。没有：暂扣用于自动购买', tr: 'Slot 2 — Sonraki seviye varsa: ödeme. Yoksa: otomatik satın alma için bekletme',
+  },
+  faq_slot3: {
+    en: 'Slot 3 — If funds were held: next level opens automatically (no fee!). Otherwise: direct payment',
+    ru: 'Слот 3 — Если средства были заморожены: следующий уровень открывается автоматически (без комиссии!). Иначе: прямая выплата',
+    ua: 'Слот 3 — Якщо кошти були заморожені: наступний рівень відкривається автоматично (без комісії!). Інакше: пряма виплата',
+    es: 'Espacio 3 — Si los fondos fueron retenidos: el siguiente nivel se abre automáticamente (¡sin cargo!). Si no: pago directo',
+    pt: 'Espaço 3 — Se fundos retidos: próximo nível abre automaticamente (sem taxa!). Senão: pagamento direto',
+    fr: 'Emplacement 3 — Si fonds retenus: niveau suivant ouvert automatiquement (sans frais!). Sinon: paiement direct',
+    de: 'Platz 3 — Wenn Gelder einbehalten: nächste Stufe öffnet automatisch (ohne Gebühr!). Sonst: Direktauszahlung',
+    pl: 'Slot 3 — Jeśli środki zamrożone: kolejny poziom otwiera się automatycznie (bez opłat!). Inaczej: bezpośrednia wypłata',
+    vi: 'Ô 3 — Nếu đã giữ tiền: cấp tiếp mở tự động (miễn phí!). Nếu không: thanh toán trực tiếp',
+    ko: '슬롯 3 — 보류된 자금이 있으면: 다음 레벨 자동 해제(수수료 없음!). 없으면: 직접 지급',
+    ja: 'スロット3 — 資金保留中: 次レベル自動解除（手数料なし！）。それ以外: 直接支払い',
+    hi: 'स्लॉट 3 — रोकी गई धनराशि: अगला स्तर स्वतः खुलता है (शुल्क नहीं!)। अन्यथा: सीधा भुगतान',
+    zh: '插槽3 — 如有冻结资金：下一级自动开启（免手续费！）。否则：直接支付',
+    tr: 'Slot 3 — Bekletilen fonlar varsa: sonraki seviye otomatik açılır (ücretsiz!). Yoksa: doğrudan ödeme',
+  },
+  faq_slot4: {
+    en: 'Slot 4 — Level resets for new cycle. Payment moves up the chain (spillover)',
+    ru: 'Слот 4 — Уровень перезапускается для нового цикла. Платёж уходит вверх по цепочке (spillover)',
+    ua: 'Слот 4 — Рівень перезапускається для нового циклу. Платіж йде вгору по ланцюжку (spillover)',
+    es: 'Espacio 4 — El nivel se reinicia para un nuevo ciclo. El pago sube por la cadena (spillover)',
+    pt: 'Espaço 4 — O nível reinicia para novo ciclo. O pagamento sobe pela cadeia (spillover)',
+    fr: 'Emplacement 4 — Le niveau se réinitialise pour un nouveau cycle. Le paiement remonte la chaîne (spillover)',
+    de: 'Platz 4 — Stufe wird für neuen Zyklus zurückgesetzt. Zahlung geht in der Kette nach oben (Spillover)',
+    pl: 'Slot 4 — Poziom resetuje się na nowy cykl. Płatność idzie w górę łańcucha (spillover)',
+    vi: 'Ô 4 — Cấp độ đặt lại cho chu kỳ mới. Thanh toán đi lên chuỗi (spillover)',
+    ko: '슬롯 4 — 레벨이 새 사이클로 리셋. 결제가 체인 위로 이동 (스필오버)',
+    ja: 'スロット4 — レベルが新サイクルにリセット。支払いがチェーン上位へ（スピルオーバー）',
+    hi: 'स्लॉट 4 — नए चक्र के लिए स्तर रीसेट। भुगतान चेन में ऊपर जाता है (spillover)',
+    zh: '插槽4 — 级别重置进入新周期。付款向上流动（溢出）',
+    tr: 'Slot 4 — Seviye yeni döngü için sıfırlanır. Ödeme zincirde yukarı gider (spillover)',
+  },
+  faq_autounlock: {
+    en: 'What is the auto-unlock feature?', ru: 'Что такое автоматическое открытие?', ua: 'Що таке автоматичне відкриття?',
+    es: '¿Qué es el desbloqueo automático?', pt: 'O que é o desbloqueio automático?', fr: "Qu'est-ce que le déverrouillage automatique ?",
+    de: 'Was ist die automatische Freischaltung?', pl: 'Czym jest automatyczne odblokowanie?', vi: 'Tính năng tự động mở khóa là gì?',
+    ko: '자동 해제 기능이란?', ja: '自動解除機能とは？', hi: 'ऑटो-अनलॉक फीचर क्या है?', zh: '什么是自动解锁功能？', tr: 'Otomatik kilitleme nedir?',
+  },
+  faq_slot4_q: {
+    en: 'What happens when level is full (slot 4)?', ru: 'Что происходит когда уровень заполнен (слот 4)?', ua: 'Що відбувається коли рівень заповнений (слот 4)?',
+    es: '¿Qué pasa cuando el nivel está lleno (espacio 4)?', pt: 'O que acontece quando o nível está cheio (espaço 4)?', fr: 'Que se passe-t-il quand le niveau est plein (emplacement 4) ?',
+    de: 'Was passiert wenn die Stufe voll ist (Platz 4)?', pl: 'Co się dzieje gdy poziom jest pełny (slot 4)?', vi: 'Điều gì xảy ra khi cấp đầy (ô 4)?',
+    ko: '레벨이 가득 차면 어떻게 되나요 (슬롯 4)?', ja: 'レベルが満杯になったら（スロット4）？', hi: 'जब स्तर भर जाता है (स्लॉट 4)?',
+    zh: '当级别满了会怎样（插槽4）？', tr: 'Seviye dolduğunda ne olur (slot 4)?',
+  },
+  faq_fees_q: {
+    en: 'What are the fees?', ru: 'Какие комиссии?', ua: 'Які комісії?', es: '¿Cuáles son las tarifas?', pt: 'Quais são as taxas?',
+    fr: 'Quels sont les frais ?', de: 'Welche Gebühren gibt es?', pl: 'Jakie są opłaty?', vi: 'Phí là bao nhiêu?',
+    ko: '수수료는 얼마인가요?', ja: '手数料は？', hi: 'शुल्क क्या हैं?', zh: '费用是多少？', tr: 'Ücretler nelerdir?',
+  },
+  faq_safe_q: {
+    en: 'Is my money safe?', ru: 'Мои деньги в безопасности?', ua: 'Мої гроші в безпеці?', es: '¿Es seguro mi dinero?', pt: 'Meu dinheiro está seguro?',
+    fr: 'Mon argent est-il en sécurité ?', de: 'Ist mein Geld sicher?', pl: 'Czy moje pieniądze są bezpieczne?', vi: 'Tiền của tôi có an toàn không?',
+    ko: '내 돈은 안전한가요?', ja: '私のお金は安全ですか？', hi: 'क्या मेरा पैसा सुरक्षित है?', zh: '我的钱安全吗？', tr: 'Param güvende mi?',
+  },
+  faq_usdc_q: {
+    en: 'What is USDC? Do I need POL?', ru: 'Что такое USDC? Нужен ли мне POL?', ua: 'Що таке USDC? Чи потрібен мені POL?',
+    es: '¿Qué es USDC? ¿Necesito POL?', pt: 'O que é USDC? Preciso de POL?', fr: "Qu'est-ce que USDC ? Ai-je besoin de POL ?",
+    de: 'Was ist USDC? Brauche ich POL?', pl: 'Czym jest USDC? Czy potrzebuję POL?', vi: 'USDC là gì? Tôi có cần POL không?',
+    ko: 'USDC란? POL이 필요한가요?', ja: 'USDCとは？POLは必要？', hi: 'USDC क्या है? POL चाहिए?', zh: '什么是USDC？需要POL吗？', tr: 'USDC nedir? POL gerekli mi?',
+  },
+  faq_alllevels_q: {
+    en: 'Do I need to buy all 17 levels?', ru: 'Нужно ли покупать все 17 уровней?', ua: 'Чи потрібно купувати всі 17 рівнів?',
+    es: '¿Necesito comprar los 17 niveles?', pt: 'Preciso comprar todos os 17 níveis?', fr: 'Dois-je acheter les 17 niveaux ?',
+    de: 'Muss ich alle 17 Stufen kaufen?', pl: 'Czy muszę kupić wszystkie 17 poziomów?', vi: 'Tôi có cần mua cả 17 cấp không?',
+    ko: '17레벨 모두 구매해야 하나요?', ja: '17レベル全部買う必要がありますか？', hi: 'क्या मुझे सभी 17 स्तर खरीदने होंगे?', zh: '我需要购买全部17个级别吗？', tr: 'Tüm 17 seviyeyi almam gerekir mi?',
+  },
+  faq_trouble_q: {
+    en: 'Something not working?', ru: 'Что-то не работает?', ua: 'Щось не працює?', es: '¿Algo no funciona?', pt: 'Algo não está funcionando?',
+    fr: 'Quelque chose ne fonctionne pas ?', de: 'Etwas funktioniert nicht?', pl: 'Coś nie działa?', vi: 'Có vấn đề gì?',
+    ko: '문제가 있나요?', ja: '何か問題がありますか？', hi: 'कुछ काम नहीं कर रहा?', zh: '有问题吗？', tr: 'Bir şey çalışmıyor mu?',
+  },
+  faq_earnings: {
+    en: 'Potential Earnings', ru: 'Потенциальный доход', ua: 'Потенційний дохід', es: 'Ganancias potenciales', pt: 'Ganhos potenciais',
+    fr: 'Gains potentiels', de: 'Potenzielle Verdienste', pl: 'Potencjalne zarobki', vi: 'Thu nhập tiềm năng',
+    ko: '예상 수익', ja: '潜在的な収益', hi: 'संभावित कमाई', zh: '潜在收入', tr: 'Potansiyel Kazanç',
+  },
+  faq_how_works: {
+    en: 'How it works', ru: 'Как это работает', ua: 'Як це працює', es: 'Cómo funciona', pt: 'Como funciona',
+    fr: 'Comment ça marche', de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
+    ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
+  },
+};
+
 function applyTranslations() {
-  // Update all elements with data-t attribute
+  // Update all elements with data-t attribute (textContent)
   document.querySelectorAll('[data-t]').forEach(el => {
     const key = el.getAttribute('data-t');
     el.textContent = t(key);
+  });
+  // Update all elements with data-th attribute (innerHTML — for HTML content)
+  document.querySelectorAll('[data-th]').forEach(el => {
+    const key = el.getAttribute('data-th');
+    const val = t(key);
+    if (val !== key) el.innerHTML = val;
   });
   // Update all elements with data-tp attribute (placeholder)
   document.querySelectorAll('[data-tp]').forEach(el => {
