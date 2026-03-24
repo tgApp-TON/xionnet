@@ -404,25 +404,27 @@ a{color:var(--poly2);text-decoration:none}
 <!-- ==================== HISTORY ==================== -->
 <div id="screen-history" class="screen">
   <div class="filter-chips">
-    <button class="chip on" onclick="filterChip(this)">All</button>
-    <button class="chip" onclick="filterChip(this)">💰 Payouts</button>
-    <button class="chip" onclick="filterChip(this)">❄️ Frozen</button>
-    <button class="chip" onclick="filterChip(this)">⬆️ Spillover</button>
-    <button class="chip" onclick="filterChip(this)">🔄 Reactivation</button>
+    <button class="chip on" onclick="filterHistory(this,'all')">All</button>
+    <button class="chip" onclick="filterHistory(this,'payout')">💰 Payouts</button>
+    <button class="chip" onclick="filterHistory(this,'frozen')">❄️ Frozen</button>
+    <button class="chip" onclick="filterHistory(this,'spillover')">⬆️ Spillover</button>
+    <button class="chip" onclick="filterHistory(this,'reactivation')">🔄 Reactivation</button>
+    <button class="chip" onclick="filterHistory(this,'bonus')">🎁 Bonus</button>
+    <button class="chip" onclick="filterHistory(this,'auto')">⚡ Auto-open</button>
   </div>
   <div class="card" style="padding:0;overflow:hidden">
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 10</div><div class="fi-sub">from 0xbc05...1067 (KP)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$1,536</div><div class="fi-time">Mar 24 11:42</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 12</div><div class="fi-sub">Will auto-unlock Level 13</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12,288</div><div class="fi-time">Mar 24 08:15</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 9</div><div class="fi-sub">from 0x120b...76cd (RW)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$768</div><div class="fi-time">Mar 24 06:30</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 8</div><div class="fi-sub">from 0xdd05...e505 via KP's network</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$384</div><div class="fi-time">Mar 23 22:10</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 7</div><div class="fi-sub">from 0xab04...ef56 (JM)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$192</div><div class="fi-time">Mar 23 18:44</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 12 opened automatically</div><div class="fi-sub">No activation fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">Mar 23 14:20</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 6</div><div class="fi-sub">from 0xcd06...2178 (LR)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$96</div><div class="fi-time">Mar 23 12:05</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 5</div><div class="fi-sub">from 0xdd09...e509 via DM's network</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$48</div><div class="fi-time">Mar 23 09:33</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(245,158,11,.12)">🔄</div><div class="fi-body"><div class="fi-title">Level 4 reset &middot; Cycle 3</div><div class="fi-sub">Ready to receive new members</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">Cycle 3</div><div class="fi-time">Mar 22 21:50</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 11</div><div class="fi-sub">from 0x450e...a901 (UZ)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$3,072</div><div class="fi-time">Mar 22 16:18</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(252,211,77,.12)">🎁</div><div class="fi-body"><div class="fi-title">Bonus! Level 8 unlocked</div><div class="fi-sub">Bought 7 levels within 180 min</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--gold)">FREE</div><div class="fi-time">Mar 20 15:02</div></div></div>
-    <div class="feed-item"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 5</div><div class="fi-sub">from 0x9a03...de45 (HK)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$48</div><div class="fi-time">Mar 20 10:44</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 10</div><div class="fi-sub">from 0xbc05...1067 (KP)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$1,536</div><div class="fi-time">Mar 24 11:42</div></div></div>
+    <div class="feed-item" data-type="frozen"><div class="fi-icon" style="background:rgba(56,189,248,.12)">❄️</div><div class="fi-body"><div class="fi-title">Funds frozen &middot; Level 12</div><div class="fi-sub">Will auto-unlock Level 13</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--frozen)">$12,288</div><div class="fi-time">Mar 24 08:15</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 9</div><div class="fi-sub">from 0x120b...76cd (RW)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$768</div><div class="fi-time">Mar 24 06:30</div></div></div>
+    <div class="feed-item" data-type="spillover"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 8</div><div class="fi-sub">from 0xdd05...e505 via KP's network</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$384</div><div class="fi-time">Mar 23 22:10</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 7</div><div class="fi-sub">from 0xab04...ef56 (JM)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$192</div><div class="fi-time">Mar 23 18:44</div></div></div>
+    <div class="feed-item" data-type="auto"><div class="fi-icon" style="background:rgba(6,214,160,.12)">⚡</div><div class="fi-body"><div class="fi-title">Level 12 opened automatically</div><div class="fi-sub">No activation fee charged</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">Free</div><div class="fi-time">Mar 23 14:20</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 6</div><div class="fi-sub">from 0xcd06...2178 (LR)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$96</div><div class="fi-time">Mar 23 12:05</div></div></div>
+    <div class="feed-item" data-type="spillover"><div class="fi-icon" style="background:rgba(124,58,237,.12)">⬆️</div><div class="fi-body"><div class="fi-title">Spillover &middot; Level 5</div><div class="fi-sub">from 0xdd09...e509 via DM's network</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">+$48</div><div class="fi-time">Mar 23 09:33</div></div></div>
+    <div class="feed-item" data-type="reactivation"><div class="fi-icon" style="background:rgba(245,158,11,.12)">🔄</div><div class="fi-body"><div class="fi-title">Level 4 reset &middot; Cycle 3</div><div class="fi-sub">Ready to receive new members</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--poly2)">Cycle 3</div><div class="fi-time">Mar 22 21:50</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 11</div><div class="fi-sub">from 0x450e...a901 (UZ)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$3,072</div><div class="fi-time">Mar 22 16:18</div></div></div>
+    <div class="feed-item" data-type="bonus"><div class="fi-icon" style="background:rgba(252,211,77,.12)">🎁</div><div class="fi-body"><div class="fi-title">Bonus! Level 8 unlocked</div><div class="fi-sub">Bought 7 levels within 180 min</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--gold)">FREE</div><div class="fi-time">Mar 20 15:02</div></div></div>
+    <div class="feed-item" data-type="payout"><div class="fi-icon" style="background:rgba(6,214,160,.12)">💰</div><div class="fi-body"><div class="fi-title">Received &middot; Level 5</div><div class="fi-sub">from 0x9a03...de45 (HK)</div></div><div class="fi-right"><div class="fi-amt" style="color:var(--green)">+$48</div><div class="fi-time">Mar 20 10:44</div></div></div>
   </div>
 </div>
 
@@ -1315,10 +1317,18 @@ async function loadMoreSubs(refKey, limit) {
   subOffsets[refKey] = offset + limit;
 }
 
-// ==================== FILTER CHIPS ====================
-function filterChip(el) {
+// ==================== HISTORY FILTER ====================
+function filterHistory(el, type) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
+  const items = document.querySelectorAll('#screen-history .feed-item');
+  items.forEach(item => {
+    if (type === 'all') {
+      item.style.display = '';
+    } else {
+      item.style.display = item.dataset.type === type ? '' : 'none';
+    }
+  });
 }
 
 // ==================== BONUS TIMER ====================
