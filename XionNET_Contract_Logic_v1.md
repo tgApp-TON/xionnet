@@ -1,6 +1,6 @@
-# XionNET — Полная логика смарт-контракта
+# XionNET — Полная спецификация проекта
 
-## v1.0 · Март 2026
+## v1.1 · Март 2026
 
 Solidity 0.8.24+ · Polygon PoS · USDC · 17 уровней · 4 слота
 Автопокупка — toggle по уровням, по умолчанию ВЫКЛЮЧЕНА
@@ -12,7 +12,7 @@ Solidity 0.8.24+ · Polygon PoS · USDC · 17 уровней · 4 слота
 | Параметр | Значение |
 |----------|----------|
 | Название | XionNET |
-| Сеть | Polygon PoS (Amoy testnet → Mainnet) |
+| Сеть | Polygon PoS (Sepolia testnet → Mainnet) |
 | Токен оплаты | USDC ERC-20, 6 decimals |
 | Количество уровней | 17 |
 | Слотов на уровне | 4 |
@@ -20,7 +20,7 @@ Solidity 0.8.24+ · Polygon PoS · USDC · 17 уровней · 4 слота
 | Прогрессия цен | ×2 каждый уровень |
 | Комиссия при покупке | +10% к цене уровня |
 | Комиссия при автопокупке | 0% (уже собрано при покупках рефералов) |
-| Дополнительные комиссии | Нет ($0.50 buy fee — нет, payout fee — нет) |
+| Дополнительные комиссии | Нет |
 
 ---
 
@@ -48,607 +48,196 @@ Solidity 0.8.24+ · Polygon PoS · USDC · 17 уровней · 4 слота
 
 Формула: `price(N) = 3 × 2^(N-1)` USDC
 
-КРИТИЧНО: USDC на Polygon имеет 6 decimals, НЕ 18. $3.00 = 3_000_000 в Solidity.
+---
+
+## 3. Кошельки
+
+| Кошелёк | Адрес | Роль |
+|---------|-------|------|
+| Owner | 0xE4c41b544acafF7d6a6f8441690841935Ccc8038 | Холодный. Управляет контрактом, pause, setWallets |
+| System | 0x48baFBeb829a6D5ea42f5BC80433bCC72E076021 | Получает 10% комиссий |
+| Master | 0x07D7D2F65e01ec2B3ce97F58ED557830d46439BC | isMaster=true, все уровни, ловит spillover |
+| Wallet M | 0x8fE850E28575686aB0Fcd9ef44c103Da1A7b39aF | Менеджер, все уровни, под master |
+| Wallet A | 0x6cC9A6ff1DFE14D02426F1C8Da3648612BE26c65 | Менеджер, все уровни, под master |
+
+Owner ≠ Master ≠ System — три разных кошелька для безопасности.
 
 ---
 
-## 3. Комиссии — единственная модель
+## 4. Логика слотов
 
-| Действие | Юзер платит | Система получает | В слоты идёт |
-|----------|-------------|------------------|--------------|
-| Ручная покупка | price × 1.10 | price × 0.10 (10%) | price (чистая) |
-| Автопокупка (слот 3A) | 0 | 0 | price(N+1) из заморозки |
+### 4.0 AutoBuy toggle
 
-Других комиссий нет. Нет $0.50 buy fee. Нет payout fee. Нет protocol fee при выплатах.
+Каждый юзер управляет автопокупкой для каждого уровня отдельно.
+По умолчанию **ВЫКЛЮЧЕНА**. `setAutoBuy(level, enabled)`.
 
-10% берётся ОДИН РАЗ при ручной покупке уровня. При автопокупке комиссия не берётся — она уже была собрана при покупках рефералов ниже.
-
----
-
-## 4. Логика слотов — полная таблица
-
-### 4.0 Автопокупка (autoBuy toggle)
-
-Каждый юзер управляет автопокупкой **для каждого уровня отдельно**.
-
-```solidity
-function setAutoBuy(uint8 level, bool enabled) external
-```
-
-| Параметр | Значение |
-|----------|----------|
-| По умолчанию | **ВЫКЛЮЧЕНА** |
-| Хранение | `mapping(uint8 => bool) autoBuyEnabled` в UserData |
-| Применяется | **С начала следующего цикла** (после реактивации слотом 4) |
-
-Правило: если юзер включил/выключил autoBuy в середине цикла (слоты уже частично заполнены), текущий цикл доигрывается по старым правилам. Новая настройка вступает в силу после реактивации.
-
-В контракте проверяется в `_slot2`:
-```
-if autoBuyEnabled[level] AND N+1 не куплен → заморозка (2B)
-if !autoBuyEnabled[level] OR N+1 куплен → выплата (2A)
-```
-
-### 4.1 Уровни 1–16: autoBuy ВЫКЛЮЧЕНА (default)
+### 4.1 autoBuy ВЫКЛЮЧЕНА (default)
 
 | Слот | Действие | Владелец получает |
 |------|----------|-------------------|
-| 1 | Выплата владельцу | price(N) |
-| 2 | Выплата владельцу | price(N) |
-| 3 | Выплата владельцу | price(N) |
-| 4 | Реактивация + spillover вверх | Ничего |
+| 1 | Выплата | price(N) |
+| 2 | Выплата | price(N) |
+| 3 | Выплата | price(N) |
+| 4 | Реактивация + spillover | Ничего |
 
-Все 3 слота = выплата. Автопокупки нет. N+1 не открывается автоматически.
-
-### 4.2 Уровни 1–16: autoBuy ВКЛЮЧЕНА, N+1 НЕ куплен
+### 4.2 autoBuy ВКЛЮЧЕНА, N+1 НЕ куплен
 
 | Слот | Действие | Владелец получает |
 |------|----------|-------------------|
-| 1 | Выплата владельцу | price(N) |
-| 2 | Заморозка price(N) на контракте | Ничего |
-| 3 | frozen + incoming = price(N+1) → автопокупка N+1 | Новый уровень N+1 (0/4) |
-| 4 | Реактивация + spillover вверх | Ничего |
+| 1 | Выплата | price(N) |
+| 2 | Заморозка price(N) | Ничего |
+| 3 | frozen + incoming = price(N+1) → автопокупка | Новый уровень N+1 |
+| 4 | Реактивация + spillover | Ничего |
 
-### 4.3 Уровни 1–16: autoBuy ВКЛЮЧЕНА, N+1 УЖЕ куплен
-
-| Слот | Действие | Владелец получает |
-|------|----------|-------------------|
-| 1 | Выплата владельцу | price(N) |
-| 2 | Выплата владельцу (N+1 есть, заморозка не нужна) | price(N) |
-| 3 | Выплата владельцу | price(N) |
-| 4 | Реактивация + spillover вверх | Ничего |
-
-### 4.4 Уровень 17 (последний, N+1 не существует)
+### 4.3 autoBuy ВКЛЮЧЕНА, N+1 УЖЕ куплен
 
 | Слот | Действие | Владелец получает |
 |------|----------|-------------------|
-| 1 | Выплата | price(L17) = 196,608 |
-| 2 | Выплата | price(L17) = 196,608 |
-| 3 | Выплата | price(L17) = 196,608 |
-| 4 | Spillover вверх по дереву на L17 | Ничего |
+| 1 | Выплата | price(N) |
+| 2 | Выплата | price(N) |
+| 3 | Выплата | price(N) |
+| 4 | Реактивация + spillover | Ничего |
 
-На L17 заморозки НЕТ НИКОГДА. autoBuy не влияет (нет N+1).
-Слот 4 — реактивация + spillover вверх по L17.
+### 4.4 Уровень 17 (последний)
 
-### 4.5 MASTER аккаунт (все уровни)
+Слоты 1-3 = выплата. Слот 4 = spillover. Нет заморозки. autoBuy не влияет.
 
-| Слот | Действие |
-|------|----------|
-| 1 | Выплата MASTER |
-| 2 | Выплата MASTER |
-| 3 | Выплата MASTER |
-| 4 | Реактивация, деньги идут MASTER (нет spillover вверх) |
+### 4.5 MASTER
+
+Все 4 слота = выплата. Нет заморозки, нет spillover вверх от слота 4.
 
 ### 4.6 Spillover мимо спонсора
 
-Когда реферал юзера X покупает уровень N, а у X уровень N **не активен** — деньги **минуют X** и идут вверх по дереву к первому спонсору у которого уровень N открыт.
-
-```
-Реферал покупает L5 → ищем спонсора с L5 active:
-  X (спонсор) — L5 не активен → пропускаем
-  Y (спонсор X) — L5 активен → деньги идут Y
-```
-
-X не получает ничего. Деньги не теряются — просто проходят мимо. Чтобы получать от рефералов, X должен иметь тот же уровень открытым.
-
-MASTER — конечная точка системы. Все слоты = выплата. Нет заморозки. Нет spillover вверх. При слоте 4 — реактивация, но деньги остаются у MASTER.
+Если у спонсора нет активного уровня N — деньги минуют его и идут выше по дереву.
 
 ---
 
-## 5. Механизм заморозки и автопокупки — подробно
+## 5. Бонус: 7 уровней за 180 минут → L8 бесплатно
 
-### 5.1 Почему это работает
-
-Прогрессия ×2 гарантирует: `2 × price(N) = price(N+1)`
-
-Слот 2 даёт price(N) + слот 3 даёт price(N) = price(N+1). Ровно хватает на следующий уровень.
-
-### 5.2 Полный сценарий (пример: уровень 3, price=12)
-
-Спонсор A (L4 активен) → Реферал B (L4 нет)
-
-**Слот 1:** Кто-то покупает L3, заполняет слот 1 у B.
-- Покупатель платит: 12 × 1.10 = **13.20 USDC**
-- Система получает: **1.20** (10%)
-- B получает: **12.00** (чистая выплата)
-
-**Слот 2:** Кто-то покупает L3, заполняет слот 2 у B.
-- Покупатель платит: **13.20 USDC**
-- Система получает: **1.20** (10%)
-- B получает: **ничего** (L4 не куплен → заморозка)
-- Контракт хранит: **12.00** (frozen)
-
-**Слот 3:** Кто-то покупает L3, заполняет слот 3 у B.
-- Покупатель платит: **13.20 USDC**
-- Система получает: **1.20** (10%)
-- Frozen 12 + входящие 12 = **24 = price(L4)**
-- Автопокупка L4 для B. B получает пустой L4 (0/4)
-- **24 USDC** идёт вверх → заполняет слот на L4 у A
-- Комиссия при автопокупке: **0** (уже собрано)
-
-**Слот 4:** Кто-то покупает L3, заполняет слот 4 у B.
-- Покупатель платит: **13.20 USDC**
-- Система получает: **1.20** (10%)
-- B получает: **ничего**
-- L3 у B реактивируется (cycleCount++, слоты 0/4)
-- **12 USDC** spillover вверх по L3 → к A (или выше по дереву)
-
-**Итог цикла для B:** +12 выплата + L4 бесплатно. Цикл повторяется.
-
-### 5.3 Сценарий 3B (N+1 уже куплен, frozen > 0)
-
-Если между слотом 2 и слотом 3 у B уже появился L4 (например, через автопокупку с другого уровня):
-
-- Frozen 12 + входящие 12 = **24 = price(N+1)**
-- Автопокупка не нужна (L4 есть)
-- **24 USDC** идёт вверх → заполняет слот на L4 у спонсора
-- B не получает новый уровень (уже есть), не получает выплату
-
-### 5.4 Сценарий FundsReturned (frozen + ручная покупка N+1)
-
-Если B вручную покупает L4 пока на L3 висит заморозка:
-- Контракт возвращает frozen (12 USDC) обратно B **ДО** активации
-- B платит за L4: 24 × 1.10 = 26.40 (из своего кошелька)
-- Потерял только 10% комиссию (2.40)
-- Frozen средства возвращены полностью
+Таймер стартует с момента регистрации. Покупка L7 в пределах 3 часов → L8 активируется без оплаты, без _fillSlot. actType=3.
 
 ---
 
-## 6. Spillover алгоритм
+## 6. Безопасность контракта
 
-Spillover — маршрутизация денег вверх по дереву. Привязка реферала к спонсору НЕ меняется.
-
-```
-_spillover(fromUser, levelNum, amount):
-    P = users[fromUser].referrer
-    hops = 0
-    while (true):
-        if P == address(0) || P == masterWallet → P = masterWallet; break
-        if hops >= MAX_HOPS → emit Bounced; P = masterWallet; break
-        if users[P].levels[levelNum].active → break  // нашли получателя
-        P = users[P].referrer
-        hops++
-    emit SpilloverSent(fromUser, P, levelNum, amount, hops)
-    _fillSlot(P, levelNum, amount, fromUser, SPILLOVER)
-```
-
-Spillover происходит когда:
-- Слот 4 заполнен → деньги идут вверх по дереву на том же уровне
-- Спонсор реферала не имеет активного уровня → ищем выше
-- Сценарий 3B → деньги идут на N+1 к спонсору (или spillover если у спонсора N+1 не активен)
-
-Рефералы **жёстко привязаны** к спонсору в смарт-контракте. Spillover — это только маршрутизация денег, привязка никогда не меняется.
+| Защита | Реализация |
+|--------|-----------|
+| SafeERC20 | safeTransfer/safeTransferFrom |
+| ReentrancyGuard | nonReentrant на activateLevel |
+| MAX_DEPTH=20 | Защита от рекурсии _fillSlot |
+| MAX_HOPS=200 | Защита spillover от газ-бомбы |
+| tx.origin check | Блокирует контракты как юзеров |
+| receive() revert | Нативные токены не застрянут |
+| filledSlots < 4 | Защита от переполнения слотов |
+| totalFrozen accounting | Freeze/unfreeze/reactivate — всё учтено |
+| Pausable | Owner может остановить всё |
+| setMasterWallet | Снимает isMaster со старого мастера |
 
 ---
 
-## 7. Привязка рефералов
+## 7. Деплой
 
-- Реферал привязывается к спонсору **один раз** при регистрации
-- Привязка **навсегда** — не может быть изменена
-- Если реферал не указан или не зарегистрирован → автоматически masterWallet
-- Self-referral запрещён (require msg.sender != referrer)
-- Даже когда деньги от реферала попадают выше по spillover, реферал остаётся привязан к своему прямому спонсору
-
----
-
-## 8. Константы контракта
-
-```solidity
-uint8   public constant MAX_LEVELS    = 17;
-uint8   public constant MAX_SLOTS     = 4;
-uint32  public constant MAX_HOPS      = 100_000;
-uint256 public constant PROTOCOL_PCT  = 10;        // 10% комиссия при ручной покупке
-uint32  public constant BONUS_WINDOW  = 3 hours;   // 10800 секунд
-uint8   public constant BONUS_TRIGGER = 7;          // купил 7 уровней за BONUS_WINDOW
-uint8   public constant BONUS_GIFT    = 8;          // получает 8й бесплатно
+### Testnet (Sepolia)
+```
+MockUSDC: 0xba7e3dF16aA202ab0A0d0DE982b8D240E1d3e54E
+XionNET:  0x14160fC843204507E224552D0141B34B975f0850
+Chain:    Sepolia (11155111)
 ```
 
-Убраны по сравнению с v5:
-- ~~BUY_FEE ($0.50)~~ — нет
-- ~~PAYOUT_FEE ($0.50)~~ — нет
-- ~~PAYOUT_FEE_THRESHOLD ($3.90)~~ — нет
-
----
-
-## 8.1 Бонус: 7 уровней за 3 часа → L8 в подарок
-
-### Логика
-
-Таймер 3 часа (180 минут) стартует с момента **регистрации** (`register()`).
-
-Когда юзер активирует L7 и с момента регистрации прошло ≤ 3 часов:
-- L8 активируется автоматически, бесплатно
-- `_fillSlot` НЕ вызывается — спонсор ничего не получает за L8
-- L8 у юзера: `active=true`, 0/4 слотов
-- `emit LevelActivated(user, 8, 0, 3, timestamp)` — actType=3 (bonus)
-
-### Edge cases
-
-- Если на L7 была заморозка для L8 → L8 уже открыт бонусом → FundsReturned (вернуть frozen)
-- Начальные участники (`_init`) — таймер не действует (уровни уже открыты)
-- Если юзер не успел за 3 часа — L8 покупается как обычно (вручную или автопокупка)
-- actType=3 — новый тип для бэкенда/UI: показать "🎁 Bonus Level!"
-
-### В хранилище
-
-В `UserData` добавляется:
-```solidity
-uint32 registeredAt;   // timestamp регистрации — для проверки бонуса
+### Mainnet (Polygon)
 ```
-
-### В контракте
-
-```solidity
-// В activateLevel(), после успешной активации levelNum:
-if (levelNum == BONUS_TRIGGER
-    && block.timestamp - users[msg.sender].registeredAt <= BONUS_WINDOW
-    && !users[msg.sender].levels[BONUS_GIFT].active)
-{
-    // Возврат заморозки с L7 если есть
-    if (users[msg.sender].levels[BONUS_TRIGGER].frozenAmount > 0) {
-        uint256 frozen = users[msg.sender].levels[BONUS_TRIGGER].frozenAmount;
-        users[msg.sender].levels[BONUS_TRIGGER].frozenAmount = 0;
-        totalFrozen -= frozen;
-        usdcToken.transfer(msg.sender, frozen);
-        emit FundsReturned(msg.sender, BONUS_TRIGGER, frozen, uint32(block.timestamp));
-    }
-
-    // Активация L8 бесплатно
-    users[msg.sender].levels[BONUS_GIFT].active = true;
-    users[msg.sender].levels[BONUS_GIFT].activatedAt = uint32(block.timestamp);
-    emit LevelActivated(msg.sender, BONUS_GIFT, 0, 3, uint32(block.timestamp));
-}
+USDC:     0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359
+XionNET:  TBD
+Chain:    Polygon (137)
 ```
 
 ---
 
-## 9. Хранилище контракта
-
-```solidity
-IERC20  public usdcToken;
-address public systemWallet;       // получает 10% комиссии
-address public masterWallet;       // конечная точка spillover
-uint256[18] public levelPrices;    // индекс 0 не используется, 1-17
-uint256 public totalFrozen;        // защита замороженных средств
-
-struct LevelData {
-    bool     active;
-    uint8    filledSlots;          // 0-4
-    uint32   cycleCount;
-    uint32   activatedAt;
-    uint256  frozenAmount;         // = price(N), сбрасывается при разморозке
-    address  slot1;
-    address  slot2;
-    address  slot3;
-    address  slot4;
-}
-
-struct UserData {
-    bool     registered;
-    address  referrer;             // навсегда, не меняется
-    bool     isMaster;
-    uint32   registeredAt;         // timestamp регистрации — для бонуса
-    uint256  totalReceived;
-    uint256  totalPaid;
-    mapping(uint8 => LevelData) levels;
-    mapping(uint8 => bool) autoBuyEnabled;  // default false — выкл
-}
-
-mapping(address => UserData) public users;
-```
-
----
-
-## 10. Конструктор и начальные участники
-
-### 10.1 Инициализация
-
-```solidity
-constructor(
-    address _usdc,
-    address _systemWallet,
-    address _masterWallet,
-    address[] memory _init          // начальные участники — все уровни открыты
-) {
-    usdcToken    = IERC20(_usdc);
-    systemWallet = _systemWallet;
-    masterWallet = _masterWallet;
-
-    levelPrices[1]  = 3_000_000;         // $3
-    levelPrices[2]  = 6_000_000;         // $6
-    levelPrices[3]  = 12_000_000;        // $12
-    levelPrices[4]  = 24_000_000;        // $24
-    levelPrices[5]  = 48_000_000;        // $48
-    levelPrices[6]  = 96_000_000;        // $96
-    levelPrices[7]  = 192_000_000;       // $192
-    levelPrices[8]  = 384_000_000;       // $384
-    levelPrices[9]  = 768_000_000;       // $768
-    levelPrices[10] = 1_536_000_000;     // $1,536
-    levelPrices[11] = 3_072_000_000;     // $3,072
-    levelPrices[12] = 6_144_000_000;     // $6,144
-    levelPrices[13] = 12_288_000_000;    // $12,288
-    levelPrices[14] = 24_576_000_000;    // $24,576
-    levelPrices[15] = 49_152_000_000;    // $49,152
-    levelPrices[16] = 98_304_000_000;    // $98,304
-    levelPrices[17] = 196_608_000_000;   // $196,608
-
-    // Master — регистрация + все уровни + isMaster
-    users[_masterWallet].registered = true;
-    users[_masterWallet].isMaster = true;
-    for (uint8 i = 1; i <= MAX_LEVELS; i++) {
-        users[_masterWallet].levels[i].active = true;
-        users[_masterWallet].levels[i].activatedAt = uint32(block.timestamp);
-    }
-
-    // Начальные участники — регистрация под мастером + все уровни
-    for (uint256 j = 0; j < _init.length; j++) {
-        address u = _init[j];
-        users[u].registered = true;
-        users[u].referrer = _masterWallet;
-        for (uint8 i = 1; i <= MAX_LEVELS; i++) {
-            users[u].levels[i].active = true;
-            users[u].levels[i].activatedAt = uint32(block.timestamp);
-        }
-    }
-}
-```
-
-### 10.2 Кошельки при деплое
-
-| Параметр | Описание |
-|----------|----------|
-| `_usdc` | Адрес USDC контракта на Polygon |
-| `_systemWallet` | Принимает 10% комиссий. Не участвует в системе уровней |
-| `_masterWallet` | Конечная точка spillover. isMaster=true. Все уровни открыты |
-| `_init` | Массив адресов начальных участников. Рефералы мастера. Все уровни открыты |
-
-В контракте нет слов "manager", "admin", "gift". Начальные участники выглядят как обычные юзеры с открытыми уровнями. Добавить новых после деплоя нельзя.
-
----
-
-## 11. Публичные функции
-
-```solidity
-// Регистрация — один раз на адрес
-// Если referrer не зарегистрирован или address(0) → masterWallet
-function register(address referrer) external
-
-// Покупка уровня — 2 транзакции MetaMask
-// Списывает levelPrices[level] * 110 / 100 с msg.sender
-// 10% → systemWallet, price → _fillSlot
-function activateLevel(uint8 level) external nonReentrant whenNotPaused
-
-// Включить/выключить автопокупку для конкретного уровня
-// Применяется с начала следующего цикла
-function setAutoBuy(uint8 level, bool enabled) external
-```
-
-### View функции (для фронтенда)
-```solidity
-function getUserLevel(address user, uint8 level) external view returns (LevelData memory)
-function getUserInfo(address user) external view returns (bool, address, bool, uint256, uint256)
-function getLevelPrice(uint8 level) external view returns (uint256)
-function getRequiredApprove(uint8 level) external view returns (uint256)  // price * 110 / 100
-function checkAllowance(address user, uint8 level) external view returns (bool, uint256, uint256)
-function getTotalFrozen() external view returns (uint256)
-```
-
-### Административные функции (onlyOwner)
-```solidity
-function setSystemWallet(address) external onlyOwner
-function setMasterWallet(address) external onlyOwner
-function pause() external onlyOwner
-function unpause() external onlyOwner
-function withdrawSystemFees(uint256 amount) external onlyOwner
-// require(amount <= balance - totalFrozen)
-```
-
----
-
-## 12. Внутренние функции
-
-```
-_activateLevelInternal(user, levelNum, amount, actType)
-    — Ядро активации. actType: 1=manual, 2=auto
-    — При manual: 10% уже удержано снаружи
-    — При auto: комиссия не берётся
-
-_fillSlot(owner, levelNum, amount, from, srcType)
-    — Главный диспетчер. Определяет номер слота (filledSlots + 1)
-    — Вызывает нужный обработчик (_slot1, _slot2, _slot3, _slot4)
-
-_slot1(owner, levelNum, amount)
-    — Выплата владельцу. Всегда.
-
-_slot2(owner, levelNum, amount)
-    — Если L17: выплата (нет N+1)
-    — Если N+1 куплен (2A): выплата
-    — Если N+1 не куплен (2B): заморозка. frozenAmount = amount. totalFrozen += amount
-
-_slot3(owner, levelNum, amount)
-    — Если L17: выплата (нет N+1)
-    — Если frozen > 0 и N+1 не куплен (3A): frozen + amount = price(N+1) → автопокупка
-    — Если frozen > 0 и N+1 куплен (3B): frozen + amount = price(N+1) → слот на N+1 вверх
-    — Если frozen = 0 (3C): выплата
-
-_slot4(owner, levelNum, amount)
-    — Реактивация: cycleCount++, slots = empty, frozenAmount = 0
-    — Spillover amount вверх по дереву на levelNum
-    — MASTER: реактивация + деньги MASTER (нет spillover вверх)
-
-_autoActivate(user, nextLevel, totalAmount)
-    — Активация без комиссии. actType = 2
-    — totalAmount = price(N+1) = frozen + incoming
-
-_spillover(fromUser, levelNum, amount)
-    — Поиск вверх по referrer у кого levelNum активен
-    — MAX_HOPS защита → MASTER
-    — _fillSlot на найденном получателе
-
-_reactivate(owner, levelNum)
-    — cycleCount++, slots = [0,0,0,0], frozenAmount = 0
-
-_payout(receiver, amount)
-    — USDC transfer на кошелёк получателя
-    — Без дополнительных комиссий (10% уже удержано при покупке)
-```
-
----
-
-## 13. События (Events)
-
-```solidity
-event UserRegistered(address indexed user, address indexed referrer, uint32 timestamp);
-
-event LevelActivated(address indexed user, uint8 level, uint256 price,
-    uint8 actType,   // 1=manual 2=auto
-    uint32 timestamp);
-
-event SlotFilled(address indexed owner, address indexed source,
-    uint8 level, uint8 slot, uint256 amount,
-    uint8 srcType,   // 1=direct 2=spillover 3=unfreeze_3b
-    uint32 timestamp);
-
-event PayoutSent(address indexed receiver, address indexed sender,
-    uint8 level, uint8 slot, uint256 amount,
-    uint32 timestamp);
-
-event FundsFrozen(address indexed user, uint8 level,
-    uint256 amount,  // = price(N)
-    uint32 timestamp);
-
-event FundsUnfrozen(address indexed user, uint8 level,
-    uint256 amount, bool autoActivated,
-    uint32 timestamp);
-
-event FundsReturned(address indexed user, uint8 level,
-    uint256 amount, uint32 timestamp);
-
-event SpilloverSent(address indexed from, address indexed to,
-    uint8 level, uint256 amount, uint32 hops, uint32 timestamp);
-
-event LevelReactivated(address indexed user, uint8 level,
-    uint32 cycleCount, uint32 timestamp);
-
-event CommissionTaken(address indexed user, uint8 level,
-    uint256 amount, uint32 timestamp);
-
-event Bounced(address indexed user, uint8 level,
-    uint8 reason,    // 1=not_found 2=MAX_HOPS
-    uint32 timestamp);
-```
-
-Упрощено по сравнению с v5:
-- CommissionTaken: убран feeType (только один тип — 10% при покупке)
-- PayoutSent: убран payoutType (выплата всегда чистая, без доп. комиссий)
-
----
-
-## 14. Edge Cases
-
-### 14.1 Frozen + ручная покупка N+1
-Заморозка висит на N. Юзер вручную покупает N+1.
-→ Контракт возвращает frozen юзеру через transfer ДО активации
-→ emit FundsReturned
-→ frozenAmount = 0, totalFrozen -= frozen
-
-### 14.2 Регистрация без реферала
-```
-if (referrer == address(0) || !users[referrer].registered) {
-    referrer = masterWallet;
-}
-```
-
-### 14.3 address(0) в spillover
-```
-if (P == address(0) || P == masterWallet) { P = masterWallet; break; }
-```
-
-### 14.4 MAX_HOPS в spillover
-```
-if (hops >= MAX_HOPS) { emit Bounced(..., reason=2); P = masterWallet; break; }
-```
-
-### 14.5 Self-referral
-```
-require(msg.sender != referrer, "Cannot self-refer");
-```
-
-### 14.6 Последовательность уровней
-```
-require(level == 1 || users[msg.sender].levels[level-1].active, "Previous level required");
-```
-
-### 14.7 Защита средств (totalFrozen)
-```
-function withdrawSystemFees(uint256 amount) external onlyOwner {
-    require(amount <= usdcToken.balanceOf(address(this)) - totalFrozen);
-    usdcToken.transfer(systemWallet, amount);
-}
-```
-
----
-
-## 15. Безопасность
-
-- `nonReentrant` на activateLevel — ОБЯЗАТЕЛЬНО
-- `onlyOwner` на все admin функции
-- `whenNotPaused` на activateLevel
-- Проверять allowance перед transferFrom
-- Проверять что уровень не активен перед активацией
-- Нет adminGiftLevel — владелец не обходит правила
-- Никакие адреса не захардкожены — всё через конструктор
-
----
-
-## 16. Технологический стек (без изменений от v5)
+## 8. Технологический стек
 
 | Компонент | Технология |
 |-----------|------------|
-| Контракт | Solidity 0.8.24+, Hardhat + TypeScript |
-| Сеть | Polygon PoS / Amoy testnet |
-| Токен | USDC ERC-20 (6 decimals) |
-| Безопасность | OpenZeppelin: ReentrancyGuard, Ownable, Pausable |
-| Бэкенд | Next.js + Supabase PostgreSQL + ethers.js |
-| Фронтенд | Тот же визуал что и XionTon, адаптирован под 17 уровней |
-| Аутентификация | SIWE (Sign-In with Ethereum) |
+| Контракт | Solidity 0.8.24, Hardhat, OpenZeppelin 5.x |
+| UI | Single HTML, Vanilla JS, ethers.js v6, Vercel |
+| Бэкенд | Supabase PostgreSQL + Event Listener (Node.js) |
+| Realtime | Supabase Realtime WebSocket |
+| Тесты | 267 тестов (Hardhat + Chai) |
 
 ---
 
-## 17. Отличия от XionTon v5
+## 9. Supabase — таблицы
 
-| Параметр | XionTon v5 | XionNET v1 |
-|----------|-----------|------------|
-| Уровней | 18 | 17 |
-| Стартовая цена | $0.10 | $3.00 |
-| Buy fee ($0.50) | Да | Нет |
-| Protocol fee (10% при выплате) | Да | Нет (10% при покупке) |
-| Payout fee ($0.50 для L7+) | Да | Нет |
-| Комиссия при автопокупке | 10% | 0% |
-| Момент взятия 10% | При выплате спонсору | При покупке уровня |
-| Последний уровень | L18 | L17 |
-| Логика последнего уровня | Слоты 1-3 выплата, слот 4 spillover | Слоты 1-3 выплата, слот 4 spillover |
+| Таблица | Описание |
+|---------|----------|
+| users | Участники: wallet, referrer, totals, active_levels |
+| user_levels | 17 уровней × юзер: active, slots, frozen, cycle, autoBuy |
+| referrals | Связи спонсор → реферал |
+| payouts | История выплат |
+| slot_events | История заполнения слотов |
+| frozen_log | История заморозок (frozen → auto_used/to_sponsor/returned) |
+| spillovers | История spillover с hops |
+| reactivations | История реактиваций |
+| commissions | 10% комиссии |
+| bounced | Ошибки MAX_HOPS |
+| system_stats | Глобальная статистика (1 строка) |
+| daily_stats | Ежедневная агрегация для графиков |
+| monitor_state | Последний обработанный блок |
+| autobuy_events | История toggle autoBuy |
 
 ---
 
-*XionNET · Smart Contract Logic v1.0 · Март 2026*
+## 10. Event Listener → Supabase
+
+Контракт эмитит 12 типов events. Listener слушает через WebSocket и записывает в Supabase:
+
+| Event | → Supabase |
+|-------|-----------|
+| UserRegistered | INSERT users + user_levels×17 + referrals |
+| LevelActivated | UPDATE user_levels.active=true |
+| SlotFilled | UPDATE slot_wallet, INSERT slot_events |
+| PayoutSent | INSERT payouts, UPDATE users.totalReceived |
+| FundsFrozen | UPDATE frozen_amount, INSERT frozen_log |
+| FundsUnfrozen | UPDATE frozen=0, UPDATE frozen_log.status |
+| FundsReturned | UPDATE frozen=0, UPDATE frozen_log.status=returned |
+| SpilloverSent | INSERT spillovers |
+| LevelReactivated | RESET slots, INSERT reactivations |
+| CommissionTaken | INSERT commissions |
+| Bounced | INSERT bounced |
+| AutoBuyToggled | UPDATE user_levels.auto_buy_enabled |
+
+---
+
+## 11. UI Features
+
+| Экран | Данные |
+|-------|--------|
+| Dashboard | Stats grid, Level Overview, Network card, Recent Activity |
+| Levels | 17 карточек (green/gold/red), detail panel, autoBuy toggle |
+| History | Фильтры по типу, данные из payouts/frozen/spillovers |
+| Network | Рефералы с раскрывающимся деревом (direct + deep), пагинация |
+| Stats | Participants, Payouts, Frozen, Leaderboard, Chart |
+| FAQ | Bonus timer, How it works, Earnings scenarios |
+
+### Дополнительные фичи
+- MetaMask подключение с автосвитчем сети
+- Mint Test USDC (testnet only)
+- QR код + Share (Telegram, WhatsApp, Email, SMS)
+- Bonus timer 180 мин с поздравительным экраном
+- Supabase data refresh на каждое действие
+- Overscroll disabled (без "желе")
+- L16-L17 на всю ширину
+
+---
+
+## 12. Репозитории и деплой
+
+| Что | Где |
+|-----|-----|
+| GitHub (Vercel) | drozarchuks-metamask/xionnet (private) |
+| GitHub (public) | tgApp-TON/xionnet |
+| Vercel UI | https://xionnet.vercel.app |
+| Push → deploy | `git push vercel-gh main` |
+
+---
+
+*XionNET · v1.1 · Март 2026*
