@@ -469,10 +469,10 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== STATS ==================== -->
 <div id="screen-stats" class="screen">
-  <div class="stat-grid">
-    <div class="stat-box sb-poly" id="participantsBox" style="display:none"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">0</div></div>
-    <div class="stat-box sb-frozen" id="frozenStatsBox" style="display:none"><div class="stat-lbl">Frozen Now</div><div class="stat-val" style="color:var(--frozen)">$0</div></div>
-    <div class="stat-box sb-orange" id="systemFeesBox" style="display:none"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$0</div></div>
+  <div class="stat-grid" id="statsAdminGrid" style="display:none">
+    <div class="stat-box sb-poly" id="participantsBox"><div class="stat-lbl">Participants</div><div class="stat-val" style="color:var(--poly2)">0</div></div>
+    <div class="stat-box sb-frozen" id="frozenStatsBox"><div class="stat-lbl">Frozen Now</div><div class="stat-val" style="color:var(--frozen)">$0</div></div>
+    <div class="stat-box sb-orange" id="systemFeesBox"><div class="stat-lbl">System Fees</div><div class="stat-val" style="color:var(--orange)">$0</div></div>
   </div>
   <div class="card" style="text-align:center;padding:20px;margin-bottom:12px;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(6,214,160,.2)">
     <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Paid out to all participants</div>
@@ -1020,13 +1020,11 @@ function f(n) {
 
 // Master wallet check (for admin-only UI elements)
 let isMasterWallet = false;
-const MASTER_WALLET = ''; // set at deploy time
+const MASTER_WALLET = '0x07D7D2F65e01ec2B3ce97F58ED557830d46439BC';
 
 function checkMasterAccess(wallet) {
   isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
-  document.getElementById('systemFeesBox').style.display = isMasterWallet ? '' : 'none';
-  document.getElementById('participantsBox').style.display = isMasterWallet ? '' : 'none';
-  document.getElementById('frozenStatsBox').style.display = isMasterWallet ? '' : 'none';
+  document.getElementById('statsAdminGrid').style.display = isMasterWallet ? '' : 'none';
   // Master always sees bonus filter
   if (isMasterWallet) {
     const bonusChip = document.getElementById('bonusFilterChip');
@@ -1037,7 +1035,7 @@ function checkMasterAccess(wallet) {
 // Prototype level states
 const LEVELS = [];
 for (let i = 1; i <= 17; i++) {
-  const lv = { num: i, price: LP[i], active: false, slots: [0,0,0,0], cycle_count: 0, frozenAmt: 0, frzState: false, autoBuy: false };
+  const lv = { num: i, price: LP[i], active: false, slots: [0,0,0,0], slotAddrs: ['','','',''], cycle_count: 0, frozenAmt: 0, frzState: false, autoBuy: false };
   LEVELS.push(lv);
 }
 // All levels start empty — real data loaded from contract via loadUserData()
@@ -1121,8 +1119,8 @@ function selectLevel(n) {
     ? ['Payout to your sponsor', 'Payout (L17 — last level)', 'Payout (L17 — last level)', 'Spillover up the tree']
     : ['Payout to your sponsor', lv.frzState ? 'Your funds held temporarily' : (lv.active && n < 17 && LEVELS[n] && LEVELS[n].active ? 'Payout (next level owned)' : 'Waiting...'), 'Auto-unlock or payout', 'Level resets — new cycle'];
 
-  const dummyAddrs = ['0x9f2c...7a11','0x3e8a...bc42','0x1a4b...3c88','0x6d2f...aa01'];
   let slotsHtml = '';
+  const slotAddrs = lv.slotAddrs || ['','','',''];
   for (let s = 0; s < 4; s++) {
     let sc = 'slot-box';
     if (lv.slots[s]) {
@@ -1130,9 +1128,11 @@ function selectLevel(n) {
       else if (s === 3) sc += ' s-spill';
       else sc += ' s-on';
     }
+    const addr = slotAddrs[s];
+    const shortAddr = addr ? addr.slice(0,6) + '...' + addr.slice(-4) : 'Waiting...';
     slotsHtml += '<div class="' + sc + '">';
     slotsHtml += '<div class="slot-num">Slot ' + (s + 1) + '</div>';
-    slotsHtml += '<div class="slot-who">' + (lv.slots[s] ? dummyAddrs[s] : 'Waiting...') + '</div>';
+    slotsHtml += '<div class="slot-who">' + (lv.slots[s] ? shortAddr : 'Waiting...') + '</div>';
     slotsHtml += '<div class="slot-desc">' + slotDescs[s] + '</div>';
     slotsHtml += '</div>';
   }
@@ -1274,6 +1274,7 @@ async function loadUserData() {
         lv.s3 !== ethers.ZeroAddress ? 1 : 0,
         lv.s4 !== ethers.ZeroAddress ? 1 : 0,
       ];
+      LEVELS[idx].slotAddrs = [lv.s1, lv.s2, lv.s3, lv.s4];
       LEVELS[idx].cycle_count = Number(lv.cycleCount);
       LEVELS[idx].frozenAmt = Number(lv.frozenAmount) / 1e6;
       LEVELS[idx].frzState = lv.frozenAmount > 0;
