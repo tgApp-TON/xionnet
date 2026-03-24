@@ -1094,14 +1094,19 @@ function updateReferralsUI(data) {
     const date = new Date(ref.registered_at).toLocaleDateString('en',{month:'short',day:'numeric'});
     const earned = (ref.total_received || 0) / 1e6;
 
+    const wallet = ref.referred_wallet;
+    const refId = 'subs-' + wallet.slice(2,10);
+
     if (isActive) {
       activeCount++;
-      activeHtml += '<div class="ref-item">' +
+      activeHtml += '<div><div class="ref-item" onclick="toggleSubRefs(\'' + wallet + '\',\'' + refId + '\',this)">' +
         '<div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">' + initials + '</div>' +
         '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
         '<div class="ref-meta">' + date + ' · ' + ref.active_levels + ' level' + (ref.active_levels > 1 ? 's' : '') + '</div>' +
         '<div class="ref-tags"><span class="ld-tag t-active">L' + ref.active_levels + '</span></div></div>' +
-        '<div class="ref-earned"><div class="val" style="color:var(--green)">' + f(earned) + '</div><div class="lbl">earned</div></div></div>';
+        '<div class="ref-earned"><div class="val" style="color:var(--green)">' + f(earned) + '</div><div class="lbl">earned</div></div>' +
+        '<div class="ri-expand">▾</div></div>' +
+        '<div class="ref-subs" id="' + refId + '"></div></div>';
     } else {
       pendingCount++;
       pendingHtml += '<div class="ref-item" style="opacity:.6">' +
@@ -1756,55 +1761,82 @@ function toggleFaq(qEl) {
 }
 
 // ==================== REFERRAL SUB-TREE ====================
-function toggleSubs(id, itemEl) {
-  const subs = document.getElementById(id);
+const subRefsLoaded = {};
+const SUB_PAGE_SIZE = 10;
+
+function toggleSubRefs(wallet, containerId, itemEl) {
+  const subs = document.getElementById(containerId);
   if (!subs) return;
   const isOpen = subs.classList.contains('show');
+
   // Close all open
   document.querySelectorAll('.ref-subs.show').forEach(s => s.classList.remove('show'));
   document.querySelectorAll('.ri-expand.open').forEach(e => e.classList.remove('open'));
-  // Toggle clicked
+
   if (!isOpen) {
     subs.classList.add('show');
     const expandBtn = itemEl.querySelector('.ri-expand');
     if (expandBtn) expandBtn.classList.add('open');
-    // In production: load sub-referrals from Supabase
-    loadSubReferrals(id);
+    // Load sub-referrals if not loaded yet
+    if (!subRefsLoaded[wallet]) {
+      loadSubRefs(wallet, containerId, 0);
+    }
   }
 }
 
-const SUB_PAGE_SIZE = 20;
-const subOffsets = {}; // track pagination per referral
-
-async function loadSubReferrals(refId) {
-  if (!SUPABASE_URL) return; // prototype mode — use hardcoded data
-  // Production flow:
-  // 1. Get direct referrals of this referral
-  // 2. Get their referrals (2nd tier) with LIMIT 20
-  // 3. Show "Show more" if more exist
-}
-
-function showMoreDirect(key) {
-  const el = document.getElementById(key + '-direct-more');
-  const btn = document.getElementById('btn-' + key + '-direct');
-  if (el) { el.style.display = 'block'; }
-  if (btn) { btn.style.display = 'none'; }
-}
-
-function showMoreDeep(key) {
-  const el = document.getElementById(key + '-deep-more');
-  const btn = document.getElementById('btn-' + key + '-deep');
-  if (el) { el.style.display = 'block'; }
-  if (btn) { btn.style.display = 'none'; }
-}
-
-async function loadMoreSubs(refKey, limit) {
+async function loadSubRefs(wallet, containerId, offset) {
   if (!SUPABASE_URL) return;
-  const offset = subOffsets[refKey] || 0;
-  // Fetch next batch: /rest/v1/referrals?...&offset={offset}&limit={limit}
-  // Append to #more-{refKey}
-  // Hide button if no more results
-  subOffsets[refKey] = offset + limit;
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (offset === 0) container.innerHTML = '<div style="padding:10px 20px;color:var(--text3);font-size:11px">Loading...</div>';
+
+  try {
+    // Get referrals of this referral
+    const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + wallet.toLowerCase() + '&order=created_at.desc&limit=' + SUB_PAGE_SIZE + '&offset=' + offset);
+    if (!refs || !refs.length) {
+      if (offset === 0) container.innerHTML = '<div style="padding:10px 20px;color:var(--text3);font-size:11px">No referrals</div>';
+      return;
+    }
+
+    // Get user info for each
+    const wallets = refs.map(r => r.referred_wallet);
+    const users = await sbFetch('/rest/v1/users?wallet=in.(' + wallets.join(',') + ')&select=wallet,active_levels,total_received,registered_at');
+    const userMap = {};
+    if (users) users.forEach(u => userMap[u.wallet] = u);
+
+    let html = offset === 0 ? '' : container.innerHTML.replace(/<button[^>]*>Show more.*?<\/button>/, '');
+
+    refs.forEach(ref => {
+      const w = ref.referred_wallet;
+      const short = w.slice(0,6) + '...' + w.slice(-4);
+      const initials = w.slice(2,4).toUpperCase();
+      const info = userMap[w] || {};
+      const isActive = (info.active_levels || 0) > 0;
+      const date = new Date(info.registered_at || ref.created_at).toLocaleDateString('en',{month:'short',day:'numeric'});
+      const borderColor = isActive ? 'var(--green2)' : 'var(--border)';
+      const avatarBg = isActive ? 'rgba(6,214,160,.1)' : 'var(--bg4)';
+      const avatarColor = isActive ? 'var(--green)' : 'var(--text3)';
+      const meta = isActive ? date + ' · L' + info.active_levels : date + ' · pending';
+
+      html += '<div class="ref-sub-item" style="border-color:' + borderColor + '">' +
+        '<div class="rs-avatar" style="background:' + avatarBg + ';color:' + avatarColor + '">' + initials + '</div>' +
+        '<div class="rs-info"><div class="rs-name">' + short + '</div>' +
+        '<div class="rs-meta">' + meta + '</div></div></div>';
+    });
+
+    // Show more button if got full page
+    if (refs.length === SUB_PAGE_SIZE) {
+      const nextOffset = offset + SUB_PAGE_SIZE;
+      html += '<button class="ghost-btn" style="margin:6px 0 6px 20px;font-size:10px" onclick="loadSubRefs(\'' + wallet + '\',\'' + containerId + '\',' + nextOffset + ')">Show more...</button>';
+    }
+
+    container.innerHTML = html;
+    subRefsLoaded[wallet] = true;
+  } catch (e) {
+    console.warn('Sub-refs load failed:', e);
+    container.innerHTML = '<div style="padding:10px 20px;color:var(--text3);font-size:11px">Failed to load</div>';
+  }
 }
 
 // ==================== HISTORY FILTER ====================
