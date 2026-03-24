@@ -323,7 +323,13 @@ a{color:var(--poly2);text-decoration:none}
 #bonusCongrats{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(12px);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px}
 #bonusCongrats.hidden{display:none}
 .congrats-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:2px solid var(--gold);border-radius:24px;padding:32px 24px;max-width:360px;width:100%;text-align:center;animation:slideUp .4s ease;box-shadow:0 0 60px rgba(252,211,77,.15)}
-.congrats-emoji{font-size:64px;margin-bottom:16px;animation:pulse 1.5s infinite}
+.congrats-emoji{margin-bottom:16px;display:flex;justify-content:center}
+.congrats-svg{width:120px;height:120px}
+@keyframes giftBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes confettiLeft{0%{transform:translate(0,0) rotate(0deg);opacity:1}100%{transform:translate(-40px,60px) rotate(-180deg);opacity:0}}
+@keyframes confettiRight{0%{transform:translate(0,0) rotate(0deg);opacity:1}100%{transform:translate(40px,60px) rotate(180deg);opacity:0}}
+@keyframes confettiUp{0%{transform:translate(0,0) scale(0);opacity:0}30%{transform:translate(0,-20px) scale(1.2);opacity:1}100%{transform:translate(0,-50px) scale(0);opacity:0}}
+@keyframes starSpin{0%{transform:rotate(0deg) scale(0);opacity:0}50%{transform:rotate(180deg) scale(1.2);opacity:1}100%{transform:rotate(360deg) scale(0);opacity:0}}
 .congrats-title{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:8px}
 .congrats-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
 .congrats-value{background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.25);border-radius:14px;padding:14px;margin-bottom:20px}
@@ -906,7 +912,33 @@ a{color:var(--poly2);text-decoration:none}
 <!-- ==================== BONUS CONGRATS ==================== -->
 <div id="bonusCongrats" class="hidden" onclick="if(event.target===this)closeCongrats()">
   <div class="congrats-card">
-    <div class="congrats-emoji">🎁🎉</div>
+    <div class="congrats-emoji">
+      <svg class="congrats-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Confetti particles -->
+        <circle cx="20" cy="20" r="4" fill="var(--gold)" style="animation:confettiLeft 1.5s ease-out infinite"/>
+        <circle cx="100" cy="20" r="4" fill="var(--green)" style="animation:confettiRight 1.5s ease-out .2s infinite"/>
+        <rect x="15" y="35" width="6" height="6" rx="1" fill="var(--poly2)" style="animation:confettiLeft 1.8s ease-out .4s infinite" transform="rotate(45 18 38)"/>
+        <rect x="99" y="35" width="6" height="6" rx="1" fill="var(--frozen)" style="animation:confettiRight 1.8s ease-out .6s infinite" transform="rotate(45 102 38)"/>
+        <polygon points="60,5 62,12 69,12 63,16 65,23 60,19 55,23 57,16 51,12 58,12" fill="var(--gold)" style="animation:confettiUp 2s ease-out infinite"/>
+        <!-- Stars -->
+        <polygon points="25,55 27,50 29,55 34,55 30,58 31,63 27,60 23,63 24,58 20,55" fill="var(--gold)" style="animation:starSpin 2s ease-in-out .3s infinite"/>
+        <polygon points="95,50 97,45 99,50 104,50 100,53 101,58 97,55 93,58 94,53 90,50" fill="var(--poly2)" style="animation:starSpin 2s ease-in-out .8s infinite"/>
+        <!-- Gift box body -->
+        <rect x="30" y="58" width="60" height="40" rx="6" fill="var(--poly)" stroke="var(--gold)" stroke-width="2.5" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <!-- Gift box lid -->
+        <rect x="26" y="48" width="68" height="14" rx="5" fill="var(--poly2)" stroke="var(--gold)" stroke-width="2.5" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <!-- Ribbon vertical -->
+        <rect x="56" y="48" width="8" height="50" rx="1" fill="var(--gold)" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <!-- Ribbon horizontal -->
+        <rect x="30" y="72" width="60" height="8" rx="1" fill="var(--gold)" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <!-- Bow -->
+        <ellipse cx="52" cy="46" rx="10" ry="7" fill="var(--gold)" stroke="var(--bg)" stroke-width="1" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <ellipse cx="68" cy="46" rx="10" ry="7" fill="var(--gold)" stroke="var(--bg)" stroke-width="1" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <circle cx="60" cy="47" r="4" fill="var(--orange)" style="animation:giftBounce 2s ease-in-out infinite"/>
+        <!-- L8 text -->
+        <text x="60" y="84" text-anchor="middle" font-family="Syne,sans-serif" font-weight="900" font-size="16" fill="#fff" style="animation:giftBounce 2s ease-in-out infinite">L8</text>
+      </svg>
+    </div>
     <div class="congrats-title">Level 8 Unlocked FREE!</div>
     <div class="congrats-sub">You bought 7 levels within 180 minutes and earned a free Level 8 activation. Your sponsor received nothing for this — it's pure bonus for you!</div>
     <div class="congrats-value">
