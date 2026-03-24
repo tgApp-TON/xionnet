@@ -18,10 +18,10 @@
   --text:#f0f2f8;--text2:#9099b0;--text3:#424d68;
   --border:rgba(124,58,237,0.14);--border2:rgba(124,58,237,0.28);--border3:rgba(124,58,237,0.45);
 }
-html{scroll-behavior:smooth;overscroll-behavior:none}
-body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;position:fixed;width:100%;height:100%;overflow:hidden}
-#connectScreen{overflow-y:auto;height:100%}
-#mainApp{overflow-y:auto;height:100%;-webkit-overflow-scrolling:touch}
+html{scroll-behavior:smooth;overscroll-behavior:none;overflow:hidden;position:fixed;width:100%;height:100%;touch-action:pan-y}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;position:fixed;width:100%;height:100%;touch-action:pan-y}
+#connectScreen{overflow-y:auto;overflow-x:hidden;height:100%;touch-action:pan-y}
+#mainApp{overflow-y:auto;overflow-x:hidden;height:100%;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 ::-webkit-scrollbar{width:0;height:0}
 a{color:var(--poly2);text-decoration:none}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
