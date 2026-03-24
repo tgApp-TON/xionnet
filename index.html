@@ -481,9 +481,20 @@ a{color:var(--poly2);text-decoration:none}
   </div>
 
   <div class="card">
-    <div class="card-title" style="margin-bottom:4px">Daily Volume</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="card-title">My Earnings</div>
+      <div style="display:flex;gap:4px">
+        <button class="chip on" onclick="switchChart(this,'day')" id="chartBtnDay">Day</button>
+        <button class="chip" onclick="switchChart(this,'month')" id="chartBtnMonth">Month</button>
+        <button class="chip" onclick="switchChart(this,'year')" id="chartBtnYear">Year</button>
+      </div>
+    </div>
     <div class="chart-wrap" id="chart"></div>
-    <div class="chart-labels"><span>Mar 14</span><span>Mar 18</span><span>Mar 22</span></div>
+    <div class="chart-labels" id="chartLabels"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px">
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase">Period Total</div><div style="font-size:16px;font-weight:900;color:var(--green)" id="chartTotal">$0</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase">Avg/Day</div><div style="font-size:16px;font-weight:900;color:var(--poly2)" id="chartAvg">$0</div></div>
+    </div>
   </div>
 
   <div class="card" style="padding:0;overflow:hidden">
@@ -1190,6 +1201,7 @@ function switchTab(el, id) {
   // Load tab-specific data
   if (id === 'history') loadHistory();
   if (id === 'referrals') loadReferrals();
+  if (id === 'stats') { loadUserPayouts().then(buildChart); }
 }
 
 // ==================== CONNECT ====================
@@ -1241,7 +1253,7 @@ async function connectWallet(btn) {
     checkMasterAccess(connectedWallet);
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
-    buildChart();
+    loadUserPayouts().then(buildChart);
     startBonusTimer();
     refreshData(true);
     subscribeRealtime();
@@ -1730,24 +1742,100 @@ function scrollToBonus() {
 }
 
 // ==================== CHART ====================
+let currentChartPeriod = 'day';
+let userPayoutCache = [];
+
+async function loadUserPayouts() {
+  if (!SUPABASE_URL || !currentWallet) return;
+  try {
+    const data = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + currentWallet.toLowerCase() + '&order=created_at.desc&limit=500');
+    if (data) userPayoutCache = data;
+  } catch(e) { console.warn('Payouts load:', e); }
+}
+
+function switchChart(btn, period) {
+  document.querySelectorAll('#screen-stats .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  currentChartPeriod = period;
+  buildChart();
+}
+
 function buildChart() {
-  const data = [
-    { date: 'Mar 14', usdc: 12.4 },
-    { date: 'Mar 15', usdc: 18.8 },
-    { date: 'Mar 16', usdc: 9.2 },
-    { date: 'Mar 17', usdc: 31.6 },
-    { date: 'Mar 18', usdc: 24.0 },
-    { date: 'Mar 19', usdc: 28.8 },
-    { date: 'Mar 20', usdc: 41.6 },
-    { date: 'Mar 21', usdc: 22.4 },
-    { date: 'Mar 22', usdc: 38.4 },
-  ];
-  const max = Math.max(...data.map(d => d.usdc));
   const el = document.getElementById('chart');
-  el.innerHTML = data.map(d =>
-    '<div class="chart-bar" style="height:' + (d.usdc / max * 100) + '%">' +
-    '<div class="chart-tooltip"><strong style="color:var(--poly2)">' + f(d.usdc) + ' USDC</strong><br><span style="color:var(--text3)">' + d.date + '</span></div></div>'
+  const labelsEl = document.getElementById('chartLabels');
+  const totalEl = document.getElementById('chartTotal');
+  const avgEl = document.getElementById('chartAvg');
+
+  if (!userPayoutCache.length) {
+    el.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px">No earnings yet</div>';
+    labelsEl.innerHTML = '';
+    totalEl.textContent = '$0';
+    avgEl.textContent = '$0';
+    return;
+  }
+
+  // Group payouts by period
+  const now = new Date();
+  let buckets = {};
+  let labelFormat, bucketCount;
+
+  if (currentChartPeriod === 'day') {
+    bucketCount = 14; // last 14 days
+    for (let i = bucketCount - 1; i >= 0; i--) {
+      const d = new Date(now); d.setDate(d.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      buckets[key] = 0;
+    }
+    labelFormat = (k) => { const d = new Date(k); return d.toLocaleDateString('en', {month:'short', day:'numeric'}); };
+  } else if (currentChartPeriod === 'month') {
+    bucketCount = 12; // last 12 months
+    for (let i = bucketCount - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      buckets[key] = 0;
+    }
+    labelFormat = (k) => { const [y,m] = k.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1]; };
+  } else {
+    bucketCount = 5; // last 5 years
+    for (let i = bucketCount - 1; i >= 0; i--) {
+      const key = String(now.getFullYear() - i);
+      buckets[key] = 0;
+    }
+    labelFormat = (k) => k;
+  }
+
+  // Fill buckets from payout data
+  userPayoutCache.forEach(p => {
+    const d = new Date(p.created_at);
+    let key;
+    if (currentChartPeriod === 'day') key = d.toISOString().split('T')[0];
+    else if (currentChartPeriod === 'month') key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    else key = String(d.getFullYear());
+    if (key in buckets) buckets[key] += (p.amount || 0) / 1e6;
+  });
+
+  const keys = Object.keys(buckets);
+  const values = keys.map(k => buckets[k]);
+  const max = Math.max(...values, 0.01);
+  const total = values.reduce((a,b) => a + b, 0);
+  const avg = currentChartPeriod === 'day' ? total / Math.min(keys.length, 14) :
+              currentChartPeriod === 'month' ? total / Math.min(keys.length, 12) / 30 :
+              total / Math.min(keys.length, 5) / 365;
+
+  el.innerHTML = values.map((v, i) =>
+    '<div class="chart-bar" style="height:' + Math.max(v / max * 100, 2) + '%">' +
+    '<div class="chart-tooltip"><strong style="color:var(--poly2)">' + f(v) + ' USDC</strong><br><span style="color:var(--text3)">' + labelFormat(keys[i]) + '</span></div></div>'
   ).join('');
+
+  // Show first, middle, last labels
+  if (keys.length >= 3) {
+    labelsEl.innerHTML = '<span>' + labelFormat(keys[0]) + '</span><span>' + labelFormat(keys[Math.floor(keys.length/2)]) + '</span><span>' + labelFormat(keys[keys.length-1]) + '</span>';
+  } else {
+    labelsEl.innerHTML = keys.map(k => '<span>' + labelFormat(k) + '</span>').join('');
+  }
+
+  totalEl.textContent = f(total);
+  avgEl.textContent = f(avg);
 }
 
 // ==================== AUTO-REFRESH ====================
