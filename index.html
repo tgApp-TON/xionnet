@@ -26,6 +26,15 @@ a{color:var(--poly2);text-decoration:none}
 @keyframes slideUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes toastIn{from{transform:translateX(-50%) translateY(-8px);opacity:0}to{transform:translateX(-50%);opacity:1}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes timerPulse{0%,100%{box-shadow:0 0 0 0 rgba(252,211,77,.4)}50%{box-shadow:0 0 8px 2px rgba(252,211,77,.2)}}
+
+/* ========== BONUS TIMER ========== */
+.bonus-timer{display:flex;align-items:center;gap:5px;background:rgba(252,211,77,.08);border:1px solid rgba(252,211,77,.25);border-radius:20px;padding:4px 10px;cursor:pointer;transition:all .15s;animation:timerPulse 2s infinite;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);font-weight:500;white-space:nowrap;text-decoration:none}
+.bonus-timer:hover{background:rgba(252,211,77,.15);border-color:rgba(252,211,77,.4)}
+.bonus-timer .bt-icon{font-size:12px}
+.bonus-timer .bt-time{font-weight:700;font-size:11px}
+.bonus-timer.expired{opacity:.4;animation:none;pointer-events:none}
+.bonus-timer.claimed{background:rgba(6,214,160,.08);border-color:rgba(6,214,160,.25);color:var(--green);animation:none}
 
 /* ========== CONNECT SCREEN ========== */
 #connectScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;background:radial-gradient(ellipse at top,rgba(124,58,237,0.12),transparent 60%)}
@@ -300,6 +309,11 @@ a{color:var(--poly2);text-decoration:none}
       <span class="wp-addr">0x7f3a...4d91</span>
       <span class="wp-badge">POL</span>
     </div>
+    <a class="bonus-timer" id="bonusTimer" onclick="switchTab(document.querySelectorAll('.tab')[5],'faq');scrollToBonus()">
+      <span class="bt-icon">🎁</span>
+      <span>L8 free in</span>
+      <span class="bt-time" id="bonusTime">179:59</span>
+    </a>
     <button class="ref-btn" onclick="copyRef(this)">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       Ref
@@ -422,6 +436,35 @@ a{color:var(--poly2);text-decoration:none}
 
 <!-- ==================== FAQ ==================== -->
 <div id="screen-faq" class="screen">
+
+  <div class="faq-section-label" id="bonusFaqSection">🎁 Bonus Program</div>
+
+  <div class="faq-item open" id="bonusFaqItem">
+    <div class="faq-q" onclick="toggleFaq(this)">How do I get Level 8 for free?<div class="faq-arrow">▾</div></div>
+    <div class="faq-a">
+      <div style="background:rgba(252,211,77,.06);border:1px solid rgba(252,211,77,.2);border-radius:10px;padding:14px;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:900;color:var(--gold);margin-bottom:6px">🎁 Buy 7 levels in 180 minutes → Level 8 is FREE</div>
+        <div style="font-size:12px;color:var(--text2)">The timer starts when you register. If you activate levels L1 through L7 within 3 hours (180 minutes), Level 8 ($384 value) opens automatically at no cost.</div>
+      </div>
+      <div style="font-size:12px;margin-bottom:8px"><strong>How it works:</strong></div>
+      <div class="faq-step"><div class="faq-step-num">1</div><div>Register and the <strong style="color:var(--gold)">180-minute timer</strong> starts</div></div>
+      <div class="faq-step"><div class="faq-step-num">2</div><div>Buy levels L1 ($3.30) through L7 ($211.20) — total <strong>$415.80</strong></div></div>
+      <div class="faq-step"><div class="faq-step-num">3</div><div>When L7 activates within the timer → <strong style="color:var(--green)">L8 ($384) opens for FREE</strong></div></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text2)">
+        <strong>Details:</strong><br>
+        • The bonus is automatic — no button to press<br>
+        • Your sponsor does NOT receive payment for L8 (it's free)<br>
+        • L8 starts with 0/4 slots, ready to earn<br>
+        • If you miss the timer, L8 can still be purchased normally or auto-unlocked<br>
+        • Many levels will auto-unlock through the freeze mechanism — you may only need to buy L1-L3 manually!
+      </div>
+      <div style="background:rgba(6,214,160,.06);border:1px solid rgba(6,214,160,.2);border-radius:8px;padding:10px 12px;margin-top:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:2px">You save</div>
+        <div style="font-size:20px;font-weight:900;color:var(--green)">$422.40</div>
+        <div style="font-size:10px;color:var(--text3)">Level 8 price ($384) + 10% fee ($38.40)</div>
+      </div>
+    </div>
+  </div>
 
   <div class="faq-section-label">📖 How it works</div>
 
@@ -732,6 +775,7 @@ function connectWallet(btn) {
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
     buildChart();
+    startBonusTimer();
   }, 900);
 }
 
@@ -845,6 +889,68 @@ function toggleFaq(qEl) {
 function filterChip(el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
+}
+
+// ==================== BONUS TIMER ====================
+const BONUS_DURATION = 180 * 60; // 180 minutes in seconds
+let bonusRegisteredAt = null;
+let bonusInterval = null;
+let bonusClaimed = false;
+
+function startBonusTimer() {
+  // Simulate: user registered "just now" for prototype
+  bonusRegisteredAt = Date.now();
+  bonusInterval = setInterval(updateBonusTimer, 1000);
+  updateBonusTimer();
+}
+
+function updateBonusTimer() {
+  if (bonusClaimed) return;
+  const elapsed = Math.floor((Date.now() - bonusRegisteredAt) / 1000);
+  const remaining = BONUS_DURATION - elapsed;
+  const timerEl = document.getElementById('bonusTimer');
+  const timeEl = document.getElementById('bonusTime');
+  const faqSection = document.getElementById('bonusFaqSection');
+  const faqItem = document.getElementById('bonusFaqItem');
+
+  if (remaining <= 0) {
+    // Timer expired — hide everything
+    timerEl.style.display = 'none';
+    if (faqSection) faqSection.style.display = 'none';
+    if (faqItem) faqItem.style.display = 'none';
+    clearInterval(bonusInterval);
+    return;
+  }
+
+  const mins = Math.floor(remaining / 60);
+  const secs = remaining % 60;
+  timeEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+  // Urgency colors
+  if (remaining < 600) { // last 10 min
+    timerEl.style.borderColor = 'rgba(251,78,109,.4)';
+    timerEl.style.color = 'var(--red)';
+    timerEl.style.background = 'rgba(251,78,109,.08)';
+  }
+}
+
+function claimBonus() {
+  bonusClaimed = true;
+  const timerEl = document.getElementById('bonusTimer');
+  timerEl.className = 'bonus-timer claimed';
+  timerEl.innerHTML = '<span class="bt-icon">✅</span><span>L8 Claimed!</span>';
+  setTimeout(() => { timerEl.style.display = 'none'; }, 3000);
+  const faqSection = document.getElementById('bonusFaqSection');
+  const faqItem = document.getElementById('bonusFaqItem');
+  if (faqSection) faqSection.style.display = 'none';
+  if (faqItem) faqItem.style.display = 'none';
+}
+
+function scrollToBonus() {
+  setTimeout(() => {
+    const el = document.getElementById('bonusFaqItem');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
 }
 
 // ==================== CHART ====================

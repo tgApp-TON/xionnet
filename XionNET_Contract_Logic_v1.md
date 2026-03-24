@@ -213,12 +213,67 @@ uint8   public constant MAX_LEVELS    = 17;
 uint8   public constant MAX_SLOTS     = 4;
 uint32  public constant MAX_HOPS      = 100_000;
 uint256 public constant PROTOCOL_PCT  = 10;        // 10% комиссия при ручной покупке
+uint32  public constant BONUS_WINDOW  = 3 hours;   // 10800 секунд
+uint8   public constant BONUS_TRIGGER = 7;          // купил 7 уровней за BONUS_WINDOW
+uint8   public constant BONUS_GIFT    = 8;          // получает 8й бесплатно
 ```
 
 Убраны по сравнению с v5:
 - ~~BUY_FEE ($0.50)~~ — нет
 - ~~PAYOUT_FEE ($0.50)~~ — нет
 - ~~PAYOUT_FEE_THRESHOLD ($3.90)~~ — нет
+
+---
+
+## 8.1 Бонус: 7 уровней за 3 часа → L8 в подарок
+
+### Логика
+
+Таймер 3 часа (180 минут) стартует с момента **регистрации** (`register()`).
+
+Когда юзер активирует L7 и с момента регистрации прошло ≤ 3 часов:
+- L8 активируется автоматически, бесплатно
+- `_fillSlot` НЕ вызывается — спонсор ничего не получает за L8
+- L8 у юзера: `active=true`, 0/4 слотов
+- `emit LevelActivated(user, 8, 0, 3, timestamp)` — actType=3 (bonus)
+
+### Edge cases
+
+- Если на L7 была заморозка для L8 → L8 уже открыт бонусом → FundsReturned (вернуть frozen)
+- Начальные участники (`_init`) — таймер не действует (уровни уже открыты)
+- Если юзер не успел за 3 часа — L8 покупается как обычно (вручную или автопокупка)
+- actType=3 — новый тип для бэкенда/UI: показать "🎁 Bonus Level!"
+
+### В хранилище
+
+В `UserData` добавляется:
+```solidity
+uint32 registeredAt;   // timestamp регистрации — для проверки бонуса
+```
+
+### В контракте
+
+```solidity
+// В activateLevel(), после успешной активации levelNum:
+if (levelNum == BONUS_TRIGGER
+    && block.timestamp - users[msg.sender].registeredAt <= BONUS_WINDOW
+    && !users[msg.sender].levels[BONUS_GIFT].active)
+{
+    // Возврат заморозки с L7 если есть
+    if (users[msg.sender].levels[BONUS_TRIGGER].frozenAmount > 0) {
+        uint256 frozen = users[msg.sender].levels[BONUS_TRIGGER].frozenAmount;
+        users[msg.sender].levels[BONUS_TRIGGER].frozenAmount = 0;
+        totalFrozen -= frozen;
+        usdcToken.transfer(msg.sender, frozen);
+        emit FundsReturned(msg.sender, BONUS_TRIGGER, frozen, uint32(block.timestamp));
+    }
+
+    // Активация L8 бесплатно
+    users[msg.sender].levels[BONUS_GIFT].active = true;
+    users[msg.sender].levels[BONUS_GIFT].activatedAt = uint32(block.timestamp);
+    emit LevelActivated(msg.sender, BONUS_GIFT, 0, 3, uint32(block.timestamp));
+}
+```
 
 ---
 
@@ -257,10 +312,17 @@ mapping(address => UserData) public users;
 
 ---
 
-## 10. Цены в конструкторе
+## 10. Конструктор и начальные участники
+
+### 10.1 Инициализация
 
 ```solidity
-constructor(address _usdc, address _systemWallet, address _masterWallet) {
+constructor(
+    address _usdc,
+    address _systemWallet,
+    address _masterWallet,
+    address[] memory _init          // начальные участники — все уровни открыты
+) {
     usdcToken    = IERC20(_usdc);
     systemWallet = _systemWallet;
     masterWallet = _masterWallet;
@@ -282,8 +344,38 @@ constructor(address _usdc, address _systemWallet, address _masterWallet) {
     levelPrices[15] = 49_152_000_000;    // $49,152
     levelPrices[16] = 98_304_000_000;    // $98,304
     levelPrices[17] = 196_608_000_000;   // $196,608
+
+    // Master — регистрация + все уровни + isMaster
+    users[_masterWallet].registered = true;
+    users[_masterWallet].isMaster = true;
+    for (uint8 i = 1; i <= MAX_LEVELS; i++) {
+        users[_masterWallet].levels[i].active = true;
+        users[_masterWallet].levels[i].activatedAt = uint32(block.timestamp);
+    }
+
+    // Начальные участники — регистрация под мастером + все уровни
+    for (uint256 j = 0; j < _init.length; j++) {
+        address u = _init[j];
+        users[u].registered = true;
+        users[u].referrer = _masterWallet;
+        for (uint8 i = 1; i <= MAX_LEVELS; i++) {
+            users[u].levels[i].active = true;
+            users[u].levels[i].activatedAt = uint32(block.timestamp);
+        }
+    }
 }
 ```
+
+### 10.2 Кошельки при деплое
+
+| Параметр | Описание |
+|----------|----------|
+| `_usdc` | Адрес USDC контракта на Polygon |
+| `_systemWallet` | Принимает 10% комиссий. Не участвует в системе уровней |
+| `_masterWallet` | Конечная точка spillover. isMaster=true. Все уровни открыты |
+| `_init` | Массив адресов начальных участников. Рефералы мастера. Все уровни открыты |
+
+В контракте нет слов "manager", "admin", "gift". Начальные участники выглядят как обычные юзеры с открытыми уровнями. Добавить новых после деплоя нельзя.
 
 ---
 
