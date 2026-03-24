@@ -158,6 +158,15 @@ a{color:var(--poly2);text-decoration:none}
 .ld-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px}
 .ld-row .lbl{color:var(--text2)}
 .ld-actions{margin-top:12px}
+.autobuy-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px 13px;margin-bottom:10px}
+.autobuy-toggle .ab-label{font-size:11px;font-weight:600}
+.autobuy-toggle .ab-hint{font-size:9px;color:var(--text3)}
+.ab-switch{position:relative;width:40px;height:22px;flex-shrink:0}
+.ab-switch input{opacity:0;width:0;height:0}
+.ab-slider{position:absolute;cursor:pointer;inset:0;background:var(--bg5);border:1px solid var(--border2);border-radius:22px;transition:all .2s}
+.ab-slider::before{content:'';position:absolute;height:16px;width:16px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:all .2s}
+.ab-switch input:checked+.ab-slider{background:var(--green);border-color:var(--green2)}
+.ab-switch input:checked+.ab-slider::before{transform:translateX(18px);background:#fff}
 .buy-btn{width:100%;padding:12px;background:var(--poly);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s}
 .buy-btn:hover{background:var(--poly2);transform:translateY(-1px)}
 
@@ -787,7 +796,7 @@ function checkMasterAccess(wallet) {
 // Prototype level states
 const LEVELS = [];
 for (let i = 1; i <= 17; i++) {
-  const lv = { num: i, price: LP[i], active: false, slots: [0,0,0,0], cycle_count: 0, frozenAmt: 0, frzState: false };
+  const lv = { num: i, price: LP[i], active: false, slots: [0,0,0,0], cycle_count: 0, frozenAmt: 0, frzState: false, autoBuy: false };
   LEVELS.push(lv);
 }
 // L1: active, 4/4 slots, cycle 1
@@ -899,6 +908,16 @@ function selectLevel(n) {
     infoRows += '<div class="ld-row"><span class="lbl">Last level</span><span style="color:var(--gold)">All slots pay out ✓</span></div>';
   }
 
+  // Auto-buy toggle (only for active levels 1-16)
+  let autoBuyHtml = '';
+  if (lv.active && !isLast) {
+    const checked = lv.autoBuy ? 'checked' : '';
+    autoBuyHtml = '<div class="autobuy-toggle">' +
+      '<div><div class="ab-label">Auto-buy Level ' + (n + 1) + '</div>' +
+      '<div class="ab-hint">' + (lv.autoBuy ? 'Slot 2 will freeze for auto-purchase' : 'All slots pay out directly') + '</div></div>' +
+      '<label class="ab-switch"><input type="checkbox" ' + checked + ' onchange="toggleAutoBuy(' + n + ',this.checked)"><span class="ab-slider"></span></label></div>';
+  }
+
   let actions = '';
   if (!lv.active) {
     actions = '<button class="buy-btn" onclick="openModal(' + n + ')">🦊 Buy Level ' + n + ' &middot; ' + f(buyCost(n)) + '</button>';
@@ -912,6 +931,7 @@ function selectLevel(n) {
     '<div class="ld-badge">L' + n + '</div>' +
     '<div class="ld-info"><div class="ld-title">Level ' + n + '</div><div class="ld-price">Cost to activate: ' + f(buyCost(n)) + ' USDC</div><div class="ld-tags">' + tags + '</div></div></div>' +
     '<div class="slots-grid">' + slotsHtml + '</div>' +
+    autoBuyHtml +
     '<div class="ld-info-box">' + infoRows + '</div>' +
     '<div class="ld-actions">' + actions + '</div>';
 
@@ -949,6 +969,21 @@ function connectWallet(btn) {
     refreshData(true); // force initial load from Supabase
     subscribeRealtime(); // start listening for live updates
   }, 900);
+}
+
+// ==================== AUTO-BUY TOGGLE ====================
+function toggleAutoBuy(levelNum, enabled) {
+  LEVELS[levelNum - 1].autoBuy = enabled;
+  // Will call contract: setAutoBuy(levelNum, enabled)
+  // For now, update UI
+  const hint = enabled ? 'Slot 2 will freeze for auto-purchase' : 'All slots pay out directly';
+  const hintEl = document.querySelector('.autobuy-toggle .ab-hint');
+  if (hintEl) hintEl.textContent = hint;
+  toast(
+    enabled ? 'Auto-buy ON for L' + (levelNum + 1) : 'Auto-buy OFF for L' + levelNum,
+    enabled ? 'Takes effect next cycle' : 'All slots will pay out',
+    100
+  );
 }
 
 // ==================== COPY REF ====================
