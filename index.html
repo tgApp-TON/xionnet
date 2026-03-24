@@ -1306,6 +1306,21 @@ async function connectWallet(btn) {
     // Show mint button on testnet
     if (IS_TESTNET) document.getElementById('mintBtn').style.display = 'flex';
 
+    // Auto-register if not registered
+    try {
+      const info = await xionContract.getUserInfo(connectedWallet);
+      if (!info.registered) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref') || ethers.ZeroAddress;
+        toast('Registering...', 'One-time setup', 50);
+        const regTx = await xionContract.register(ref);
+        await regTx.wait();
+        toast('Registered!', 'Welcome to XionNET', 100);
+      }
+    } catch (e) {
+      console.warn('Auto-register:', e.reason || e.message);
+    }
+
     // Load real data from contract
     await loadUserData();
 
@@ -1555,18 +1570,6 @@ async function doStep() {
     btn.textContent = '⏳ Activating...';
     toast('Activating Level ' + modalLevel + '...', 'Confirm in MetaMask', 80);
     try {
-      // Check if user is registered, if not — register first
-      const info = await xionContract.getUserInfo(connectedWallet);
-      if (!info.registered) {
-        toast('Registering...', 'First-time setup', 75);
-        // Get referrer from URL or default
-        const urlParams = new URLSearchParams(window.location.search);
-        const ref = urlParams.get('ref') || ethers.ZeroAddress;
-        const regTx = await xionContract.register(ref);
-        await regTx.wait();
-        toast('Registered!', 'Now activating level...', 80);
-      }
-
       const tx = await xionContract.activateLevel(modalLevel);
       toast('Activating...', 'Transaction sent', 90);
       const receipt = await tx.wait();
