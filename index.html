@@ -530,7 +530,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
   <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
-    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl" data-t="total">Total</div></div>
+    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0 / 0</div><div class="lbl" data-t="direct_slash_indirect">direct / indirect</div></div>
     <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl" data-t="active">Active</div></div>
     <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl" data-t="pending">Pending</div></div>
     <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl" data-t="earned">Earned</div></div>
@@ -1135,12 +1135,20 @@ async function loadReferrals() {
     const userMap = {};
     if (users) users.forEach(u => userMap[u.wallet] = u);
 
+    // Get sub-referral counts for each direct referral
+    const subCountMap = {};
+    const allSubRefs = await sbFetch('/rest/v1/referrals?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet');
+    if (allSubRefs) allSubRefs.forEach(sr => {
+      subCountMap[sr.referrer_wallet] = (subCountMap[sr.referrer_wallet] || 0) + 1;
+    });
+
     const enriched = refs.map(r => ({
       ...r,
       active_levels: userMap[r.referred_wallet]?.active_levels || 0,
       total_received: userMap[r.referred_wallet]?.total_received || 0,
       earned_from: earnedFromMap[r.referred_wallet] || 0,
       registered_at: userMap[r.referred_wallet]?.registered_at || r.created_at,
+      sub_count: subCountMap[r.referred_wallet] || 0,
     }));
 
     updateReferralsUI(enriched);
@@ -1281,10 +1289,11 @@ function updateReferralsUI(data) {
 
     if (isActive) {
       activeCount++;
+      const subInfo = ref.sub_count > 0 ? ' <span class="ref-sub-count">+' + ref.sub_count + ' refs</span>' : '';
       activeHtml += '<div><div class="ref-item" onclick="toggleSubRefs(\'' + wallet + '\',\'' + refId + '\',this)">' +
         '<div class="ref-avatar" style="background:rgba(6,214,160,.15);color:var(--green)">' + initials + '</div>' +
-        '<div class="ref-info"><div class="ref-name">' + short + '</div>' +
-        '<div class="ref-meta">' + date + ' · ' + ref.active_levels + ' level' + (ref.active_levels > 1 ? 's' : '') + '</div>' +
+        '<div class="ref-info"><div class="ref-name">' + short + subInfo + '</div>' +
+        '<div class="ref-meta">' + date + ' · ' + ref.active_levels + ' ' + t('nav_levels').toLowerCase() + '</div>' +
         '<div class="ref-tags"><span class="ld-tag t-active">L' + ref.active_levels + '</span></div></div>' +
         '<div class="ref-earned"><div class="val" style="color:var(--green)">' + (earnedFrom > 0 ? '+' + f(earnedFrom) : '$0') + '</div><div class="lbl">earned you</div></div>' +
         '<div class="ri-expand">▾</div></div>' +
@@ -1305,8 +1314,12 @@ function updateReferralsUI(data) {
     totalEarned += (ref.earned_from || 0) / 1e6;
   });
 
+  // Count total sub-referrals
+  let totalSubCount = 0;
+  data.forEach(ref => { totalSubCount += (ref.sub_count || 0); });
+
   // Update stats
-  document.getElementById('refStatDirect').textContent = totalCount;
+  document.getElementById('refStatDirect').textContent = totalCount + ' / ' + totalSubCount;
   document.getElementById('refStatActive').textContent = activeCount;
   document.getElementById('refStatPending').textContent = pendingCount;
   document.getElementById('refStatEarned').textContent = f(totalEarned);
@@ -1326,8 +1339,8 @@ function updateReferralsUI(data) {
   const dashNet = document.getElementById('dashNetworkCard');
   if (dashNet && totalCount > 0) {
     dashNet.innerHTML = '<div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">' +
-      '<div style="font-size:28px;font-weight:900;color:var(--poly2)">' + totalCount + '</div>' +
-      '<div><div style="font-size:12px">' + activeCount + ' active · ' + pendingCount + ' pending</div></div></div>' +
+      '<div style="font-size:28px;font-weight:900;color:var(--poly2)">' + (totalCount + totalSubCount) + '</div>' +
+      '<div><div style="font-size:12px">' + totalCount + ' ' + t('active_refs').toLowerCase() + ' / ' + totalSubCount + ' ' + t('indirect') + '</div></div></div>' +
       '<div class="prog-track"><div class="prog-fill" style="width:' + (totalCount > 0 ? Math.round(activeCount/totalCount*100) : 0) + '%"></div></div>' +
       '<div style="font-size:10px;color:var(--text3);margin-top:4px">' + activeCount + ' have activated levels</div>';
   }

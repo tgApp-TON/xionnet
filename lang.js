@@ -648,6 +648,16 @@ const T = {
     fr: 'Comment ça marche', de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
     ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
   },
+  indirect: {
+    en: 'indirect', ru: 'непрямых', ua: 'непрямих', es: 'indirectos', pt: 'indiretos', fr: 'indirects',
+    de: 'indirekt', pl: 'pośrednich', vi: 'gián tiếp', ko: '간접', ja: '間接', hi: 'अप्रत्यक्ष', zh: '间接', tr: 'dolaylı',
+  },
+  direct_slash_indirect: {
+    en: 'direct / indirect', ru: 'прямых / непрямых', ua: 'прямих / непрямих', es: 'directos / indirectos',
+    pt: 'diretos / indiretos', fr: 'directs / indirects', de: 'direkt / indirekt', pl: 'bezpośrednich / pośrednich',
+    vi: 'trực tiếp / gián tiếp', ko: '직접 / 간접', ja: '直接 / 間接', hi: 'प्रत्यक्ष / अप्रत्यक्ष', zh: '直接 / 间接', tr: 'doğrudan / dolaylı',
+  },
+
   // ==================== PUSH NOTIFICATIONS ====================
   notif_payout: {
     en: 'Payout received · L', ru: 'Выплата получена · L', ua: 'Виплата отримана · L', es: 'Pago recibido · L', pt: 'Pagamento recebido · L',
