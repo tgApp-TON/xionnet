@@ -482,7 +482,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title" data-t="dash_level_overview">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
+    <div class="card-hdr"><span class="card-title" data-t="dash_level_overview">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')" data-t="full_view">Full view</button></div>
     <div class="lvl-grid" id="dash-lvls"></div>
   </div>
 
@@ -494,7 +494,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title" data-t="dash_recent">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
+    <div class="card-hdr"><span class="card-title" data-t="dash_recent">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')" data-t="all">All</button></div>
     <div class="fi-feed" id="dashRecentFeed">
       <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px" data-t="no_activity">No activity yet</div>
     </div>
@@ -523,7 +523,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <button class="chip" onclick="filterHistory(this,'auto')" data-t="auto_open">⚡ Auto-open</button>
   </div>
   <div class="card" style="padding:0;overflow:hidden" id="historyFeed">
-    <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No activity yet</div>
+    <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px" data-t="no_activity">No activity yet</div>
   </div>
 </div>
 
@@ -533,7 +533,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl" data-t="total">Total</div></div>
     <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl" data-t="active">Active</div></div>
     <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl" data-t="pending">Pending</div></div>
-    <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl">Earned</div></div>
+    <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl" data-t="earned">Earned</div></div>
   </div>
   <button class="ghost-btn" id="treeBtn" style="width:100%;padding:10px;margin-bottom:12px;display:none" onclick="openTreeModal()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="6" y1="14" x2="18" y2="14"/><line x1="6" y1="14" x2="6" y2="18"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="18" y1="14" x2="18" y2="18"/><circle cx="6" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
@@ -569,7 +569,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;margin:12px 0">
-      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase" id="chartPeriodLabel">Total Earned</div><div style="font-size:22px;font-weight:900;color:var(--green)" id="chartTotal">$0</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--text3);text-transform:uppercase" id="chartPeriodLabel" data-t="total_earned_all">Total Earned</div><div style="font-size:22px;font-weight:900;color:var(--green)" id="chartTotal">$0</div></div>
     </div>
     <div class="chart-wrap" id="chart"></div>
     <div class="chart-labels" id="chartLabels"></div>
@@ -1243,13 +1243,13 @@ function updateHistoryUI(data) {
                   ev.event_type === 'reactivation' ? 'Reset · Level ' + ev.level_num :
                   ev.event_type === 'auto_open' ? 'Auto-opened Level ' + ev.level_num :
                   ev.event_type === 'bonus' ? 'Bonus! Level ' + ev.level_num :
-                  'Level ' + ev.level_num + ' activated';
+                  t('level_activated') + ' ' + ev.level_num + ' activated';
     const time = ev.created_at ? new Date(ev.created_at).toLocaleDateString('en', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
 
     html += '<div class="feed-item" data-type="' + ev.event_type + '">' +
       '<div class="fi-icon" style="background:' + bg + '">' + icon + '</div>' +
       '<div class="fi-body"><div class="fi-title">' + title + '</div>' +
-      '<div class="fi-sub">' + (addr ? 'from ' + addr : ev.details || '') + '</div></div>' +
+      '<div class="fi-sub">' + (addr ? t('from') + ' ' + addr : ev.details || '') + '</div></div>' +
       '<div class="fi-right"><div class="fi-amt" style="color:' + color + '">' + (ev.amount > 0 ? '+' : '') + amt + '</div>' +
       '<div class="fi-time">' + time + '</div></div></div>';
   });
@@ -2220,23 +2220,23 @@ function buildChart() {
   if (currentChartPeriod === 'all') {
     periodTotal = userPayoutCache.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
     periodPayouts = userPayoutCache;
-    periodLabel.textContent = 'Total Earned (All Time)';
+    periodLabel.textContent = t('total_earned_all');
   } else if (currentChartPeriod === 'day') {
     periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] === today);
     periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
-    periodLabel.textContent = 'Earned Today';
+    periodLabel.textContent = t('earned_today');
   } else if (currentChartPeriod === 'week') {
     periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= monday);
     periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
-    periodLabel.textContent = 'Earned This Week';
+    periodLabel.textContent = t('earned_week');
   } else if (currentChartPeriod === 'month') {
     periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= monthStart);
     periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
-    periodLabel.textContent = 'Earned This Month';
+    periodLabel.textContent = t('earned_month');
   } else if (currentChartPeriod === 'year') {
     periodPayouts = userPayoutCache.filter(p => p.created_at && p.created_at.split('T')[0] >= yearStart);
     periodTotal = periodPayouts.reduce((s, p) => s + (p.amount || 0) / 1e6, 0);
-    periodLabel.textContent = 'Earned This Year';
+    periodLabel.textContent = t('earned_year');
   }
 
   totalEl.textContent = f(periodTotal);
@@ -2429,13 +2429,13 @@ async function loadRecentActivity() {
       const [, bg, color] = icons[ev.event_type] || ['●','var(--bg4)','var(--text2)'];
       const amt = ev.amount > 0 ? '+' + f(ev.amount / 1e6) : (ev.event_type === 'bonus' ? 'FREE' : '');
       const addr = ev.counterparty ? ev.counterparty.slice(0,6) + '...' + ev.counterparty.slice(-4) : '';
-      const title = ev.event_type === 'payout' ? 'Received · L' + ev.level_num :
-                    ev.event_type === 'frozen' ? 'Frozen · L' + ev.level_num :
-                    ev.event_type === 'spillover' ? 'Spillover · L' + ev.level_num :
-                    ev.event_type === 'reactivation' ? 'Reset · L' + ev.level_num :
-                    ev.event_type === 'auto_open' ? 'Auto-open L' + ev.level_num :
-                    ev.event_type === 'bonus' ? 'Bonus L' + ev.level_num :
-                    'Level ' + ev.level_num;
+      const title = ev.event_type === 'payout' ? t('received_level') + ev.level_num :
+                    ev.event_type === 'frozen' ? t('frozen_level') + ev.level_num :
+                    ev.event_type === 'spillover' ? t('spillover_level') + ev.level_num :
+                    ev.event_type === 'reactivation' ? t('reset_level') + ev.level_num :
+                    ev.event_type === 'auto_open' ? t('auto_open_level') + ev.level_num :
+                    ev.event_type === 'bonus' ? t('bonus_level') + ev.level_num :
+                    t('level_activated') + ' ' + ev.level_num;
       const svgIcon = ev.event_type === 'payout' || ev.event_type === 'spillover'
         ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'
         : ev.event_type === 'frozen'
@@ -2445,7 +2445,7 @@ async function loadRecentActivity() {
 
       html += '<div class="feed-item"><div class="fi-icon" style="background:' + bg + '">' + svgIcon + '</div>' +
         '<div class="fi-body"><div class="fi-title">' + title + '</div>' +
-        '<div class="fi-sub">' + (addr ? 'from ' + addr : ev.details || '') + '</div></div>' +
+        '<div class="fi-sub">' + (addr ? t('from') + ' ' + addr : ev.details || '') + '</div></div>' +
         '<div class="fi-right"><div class="fi-amt" style="color:' + color + '">' + amt + '</div>' +
         '<div class="fi-time">' + time + '</div></div></div>';
     });
@@ -2610,7 +2610,7 @@ function runCalc() {
   // Payouts per level = floor(totalFills / 4) × 3 + min(totalFills % 4, 3)
 
   let totalEarnings = 0;
-  let breakdownHtml = '<table style="width:100%;border-collapse:collapse;font-size:11px"><tr style="color:var(--text3)"><th style="text-align:left;padding:4px 6px">Level</th><th style="text-align:right;padding:4px 6px">Price</th><th style="text-align:right;padding:4px 6px">Fills</th><th style="text-align:right;padding:4px 6px">Payouts</th><th style="text-align:right;padding:4px 6px">Earned</th></tr>';
+  let breakdownHtml = '<table style="width:100%;border-collapse:collapse;font-size:11px"><tr style="color:var(--text3)"><th style="text-align:left;padding:4px 6px">' + t('level_activated') + '</th><th style="text-align:right;padding:4px 6px">' + t('level_price') + '</th><th style="text-align:right;padding:4px 6px">Fills</th><th style="text-align:right;padding:4px 6px">' + t('payouts') + '</th><th style="text-align:right;padding:4px 6px">' + t('earned') + '</th></tr>';
 
   for (let lvl = 1; lvl <= maxLvl; lvl++) {
     const price = LP[lvl];

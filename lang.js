@@ -1019,6 +1019,16 @@ function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('xn_lang', lang);
   applyTranslations();
+  // Re-render dynamic sections with new language
+  if (typeof renderLevels === 'function') {
+    renderLevels('dash-lvls');
+    renderLevels('main-lvls');
+  }
+  if (typeof buildChart === 'function') buildChart();
+  if (typeof loadReferrals === 'function') loadReferrals();
+  if (typeof loadRecentActivity === 'function') loadRecentActivity();
+  if (typeof loadLeaderboard === 'function') loadLeaderboard();
+  if (typeof runCalc === 'function') runCalc();
 }
 
 function applyTranslations() {
