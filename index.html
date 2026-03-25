@@ -2711,69 +2711,78 @@ function getAudio() {
   return audioCtx;
 }
 
-// Glass chime — layered harmonics like iPhone
-function playChime(freq, dur, vol) {
+// Realistic bell/marimba synthesis — closest to iPhone without samples
+function playBell(freq, dur, vol) {
   if (!soundEnabled) return;
   try {
     const ctx = getAudio();
     const t = ctx.currentTime;
-    // Layer 3 harmonics for glass/crystal quality
-    [1, 2, 3].forEach((h, i) => {
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0, t);
+    master.gain.linearRampToValueAtTime(vol || 0.04, t + 0.001);
+    master.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    master.connect(ctx.destination);
+
+    // Bell partials: fundamental, 2.76x, 5.4x, 8.93x (inharmonic = bell-like)
+    const partials = [
+      { ratio: 1, amp: 1, decay: dur },
+      { ratio: 2.76, amp: 0.5, decay: dur * 0.6 },
+      { ratio: 5.4, amp: 0.2, decay: dur * 0.3 },
+      { ratio: 8.93, amp: 0.08, decay: dur * 0.15 },
+    ];
+    partials.forEach(p => {
       const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      const g = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.value = freq * h;
-      const v = (vol || 0.06) / (h * 1.5); // higher harmonics quieter
-      gain.gain.setValueAtTime(0, t);
-      gain.gain.linearRampToValueAtTime(v, t + 0.003); // fast attack
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur); // smooth decay
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+      osc.frequency.value = freq * p.ratio;
+      g.gain.setValueAtTime(p.amp, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + p.decay);
+      osc.connect(g);
+      g.connect(master);
       osc.start(t);
-      osc.stop(t + dur);
+      osc.stop(t + dur + 0.01);
     });
   } catch(e) {}
 }
 
 function soundPayout() {
-  // Apple Pay success: E6→G#6→B6 (major triad, glass)
-  playChime(1319, 0.2, 0.05);
-  setTimeout(() => playChime(1661, 0.2, 0.05), 80);
-  setTimeout(() => playChime(1976, 0.3, 0.04), 160);
+  // Apple Pay done: bright bell ascending major third
+  playBell(1568, 0.3, 0.035);
+  setTimeout(() => playBell(1976, 0.3, 0.035), 90);
+  setTimeout(() => playBell(2349, 0.4, 0.03), 180);
 }
 
 function soundBuy() {
-  // iOS tap: single crystal tick
-  playChime(2093, 0.06, 0.04);
+  // Tap confirm: single marimba hit
+  playBell(1397, 0.12, 0.03);
 }
 
 function soundNotif() {
-  // iMessage tri-tone
-  playChime(1047, 0.12, 0.04);
-  setTimeout(() => playChime(1319, 0.12, 0.04), 100);
-  setTimeout(() => playChime(1568, 0.15, 0.03), 200);
+  // iMessage: two bells, perfect fifth apart
+  playBell(1175, 0.2, 0.03);
+  setTimeout(() => playBell(1760, 0.25, 0.03), 120);
 }
 
 function soundSuccess() {
-  // iOS unlock: B5→D#6→F#6 warm ascending
-  playChime(988, 0.12, 0.04);
-  setTimeout(() => playChime(1245, 0.12, 0.04), 100);
-  setTimeout(() => playChime(1480, 0.2, 0.05), 200);
+  // Unlock/connect: C6→E6→G6 (C major arpeggio)
+  playBell(1047, 0.15, 0.03);
+  setTimeout(() => playBell(1319, 0.15, 0.03), 100);
+  setTimeout(() => playBell(1568, 0.25, 0.035), 200);
 }
 
 function soundBonus() {
-  // iOS achievement: fast ascending sparkle C6→E6→G6→C7
-  playChime(1047, 0.1, 0.04);
-  setTimeout(() => playChime(1319, 0.1, 0.04), 70);
-  setTimeout(() => playChime(1568, 0.1, 0.04), 140);
-  setTimeout(() => playChime(2093, 0.15, 0.05), 210);
-  setTimeout(() => playChime(2637, 0.25, 0.03), 290);
+  // Achievement fanfare: fast ascending with final ring
+  playBell(1319, 0.1, 0.025);
+  setTimeout(() => playBell(1568, 0.1, 0.025), 65);
+  setTimeout(() => playBell(1976, 0.1, 0.03), 130);
+  setTimeout(() => playBell(2349, 0.12, 0.03), 195);
+  setTimeout(() => playBell(2637, 0.4, 0.035), 270);
 }
 
 function soundError() {
-  // iOS gentle error: F4→Eb4 (minor second down)
-  playChime(349, 0.12, 0.04);
-  setTimeout(() => playChime(311, 0.18, 0.04), 120);
+  // Gentle error: two low bells, descending minor second
+  playBell(523, 0.15, 0.03);
+  setTimeout(() => playBell(494, 0.2, 0.03), 130);
 }
 
 // ==================== AUTO-CONNECT ====================
