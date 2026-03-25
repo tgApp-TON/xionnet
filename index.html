@@ -637,7 +637,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <div class="faq-item open">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_what_is">What is XionNET?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_what_is_a">Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.</div>
+    <div class="faq-a" data-th="faq_what_is_a">Decentralized protocol on Polygon blockchain. All payments in USDC go directly to your wallet through a smart contract — no middlemen, no central authority. The contract handles all distributions automatically and transparently.</div>
   </div>
 
   <div class="faq-item">
@@ -647,12 +647,12 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_autounlock">What is the auto-unlock feature?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_autounlock_a">When slot 2 fills and you don't own the next level, your funds are temporarily held. When slot 3 fills, both payments combine to auto-purchase the next level — completely free, no activation fee charged. Two payments at level N = one next level.</div>
+    <div class="faq-a" data-th="faq_autounlock_a">When slot 2 fills and you don't own the next level, your funds are temporarily held. When slot 3 fills, both payments combine to auto-purchase the next level — completely free, no activation fee charged. Two payments at level N = one next level.</div>
   </div>
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_slot4_q">What happens when level is full (slot 4)?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_slot4_a">The level resets (cycle count increases, all slots cleared). The slot 4 payment moves up the referral chain (spillover) to the nearest person above you who has that level active. Your level is then ready to accept new members again.</div>
+    <div class="faq-a" data-th="faq_slot4_a">The level resets (cycle count increases, all slots cleared). The slot 4 payment moves up the referral chain (spillover) to the nearest person above you who has that level active. Your level is then ready to accept new members again.</div>
   </div>
 
   <div class="faq-item">
@@ -662,17 +662,17 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_safe_q">Is my money safe?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_safe_a">All funds are managed by a smart contract on Polygon. No person controls them. What goes in through MetaMask comes out through MetaMask. Temporarily held funds (slot 2) are protected — the admin cannot withdraw frozen user funds.</div>
+    <div class="faq-a" data-th="faq_safe_a">All funds are managed by a smart contract on Polygon. No person controls them. What goes in through MetaMask comes out through MetaMask. Temporarily held funds (slot 2) are protected — the admin cannot withdraw frozen user funds.</div>
   </div>
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_usdc_q">What is USDC? Do I need POL?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_usdc_a">USDC is a stablecoin pegged to $1. All level prices are in USDC. You also need a tiny amount of POL (Polygon's native token) for gas fees — about $0.0001 per transaction.</div>
+    <div class="faq-a" data-th="faq_usdc_a">USDC is a stablecoin pegged to $1. All level prices are in USDC. You also need a tiny amount of POL (Polygon's native token) for gas fees — about $0.0001 per transaction.</div>
   </div>
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_alllevels_q">Do I need to buy all 17 levels?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_alllevels_a">No! Buy levels in order, starting from L1 ($3). Many levels will open automatically through the auto-unlock feature. Sweet spot is L4–L7 for moderate investment. Higher levels are for builders with larger networks.</div>
+    <div class="faq-a" data-th="faq_alllevels_a">No! Buy levels in order, starting from L1 ($3). Many levels will open automatically through the auto-unlock feature. Sweet spot is L4–L7 for moderate investment. Higher levels are for builders with larger networks.</div>
   </div>
 
   <div class="faq-item">
@@ -682,7 +682,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_languages_q">What languages are supported?</span><div class="faq-arrow">▾</div></div>
-    <div class="faq-a" data-t="faq_languages_a">XionNET supports 14 languages: English, Russian, Ukrainian, Spanish, Portuguese, French, German, Polish, Vietnamese, Korean, Japanese, Hindi, Chinese, and Turkish. The app auto-detects your browser language. You can also change it manually in Settings.</div>
+    <div class="faq-a" data-th="faq_languages_a">XionNET supports 14 languages: English, Russian, Ukrainian, Spanish, Portuguese, French, German, Polish, Vietnamese, Korean, Japanese, Hindi, Chinese, and Turkish. The app auto-detects your browser language. You can also change it manually in Settings.</div>
   </div>
 
   <div class="faq-section-label" data-t="faq_earnings">💰 Potential Earnings</div>
@@ -1655,10 +1655,10 @@ async function mintTestUSDC() {
   try {
     const amount = ethers.parseUnits('10000', 6); // $10,000
     const tx = await usdcContract.mint(connectedWallet, amount);
-    toast('Minting USDC...', 'Confirm in MetaMask', 50);
+    toast(t('approving') + ' USDC...', t('confirm_metamask'), 50);
     await tx.wait();
     const bal = await usdcContract.balanceOf(connectedWallet);
-    toast('Minted!', '$' + (Number(bal) / 1e6).toLocaleString() + ' USDC total', 100);
+    toast('Minted!', '$' + (Number(bal) / 1e6).toLocaleString() + ' USDC', 100);
     soundPayout();
     btn.textContent = '💰 Mint $10,000 Test USDC';
     btn.disabled = false;
@@ -1679,7 +1679,7 @@ async function toggleAutoBuy(levelNum, enabled) {
 
   if (xionContract) {
     try {
-      toast(enabled ? 'Enabling auto-buy...' : 'Disabling auto-buy...', 'Confirm in MetaMask', 50);
+      toast(t('activating'), t('confirm_metamask'), 50);
       const tx = await xionContract.setAutoBuy(levelNum, enabled);
       await tx.wait();
       toast(
@@ -1689,7 +1689,7 @@ async function toggleAutoBuy(levelNum, enabled) {
       );
     } catch (err) {
       LEVELS[levelNum - 1].autoBuy = !enabled;
-      toast('Failed', err.reason || err.message, 0);
+      toast(t('level_locked'), err.reason || err.message, 0);
     }
   }
 }
@@ -1780,7 +1780,7 @@ async function openModal(n) {
         await loadUserData();
         renderLevels('dash-lvls');
         renderLevels('main-lvls');
-        toast('Level ' + n + ' already active', 'Data refreshed', 100);
+        toast(t('level_activated') + ' ' + n + ' ' + t('level_already_active'), t('data_refreshed'), 100);
         soundNotif();
         selectedLevel = 0;
         if (n < 17) selectLevel(n + 1);
@@ -1826,11 +1826,11 @@ async function doStep() {
     btn.disabled = true;
     btn.className = 'buy-btn btn-waiting';
     btn.innerHTML = spinnerSVG + ' Approving...';
-    toast('Approving USDC...', 'Confirm in MetaMask', 30);
+    toast(t('approving'), t('confirm_metamask'), 30);
     try {
       const required = await xionContract.getRequiredApprove(modalLevel);
       const tx = await usdcContract.approve(CONTRACT_ADDRESS, required);
-      toast('Approving USDC...', 'Transaction sent', 50);
+      toast(t('approving'), t('tx_sent'), 50);
       await tx.wait();
 
       document.getElementById('ms1n').className = 'm-step-num done';
@@ -1840,14 +1840,14 @@ async function doStep() {
       btn.className = 'buy-btn btn-ready';
       btn.disabled = false;
       modalStep = 1;
-      toast('USDC Approved', 'Ready to activate', 70);
+      toast('USDC OK', t('ready_activate'), 70);
       soundBuy();
     } catch (err) {
       console.error('Approve failed:', err);
       btn.innerHTML = walletSVG + ' Approve USDC';
       btn.className = 'buy-btn';
       btn.disabled = false;
-      toast('Approve failed', err.reason || 'User rejected', 0);
+      toast(t('level_locked'), err.reason || '', 0);
       soundError();
     }
   } else {
@@ -1855,15 +1855,15 @@ async function doStep() {
     btn.disabled = true;
     btn.className = 'buy-btn btn-waiting';
     btn.innerHTML = spinnerSVG + ' Activating...';
-    toast('Activating Level ' + modalLevel + '...', 'Confirm in MetaMask', 80);
+    toast(t('activating') + ' ' + t('level_activated') + ' ' + modalLevel, t('confirm_metamask'), 80);
     try {
       const tx = await xionContract.activateLevel(modalLevel);
-      toast('Activating...', 'Transaction sent', 90);
+      toast(t('activating'), t('tx_sent'), 90);
       const receipt = await tx.wait();
 
       document.getElementById('ms2n').className = 'm-step-num done';
       document.getElementById('ms2n').textContent = '✓';
-      toast('Level ' + modalLevel + ' Active!', 'Purchase complete', 100);
+      toast(t('level_activated') + ' ' + modalLevel + ' ✓', t('purchase_complete'), 100);
       soundSuccess();
 
       // Reload data from contract (instant, no Supabase delay)
@@ -1904,7 +1904,7 @@ async function doStep() {
       btn.innerHTML = boltSVG + ' Activate Level ' + modalLevel;
       btn.className = 'buy-btn btn-ready';
       btn.disabled = false;
-      toast('Activation failed', err.reason || err.message || 'Transaction reverted', 0);
+      toast(t('level_locked'), err.reason || err.message || '', 0);
       soundError();
     }
   }
@@ -1952,7 +1952,10 @@ function toggleFaq(qEl) {
   const item = qEl.parentElement;
   const wasOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
+  if (!wasOpen) {
+    item.classList.add('open');
+    applyTranslations(); // translate newly visible content
+  }
 }
 
 // ==================== REFERRAL SUB-TREE ====================
