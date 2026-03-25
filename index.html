@@ -1218,10 +1218,13 @@ function updateLevelsFromDB(levels) {
 
 function updateGlobalStats(stats) {
   if (!stats) return;
-  const boxes = document.querySelectorAll('#screen-stats .stat-box');
-  if (boxes[0]) boxes[0].querySelector('.stat-val').textContent = f(stats.total_users || 0);
-  if (boxes[1]) boxes[1].querySelector('.stat-val').textContent = f((stats.total_frozen || 0) / 1e6);
+  const participantsEl = document.querySelector('#participantsBox .stat-val');
+  const frozenEl = document.querySelector('#frozenStatsBox .stat-val');
+  const feesEl = document.querySelector('#systemFeesBox .stat-val');
   const payoutsEl = document.getElementById('statsTotalPayouts');
+  if (participantsEl) participantsEl.textContent = f(stats.total_users || 0);
+  if (frozenEl) frozenEl.textContent = f((stats.total_frozen || 0) / 1e6);
+  if (feesEl) feesEl.textContent = f((stats.total_fees || 0) / 1e6);
   if (payoutsEl) payoutsEl.textContent = f((stats.total_payouts || 0) / 1e6);
 }
 
