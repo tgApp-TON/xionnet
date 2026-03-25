@@ -17,6 +17,7 @@ const LANGS = {
   zh: { name: '中文', flag: '🇨🇳' },
   tr: { name: 'Türkçe', flag: '🇹🇷' },
   ar: { name: 'العربية', flag: '🇦🇪' },
+  th: { name: 'ไทย', flag: '🇹🇭' },
 };
 
 const T = {
@@ -647,6 +648,39 @@ const T = {
     fr: 'Comment ça marche', de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
     ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
   },
+  // ==================== PUSH NOTIFICATIONS ====================
+  notif_payout: {
+    en: 'Payout received · L', ru: 'Выплата получена · L', ua: 'Виплата отримана · L', es: 'Pago recibido · L', pt: 'Pagamento recebido · L',
+    fr: 'Paiement reçu · L', de: 'Auszahlung erhalten · L', pl: 'Wypłata otrzymana · L', vi: 'Nhận thanh toán · L',
+    ko: '지급 수령 · L', ja: '支払い受領 · L', hi: 'भुगतान प्राप्त · L', zh: '收到支付 · L', tr: 'Ödeme alındı · L', ar: 'تم استلام الدفع · L',
+  },
+  notif_slot: {
+    en: 'filled · L', ru: 'заполнен · L', ua: 'заповнений · L', es: 'lleno · L', pt: 'preenchido · L',
+    fr: 'rempli · L', de: 'gefüllt · L', pl: 'wypełniony · L', vi: 'đã lấp · L',
+    ko: '채워짐 · L', ja: '充填 · L', hi: 'भरा · L', zh: '已填 · L', tr: 'dolu · L', ar: 'ممتلئ · L',
+  },
+  notif_joined: {
+    en: 'joined', ru: 'присоединился', ua: 'приєднався', es: 'se unió', pt: 'entrou',
+    fr: 'a rejoint', de: 'beigetreten', pl: 'dołączył', vi: 'đã tham gia',
+    ko: '참여', ja: '参加', hi: 'जुड़ गया', zh: '加入了', tr: 'katıldı', ar: 'انضم',
+  },
+  notif_new_ref: {
+    en: 'New referral!', ru: 'Новый реферал!', ua: 'Новий реферал!', es: '¡Nuevo referido!', pt: 'Nova indicação!',
+    fr: 'Nouveau filleul !', de: 'Neue Empfehlung!', pl: 'Nowe polecenie!', vi: 'Giới thiệu mới!',
+    ko: '새 추천인!', ja: '新しい紹介!', hi: 'नया रेफरल!', zh: '新推荐！', tr: 'Yeni referans!', ar: 'إحالة جديدة!',
+  },
+  notif_joined_network: {
+    en: 'joined your network', ru: 'присоединился к вашей сети', ua: 'приєднався до вашої мережі',
+    es: 'se unió a tu red', pt: 'entrou na sua rede', fr: 'a rejoint votre réseau',
+    de: 'ist Ihrem Netzwerk beigetreten', pl: 'dołączył do twojej sieci', vi: 'đã tham gia mạng của bạn',
+    ko: '네트워크에 참여', ja: 'ネットワークに参加', hi: 'आपके नेटवर्क में शामिल हुआ', zh: '加入了您的网络', tr: 'ağınıza katıldı', ar: 'انضم إلى شبكتك',
+  },
+  notif_hops: {
+    en: 'hops from', ru: 'хопов от', ua: 'хопів від', es: 'saltos desde', pt: 'saltos de',
+    fr: 'sauts depuis', de: 'Hops von', pl: 'skoków od', vi: 'bước từ',
+    ko: '홉', ja: 'ホップ', hi: 'हॉप्स', zh: '跳', tr: 'atlama', ar: 'قفزة من',
+  },
+
   // ==================== LEVEL DETAIL DYNAMIC ====================
   slot: {
     en: 'Slot', ru: 'Слот', ua: 'Слот', es: 'Espacio', pt: 'Espaço', fr: 'Emplacement',
@@ -1004,7 +1038,7 @@ function detectLang() {
   const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   const short = browserLang.split('-')[0];
   // Map browser codes to our codes
-  const map = { en:'en', ru:'ru', uk:'ua', ua:'ua', es:'es', pt:'pt', fr:'fr', de:'de', pl:'pl', vi:'vi', ko:'ko', ja:'ja', hi:'hi', zh:'zh', tr:'tr', ar:'ar' };
+  const map = { en:'en', ru:'ru', uk:'ua', ua:'ua', es:'es', pt:'pt', fr:'fr', de:'de', pl:'pl', vi:'vi', ko:'ko', ja:'ja', hi:'hi', zh:'zh', tr:'tr', ar:'ar', th:'th' };
   return map[short] || 'en';
 }
 let currentLang = detectLang();

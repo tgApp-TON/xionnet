@@ -2368,32 +2368,31 @@ async function checkNewEvents() {
     // Check new payouts
     const payouts = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
     if (payouts) payouts.forEach(p => {
-      showNotif('payout', 'Payout received · L' + p.level_num,
-        'from ' + p.sender_wallet.slice(0,6) + '...' + p.sender_wallet.slice(-4),
+      showNotif('payout', t('notif_payout') + p.level_num,
+        t('from') + ' ' + p.sender_wallet.slice(0,6) + '...' + p.sender_wallet.slice(-4),
         '+' + f(p.amount / 1e6));
     });
 
     // Check new slot fills on my levels
     const slots = await sbFetch('/rest/v1/slot_events?owner_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
     if (slots) slots.forEach(s => {
-      // Skip if already showed payout for same tx
       if (payouts && payouts.find(p => p.tx_hash === s.tx_hash)) return;
-      showNotif('slot', 'Slot ' + s.slot_num + ' filled · L' + s.level_num,
-        s.source_wallet.slice(0,6) + '...' + s.source_wallet.slice(-4) + ' joined', null);
+      showNotif('slot', t('slot') + ' ' + s.slot_num + ' ' + t('notif_slot') + s.level_num,
+        s.source_wallet.slice(0,6) + '...' + s.source_wallet.slice(-4) + ' ' + t('notif_joined'), null);
     });
 
     // Check new referrals
     const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
     if (refs) refs.forEach(r => {
-      showNotif('referral', 'New referral!',
-        r.referred_wallet.slice(0,6) + '...' + r.referred_wallet.slice(-4) + ' joined your network', null);
+      showNotif('referral', t('notif_new_ref'),
+        r.referred_wallet.slice(0,6) + '...' + r.referred_wallet.slice(-4) + ' ' + t('notif_joined_network'), null);
     });
 
     // Check spillovers to me
     const spills = await sbFetch('/rest/v1/spillovers?to_wallet=eq.' + wallet + '&created_at=gt.' + since + '&order=created_at.desc&limit=5');
     if (spills) spills.forEach(s => {
-      showNotif('spillover', 'Spillover · L' + s.level_num,
-        s.hops + ' hops from ' + s.from_wallet.slice(0,6) + '...',
+      showNotif('spillover', t('spillover_level') + s.level_num,
+        s.hops + ' ' + t('notif_hops') + ' ' + s.from_wallet.slice(0,6) + '...',
         '+' + f(s.amount / 1e6));
     });
   } catch (e) { /* silent */ }
