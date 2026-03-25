@@ -1409,7 +1409,7 @@ function renderLevels(containerId) {
     html += '</div>';
     html += '<div class="lc-price' + (lv.active ? '' : ' dim') + '">' + f(lv.price) + '</div>';
     html += '<div class="lc-pips">' + pips + '</div>';
-    html += '<div class="lc-meta">' + filled + '/4 slots</div>';
+    html += '<div class="lc-meta">' + filled + '/4 ' + t('slots') + '</div>';
     if (lv.frzState) html += '<div class="lc-frozen-badge">❄️ ' + f(lv.frozenAmt) + '</div>';
     html += '</div>';
   }
@@ -1444,14 +1444,14 @@ function selectLevel(n) {
   });
 
   let tags = '';
-  if (lv.active) tags += '<span class="ld-tag t-active">Active</span>';
-  else tags += '<span class="ld-tag t-inactive">Inactive</span>';
-  if (lv.frzState) tags += '<span class="ld-tag t-frozen">❄️ Frozen</span>';
-  if (isLast) tags += '<span class="ld-tag t-last">★ LAST</span>';
+  if (lv.active) tags += '<span class="ld-tag t-active">' + t('active') + '</span>';
+  else tags += '<span class="ld-tag t-inactive">' + t('inactive') + '</span>';
+  if (lv.frzState) tags += '<span class="ld-tag t-frozen">❄️ ' + t('dash_frozen') + '</span>';
+  if (isLast) tags += '<span class="ld-tag t-last">★ ' + t('last') + '</span>';
 
   const slotDescs = isLast
-    ? ['Payout to your sponsor', 'Payout (L17 — last level)', 'Payout (L17 — last level)', 'Spillover up the tree']
-    : ['Payout to your sponsor', lv.frzState ? 'Your funds held temporarily' : (lv.active && n < 17 && LEVELS[n] && LEVELS[n].active ? 'Payout (next level owned)' : 'Waiting...'), 'Auto-unlock or payout', 'Level resets — new cycle'];
+    ? [t('payout_to_sponsor'), t('payout_to_sponsor') + ' (L17)', t('payout_to_sponsor') + ' (L17)', 'Spillover']
+    : [t('payout_to_sponsor'), lv.frzState ? t('funds_held') : (lv.active && n < 17 && LEVELS[n] && LEVELS[n].active ? t('payout_next_owned') : t('waiting')), t('auto_unlock_or_payout'), t('level_resets')];
 
   let slotsHtml = '';
   const slotAddrs = lv.slotAddrs || ['','','',''];
@@ -1463,21 +1463,21 @@ function selectLevel(n) {
       else sc += ' s-on';
     }
     const addr = slotAddrs[s];
-    const shortAddr = addr ? addr.slice(0,6) + '...' + addr.slice(-4) : 'Waiting...';
+    const shortAddr = addr ? addr.slice(0,6) + '...' + addr.slice(-4) : t('waiting');
     slotsHtml += '<div class="' + sc + '">';
-    slotsHtml += '<div class="slot-num">Slot ' + (s + 1) + '</div>';
-    slotsHtml += '<div class="slot-who">' + (lv.slots[s] ? shortAddr : 'Waiting...') + '</div>';
+    slotsHtml += '<div class="slot-num">' + t('slot') + ' ' + (s + 1) + '</div>';
+    slotsHtml += '<div class="slot-who">' + (lv.slots[s] ? shortAddr : t('waiting')) + '</div>';
     slotsHtml += '<div class="slot-desc">' + slotDescs[s] + '</div>';
     slotsHtml += '</div>';
   }
 
-  let infoRows = '<div class="ld-row"><span class="lbl">Activation cost</span><span style="color:var(--orange)">' + f(buyCost(n)) + ' USDC</span></div>';
-  infoRows += '<div class="ld-row"><span class="lbl">Your sponsor receives</span><span style="color:var(--green)">' + f(sponsorGets(n)) + '</span></div>';
+  let infoRows = '<div class="ld-row"><span class="lbl">' + t('activation_cost') + '</span><span style="color:var(--orange)">' + f(buyCost(n)) + ' USDC</span></div>';
+  infoRows += '<div class="ld-row"><span class="lbl">' + t('sponsor_receives') + '</span><span style="color:var(--green)">' + f(sponsorGets(n)) + '</span></div>';
   if (!isLast && lv.frzState) {
-    infoRows += '<div class="ld-row"><span class="lbl">Auto-unlocks next level</span><span style="color:var(--frozen)">Level ' + (n + 1) + '</span></div>';
+    infoRows += '<div class="ld-row"><span class="lbl">' + t('auto_unlocks') + '</span><span style="color:var(--frozen)">' + t('level_activated') + ' ' + (n + 1) + '</span></div>';
   }
   if (isLast) {
-    infoRows += '<div class="ld-row"><span class="lbl">Last level</span><span style="color:var(--gold)">All slots pay out ✓</span></div>';
+    infoRows += '<div class="ld-row"><span class="lbl">' + t('last_level') + '</span><span style="color:var(--gold)">' + t('all_slots_payout') + ' ✓</span></div>';
   }
 
   // Auto-buy toggle (only for active levels 1-16)
@@ -1485,23 +1485,23 @@ function selectLevel(n) {
   if (lv.active && !isLast) {
     const checked = lv.autoBuy ? 'checked' : '';
     autoBuyHtml = '<div class="autobuy-toggle">' +
-      '<div><div class="ab-label">Auto-buy Level ' + (n + 1) + '</div>' +
-      '<div class="ab-hint">' + (lv.autoBuy ? 'Slot 2 will freeze for auto-purchase' : 'All slots pay out directly') + '</div></div>' +
+      '<div><div class="ab-label">' + t('auto_buy') + ' ' + (n + 1) + '</div>' +
+      '<div class="ab-hint">' + (lv.autoBuy ? t('funds_held') : t('all_slots_payout')) + '</div></div>' +
       '<label class="ab-switch"><input type="checkbox" ' + checked + ' onchange="toggleAutoBuy(' + n + ',this.checked)"><span class="ab-slider"></span></label></div>';
   }
 
   let actions = '';
   if (!lv.active) {
-    actions = '<button class="buy-btn" onclick="openModal(' + n + ')">' + walletSVG + ' Buy Level ' + n + ' &middot; ' + f(buyCost(n)) + '</button>';
+    actions = '<button class="buy-btn" onclick="openModal(' + n + ')">' + walletSVG + ' ' + t('buy_level') + ' ' + n + ' · ' + f(buyCost(n)) + '</button>';
   } else if (lv.frzState) {
-    actions = '<div style="color:var(--frozen);font-size:12px;font-weight:600;text-align:center;padding:8px">❄️ Waiting slot 3 → will auto-buy Level ' + (n + 1) + '</div>';
+    actions = '<div style="color:var(--frozen);font-size:12px;font-weight:600;text-align:center;padding:8px">❄️ ' + t('will_auto_buy') + ' ' + (n + 1) + '</div>';
   } else {
-    actions = '<button class="ghost-btn" style="width:100%;padding:10px" onclick="copyRef(this)">🔗 Share ref link</button>';
+    actions = '<button class="ghost-btn" style="width:100%;padding:10px" onclick="copyRef(this)">🔗 ' + t('share_ref_link') + '</button>';
   }
 
   panel.innerHTML = '<div class="ld-hdr">' +
     '<div class="ld-badge">L' + n + '</div>' +
-    '<div class="ld-info"><div class="ld-title">Level ' + n + '</div><div class="ld-price">Cost to activate: ' + f(buyCost(n)) + ' USDC</div><div class="ld-tags">' + tags + '</div></div></div>' +
+    '<div class="ld-info"><div class="ld-title">' + t('level_activated') + ' ' + n + '</div><div class="ld-price">' + t('activation_cost') + ': ' + f(buyCost(n)) + ' USDC</div><div class="ld-tags">' + tags + '</div></div></div>' +
     '<div class="slots-grid">' + slotsHtml + '</div>' +
     autoBuyHtml +
     '<div class="ld-info-box">' + infoRows + '</div>' +

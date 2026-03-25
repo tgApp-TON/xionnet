@@ -646,6 +646,81 @@ const T = {
     fr: 'Comment ça marche', de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
     ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
   },
+  // ==================== LEVEL DETAIL DYNAMIC ====================
+  slot: {
+    en: 'Slot', ru: 'Слот', ua: 'Слот', es: 'Espacio', pt: 'Espaço', fr: 'Emplacement',
+    de: 'Platz', pl: 'Slot', vi: 'Ô', ko: '슬롯', ja: 'スロット', hi: 'स्लॉट', zh: '插槽', tr: 'Slot',
+  },
+  payout_to_sponsor: {
+    en: 'Payout to your sponsor', ru: 'Выплата вашему спонсору', ua: 'Виплата вашому спонсору',
+    es: 'Pago a tu patrocinador', pt: 'Pagamento ao seu patrocinador', fr: 'Paiement à votre parrain',
+    de: 'Auszahlung an Ihren Sponsor', pl: 'Wypłata dla twojego sponsora', vi: 'Thanh toán cho người bảo trợ',
+    ko: '스폰서에게 지급', ja: 'スポンサーへの支払い', hi: 'आपके स्पॉन्सर को भुगतान', zh: '支付给赞助人', tr: 'Sponsorunuza ödeme',
+  },
+  funds_held: {
+    en: 'Your funds held temporarily', ru: 'Ваши средства временно заморожены', ua: 'Ваші кошти тимчасово заморожені',
+    es: 'Tus fondos retenidos temporalmente', pt: 'Seus fundos retidos temporariamente', fr: 'Vos fonds temporairement retenus',
+    de: 'Ihre Gelder vorübergehend einbehalten', pl: 'Twoje środki tymczasowo zamrożone', vi: 'Tiền tạm giữ',
+    ko: '자금 일시 보류', ja: '資金一時保留', hi: 'आपकी धनराशि अस्थायी रूप से रोकी गई', zh: '资金暂时冻结', tr: 'Fonlarınız geçici olarak tutuluyor',
+  },
+  payout_next_owned: {
+    en: 'Payout (next level owned)', ru: 'Выплата (следующий уровень куплен)', ua: 'Виплата (наступний рівень куплений)',
+    es: 'Pago (siguiente nivel adquirido)', pt: 'Pagamento (próximo nível adquirido)', fr: 'Paiement (niveau suivant acquis)',
+    de: 'Auszahlung (nächste Stufe vorhanden)', pl: 'Wypłata (kolejny poziom kupiony)', vi: 'Thanh toán (có cấp tiếp)',
+    ko: '지급 (다음 레벨 보유)', ja: '支払い (次レベル所有)', hi: 'भुगतान (अगला स्तर खरीदा)', zh: '支付（已有下一级）', tr: 'Ödeme (sonraki seviye var)',
+  },
+  auto_unlock_or_payout: {
+    en: 'Auto-unlock or payout', ru: 'Автооткрытие или выплата', ua: 'Автовідкриття або виплата',
+    es: 'Desbloqueo auto o pago', pt: 'Desbloqueio auto ou pagamento', fr: 'Déblocage auto ou paiement',
+    de: 'Auto-Freischaltung oder Auszahlung', pl: 'Autoodblokowanie lub wypłata', vi: 'Tự mở khóa hoặc thanh toán',
+    ko: '자동해제 또는 지급', ja: '自動解除または支払い', hi: 'ऑटो-अनलॉक या भुगतान', zh: '自动解锁或支付', tr: 'Otomatik açma veya ödeme',
+  },
+  level_resets: {
+    en: 'Level resets — new cycle', ru: 'Уровень перезапускается — новый цикл', ua: 'Рівень перезапускається — новий цикл',
+    es: 'Nivel se reinicia — nuevo ciclo', pt: 'Nível reinicia — novo ciclo', fr: 'Niveau réinitialisé — nouveau cycle',
+    de: 'Stufe zurückgesetzt — neuer Zyklus', pl: 'Poziom resetuje się — nowy cykl', vi: 'Cấp đặt lại — chu kỳ mới',
+    ko: '레벨 리셋 — 새 사이클', ja: 'レベルリセット — 新サイクル', hi: 'स्तर रीसेट — नया चक्र', zh: '级别重置 — 新周期', tr: 'Seviye sıfırlandı — yeni döngü',
+  },
+  slot_filled: {
+    en: 'filled', ru: 'заполнен', ua: 'заповнений', es: 'lleno', pt: 'preenchido', fr: 'rempli',
+    de: 'gefüllt', pl: 'wypełniony', vi: 'đã lấp', ko: '채워짐', ja: '充填済', hi: 'भरा', zh: '已填', tr: 'dolu',
+  },
+  last: {
+    en: 'LAST', ru: 'ПОСЛЕДНИЙ', ua: 'ОСТАННІЙ', es: 'ÚLTIMO', pt: 'ÚLTIMO', fr: 'DERNIER',
+    de: 'LETZTER', pl: 'OSTATNI', vi: 'CUỐI', ko: '마지막', ja: '最後', hi: 'अंतिम', zh: '最后', tr: 'SON',
+  },
+  all_slots_payout: {
+    en: 'All slots pay out', ru: 'Все слоты = выплата', ua: 'Всі слоти = виплата', es: 'Todos los espacios pagan',
+    pt: 'Todos os espaços pagam', fr: 'Tous les emplacements paient', de: 'Alle Plätze zahlen aus',
+    pl: 'Wszystkie sloty = wypłata', vi: 'Tất cả ô đều thanh toán', ko: '모든 슬롯 지급',
+    ja: '全スロット支払い', hi: 'सभी स्लॉट भुगतान', zh: '所有插槽都支付', tr: 'Tüm slotlar öder',
+  },
+  will_auto_buy: {
+    en: 'Waiting slot 3 → will auto-buy Level', ru: 'Ожидание слота 3 → автопокупка Уровня', ua: 'Очікування слоту 3 → автокупівля Рівня',
+    es: 'Esperando espacio 3 → comprará automáticamente Nivel', pt: 'Aguardando espaço 3 → comprará automaticamente Nível',
+    fr: 'En attente emplacement 3 → achat auto Niveau', de: 'Warte auf Platz 3 → kauft automatisch Stufe',
+    pl: 'Oczekiwanie slot 3 → autokupno Poziomu', vi: 'Đợi ô 3 → tự động mua Cấp',
+    ko: '슬롯 3 대기 → 자동구매 레벨', ja: 'スロット3待機 → 自動購入レベル', hi: 'स्लॉट 3 की प्रतीक्षा → ऑटो-खरीद स्तर',
+    zh: '等待插槽3 → 自动购买级别', tr: 'Slot 3 bekleniyor → otomatik Seviye al',
+  },
+  activation_cost: {
+    en: 'Activation cost', ru: 'Стоимость активации', ua: 'Вартість активації', es: 'Costo de activación', pt: 'Custo de ativação',
+    fr: "Coût d'activation", de: 'Aktivierungskosten', pl: 'Koszt aktywacji', vi: 'Chi phí kích hoạt',
+    ko: '활성화 비용', ja: '有効化コスト', hi: 'सक्रियण लागत', zh: '激活成本', tr: 'Etkinleştirme maliyeti',
+  },
+  last_level: {
+    en: 'Last level', ru: 'Последний уровень', ua: 'Останній рівень', es: 'Último nivel', pt: 'Último nível',
+    fr: 'Dernier niveau', de: 'Letzte Stufe', pl: 'Ostatni poziom', vi: 'Cấp cuối',
+    ko: '마지막 레벨', ja: '最終レベル', hi: 'अंतिम स्तर', zh: '最后级别', tr: 'Son seviye',
+  },
+  auto_unlocks: {
+    en: 'Auto-unlocks next level', ru: 'Автооткрытие следующего уровня', ua: 'Автовідкриття наступного рівня',
+    es: 'Desbloqueo automático del siguiente nivel', pt: 'Desbloqueio automático do próximo nível',
+    fr: 'Déblocage automatique du niveau suivant', de: 'Automatische Freischaltung der nächsten Stufe',
+    pl: 'Automatyczne odblokowanie kolejnego poziomu', vi: 'Tự động mở khóa cấp tiếp',
+    ko: '다음 레벨 자동 해제', ja: '次のレベルを自動解除', hi: 'अगला स्तर ऑटो-अनलॉक', zh: '自动解锁下一级', tr: 'Sonraki seviyeyi otomatik aç',
+  },
+
   // ==================== REMAINING UI ====================
   ref: {
     en: 'Ref', ru: 'Реф', ua: 'Реф', es: 'Ref', pt: 'Ref', fr: 'Réf',
