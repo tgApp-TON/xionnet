@@ -16,6 +16,7 @@ const LANGS = {
   hi: { name: 'हिन्दी', flag: '🇮🇳' },
   zh: { name: '中文', flag: '🇨🇳' },
   tr: { name: 'Türkçe', flag: '🇹🇷' },
+  ar: { name: 'العربية', flag: '🇦🇪' },
 };
 
 const T = {
@@ -1003,7 +1004,7 @@ function detectLang() {
   const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   const short = browserLang.split('-')[0];
   // Map browser codes to our codes
-  const map = { en:'en', ru:'ru', uk:'ua', ua:'ua', es:'es', pt:'pt', fr:'fr', de:'de', pl:'pl', vi:'vi', ko:'ko', ja:'ja', hi:'hi', zh:'zh', tr:'tr' };
+  const map = { en:'en', ru:'ru', uk:'ua', ua:'ua', es:'es', pt:'pt', fr:'fr', de:'de', pl:'pl', vi:'vi', ko:'ko', ja:'ja', hi:'hi', zh:'zh', tr:'tr', ar:'ar' };
   return map[short] || 'en';
 }
 let currentLang = detectLang();

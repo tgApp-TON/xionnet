@@ -487,7 +487,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Network</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'referrals')">View</button></div>
+    <div class="card-hdr"><span class="card-title" data-t="dash_network">Network</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'referrals')" data-t="view">View</button></div>
     <div id="dashNetworkCard">
       <div style="padding:10px;text-align:center;color:var(--text3);font-size:12px" data-t="no_referrals_dash">No referrals yet</div>
     </div>
@@ -505,7 +505,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <div id="screen-levels" class="screen">
   <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
     <div style="font-size:14px;font-weight:800" data-t="my_levels">My Levels</div>
-    <div style="font-size:11px;color:var(--text3)">17 levels &middot; auto-purchase always on</div>
+    <div style="font-size:11px;color:var(--text3)" data-t="levels_subtitle">17 levels · auto-purchase always on</div>
   </div>
   <div id="lvlDetail"></div>
   <div class="lvl-grid" id="main-lvls"></div>
@@ -530,9 +530,9 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
   <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
-    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl">Total</div></div>
-    <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl">Active</div></div>
-    <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl">Pending</div></div>
+    <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0</div><div class="lbl" data-t="total">Total</div></div>
+    <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl" data-t="active">Active</div></div>
+    <div class="ref-stat"><div class="val" id="refStatPending" style="color:var(--orange)">0</div><div class="lbl" data-t="pending">Pending</div></div>
     <div class="ref-stat"><div class="val" id="refStatEarned" style="color:var(--green)">$0</div><div class="lbl">Earned</div></div>
   </div>
   <button class="ghost-btn" id="treeBtn" style="width:100%;padding:10px;margin-bottom:12px;display:none" onclick="openTreeModal()">
