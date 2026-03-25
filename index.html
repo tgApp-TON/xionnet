@@ -1588,7 +1588,8 @@ async function connectWallet(btn) {
     // Update UI
     const short = connectedWallet.slice(0, 6) + '...' + connectedWallet.slice(-4);
     document.querySelector('.wp-addr').textContent = short;
-    document.querySelector('.wp-badge').textContent = CHAIN_NAME;
+    const wpBadge = document.querySelector('.wp-badge');
+    if (wpBadge) wpBadge.textContent = CHAIN_NAME;
 
     // Show mint button on testnet
     if (IS_TESTNET) document.getElementById('mintBtn').style.display = 'flex';
