@@ -646,6 +646,116 @@ const T = {
     fr: 'Comment ça marche', de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
     ko: '작동 방식', ja: '仕組み', hi: 'कैसे काम करता है', zh: '如何运作', tr: 'Nasıl çalışır',
   },
+  // ==================== REMAINING UI ====================
+  ref: {
+    en: 'Ref', ru: 'Реф', ua: 'Реф', es: 'Ref', pt: 'Ref', fr: 'Réf',
+    de: 'Ref', pl: 'Ref', vi: 'Ref', ko: '추천', ja: '紹介', hi: 'रेफ', zh: '推荐', tr: 'Ref',
+  },
+  bonus_timer_text: {
+    en: 'Buy 7 levels in', ru: 'Купи 7 уровней за', ua: 'Купи 7 рівнів за', es: 'Compra 7 niveles en',
+    pt: 'Compre 7 níveis em', fr: 'Achetez 7 niveaux en', de: 'Kaufe 7 Stufen in', pl: 'Kup 7 poziomów w',
+    vi: 'Mua 7 cấp trong', ko: '7레벨을 구매', ja: '7レベルを購入', hi: '7 लेवल खरीदें', zh: '购买7个级别', tr: '7 seviye al',
+  },
+  l8_free: {
+    en: '→ L8 FREE', ru: '→ L8 БЕСПЛАТНО', ua: '→ L8 БЕЗКОШТОВНО', es: '→ L8 GRATIS', pt: '→ L8 GRÁTIS',
+    fr: '→ L8 GRATUIT', de: '→ L8 KOSTENLOS', pl: '→ L8 ZA DARMO', vi: '→ L8 MIỄN PHÍ',
+    ko: '→ L8 무료', ja: '→ L8 無料', hi: '→ L8 मुफ्त', zh: '→ L8 免费', tr: '→ L8 ÜCRETSİZ',
+  },
+  no_referrals_dash: {
+    en: 'No referrals yet', ru: 'Пока нет рефералов', ua: 'Ще немає рефералів', es: 'Sin referidos aún',
+    pt: 'Sem indicações', fr: 'Pas de filleuls', de: 'Keine Empfehlungen', pl: 'Brak poleceń',
+    vi: 'Chưa có giới thiệu', ko: '추천인 없음', ja: '紹介なし', hi: 'कोई रेफरल नहीं', zh: '暂无推荐', tr: 'Referans yok',
+  },
+  participants: {
+    en: 'Participants', ru: 'Участники', ua: 'Учасники', es: 'Participantes', pt: 'Participantes', fr: 'Participants',
+    de: 'Teilnehmer', pl: 'Uczestnicy', vi: 'Người tham gia', ko: '참가자', ja: '参加者', hi: 'प्रतिभागी', zh: '参与者', tr: 'Katılımcılar',
+  },
+  frozen_now: {
+    en: 'Frozen Now', ru: 'Заморожено сейчас', ua: 'Заморожено зараз', es: 'Congelado ahora', pt: 'Congelado agora',
+    fr: 'Gelé actuellement', de: 'Aktuell eingefroren', pl: 'Zamrożone teraz', vi: 'Đang đóng băng',
+    ko: '현재 동결', ja: '現在凍結中', hi: 'अभी फ्रोज़न', zh: '当前冻结', tr: 'Şu an dondurulmuş',
+  },
+  system_fees: {
+    en: 'System Fees', ru: 'Системные сборы', ua: 'Системні збори', es: 'Tarifas del sistema', pt: 'Taxas do sistema',
+    fr: 'Frais système', de: 'Systemgebühren', pl: 'Opłaty systemowe', vi: 'Phí hệ thống',
+    ko: '시스템 수수료', ja: 'システム手数料', hi: 'सिस्टम शुल्क', zh: '系统费用', tr: 'Sistem ücretleri',
+  },
+  paid_all: {
+    en: 'Paid out to all participants', ru: 'Выплачено всем участникам', ua: 'Виплачено всім учасникам',
+    es: 'Pagado a todos los participantes', pt: 'Pago a todos os participantes', fr: 'Payé à tous les participants',
+    de: 'An alle Teilnehmer ausgezahlt', pl: 'Wypłacono wszystkim uczestnikom', vi: 'Đã thanh toán cho tất cả',
+    ko: '모든 참가자에게 지급', ja: '全参加者に支払済み', hi: 'सभी प्रतिभागियों को भुगतान', zh: '已支付给所有参与者', tr: 'Tüm katılımcılara ödendi',
+  },
+  community_earned: {
+    en: 'Total USDC earned by the community', ru: 'Всего USDC заработано сообществом', ua: 'Всього USDC зароблено спільнотою',
+    es: 'Total USDC ganado por la comunidad', pt: 'Total USDC ganho pela comunidade', fr: 'Total USDC gagné par la communauté',
+    de: 'Gesamt von der Community verdiente USDC', pl: 'Łącznie USDC zarobione przez społeczność', vi: 'Tổng USDC cộng đồng kiếm được',
+    ko: '커뮤니티 총 USDC 수익', ja: 'コミュニティ総USDC収益', hi: 'समुदाय द्वारा कमाया गया कुल USDC', zh: '社区总USDC收入', tr: 'Topluluk tarafından kazanılan toplam USDC',
+  },
+  level_locked: {
+    en: 'Level locked', ru: 'Уровень заблокирован', ua: 'Рівень заблокований', es: 'Nivel bloqueado', pt: 'Nível bloqueado',
+    fr: 'Niveau verrouillé', de: 'Stufe gesperrt', pl: 'Poziom zablokowany', vi: 'Cấp bị khóa',
+    ko: '레벨 잠김', ja: 'レベルロック', hi: 'स्तर लॉक', zh: '级别已锁定', tr: 'Seviye kilitli',
+  },
+  level_requires: {
+    en: 'requires Level', ru: 'требуется Уровень', ua: 'потрібен Рівень', es: 'requiere Nivel', pt: 'requer Nível',
+    fr: 'nécessite Niveau', de: 'erfordert Stufe', pl: 'wymaga Poziomu', vi: 'yêu cầu Cấp',
+    ko: '필요 레벨', ja: '必要レベル', hi: 'स्तर आवश्यक', zh: '需要级别', tr: 'gerekli Seviye',
+  },
+  buy_first: {
+    en: 'Buy first:', ru: 'Сначала купите:', ua: 'Спочатку купіть:', es: 'Compra primero:', pt: 'Compre primeiro:',
+    fr: "Achetez d'abord:", de: 'Zuerst kaufen:', pl: 'Najpierw kup:', vi: 'Mua trước:',
+    ko: '먼저 구매:', ja: 'まず購入:', hi: 'पहले खरीदें:', zh: '先购买:', tr: 'Önce satın al:',
+  },
+  go_to_level: {
+    en: 'Go to Level', ru: 'Перейти к уровню', ua: 'Перейти до рівня', es: 'Ir al Nivel', pt: 'Ir para o Nível',
+    fr: 'Aller au Niveau', de: 'Gehe zu Stufe', pl: 'Przejdź do Poziomu', vi: 'Đi đến Cấp',
+    ko: '레벨로 이동', ja: 'レベルへ移動', hi: 'स्तर पर जाएं', zh: '前往级别', tr: 'Seviyeye git',
+  },
+  telegram: {
+    en: 'Telegram', ru: 'Telegram', ua: 'Telegram', es: 'Telegram', pt: 'Telegram', fr: 'Telegram',
+    de: 'Telegram', pl: 'Telegram', vi: 'Telegram', ko: '텔레그램', ja: 'テレグラム', hi: 'टेलीग्राम', zh: 'Telegram', tr: 'Telegram',
+  },
+  whatsapp: {
+    en: 'WhatsApp', ru: 'WhatsApp', ua: 'WhatsApp', es: 'WhatsApp', pt: 'WhatsApp', fr: 'WhatsApp',
+    de: 'WhatsApp', pl: 'WhatsApp', vi: 'WhatsApp', ko: '왓츠앱', ja: 'WhatsApp', hi: 'वॉट्सऐप', zh: 'WhatsApp', tr: 'WhatsApp',
+  },
+  email: {
+    en: 'Email', ru: 'Почта', ua: 'Пошта', es: 'Correo', pt: 'Email', fr: 'Email',
+    de: 'E-Mail', pl: 'Email', vi: 'Email', ko: '이메일', ja: 'メール', hi: 'ईमेल', zh: '邮件', tr: 'E-posta',
+  },
+  sms: {
+    en: 'SMS', ru: 'SMS', ua: 'SMS', es: 'SMS', pt: 'SMS', fr: 'SMS',
+    de: 'SMS', pl: 'SMS', vi: 'SMS', ko: 'SMS', ja: 'SMS', hi: 'SMS', zh: '短信', tr: 'SMS',
+  },
+  bonus_program: {
+    en: 'Bonus Program', ru: 'Бонусная программа', ua: 'Бонусна програма', es: 'Programa de bonificación', pt: 'Programa de bônus',
+    fr: 'Programme bonus', de: 'Bonusprogramm', pl: 'Program bonusowy', vi: 'Chương trình thưởng',
+    ko: '보너스 프로그램', ja: 'ボーナスプログラム', hi: 'बोनस प्रोग्राम', zh: '奖励计划', tr: 'Bonus programı',
+  },
+  faq_languages_q: {
+    en: 'What languages are supported?', ru: 'Какие языки поддерживаются?', ua: 'Які мови підтримуються?',
+    es: '¿Qué idiomas se admiten?', pt: 'Quais idiomas são suportados?', fr: 'Quelles langues sont prises en charge ?',
+    de: 'Welche Sprachen werden unterstützt?', pl: 'Jakie języki są obsługiwane?', vi: 'Hỗ trợ ngôn ngữ nào?',
+    ko: '어떤 언어가 지원되나요?', ja: 'どの言語がサポートされていますか？', hi: 'कौन सी भाषाएं समर्थित हैं?', zh: '支持哪些语言？', tr: 'Hangi diller destekleniyor?',
+  },
+  faq_languages_a: {
+    en: 'XionNET supports 14 languages: English, Russian, Ukrainian, Spanish, Portuguese, French, German, Polish, Vietnamese, Korean, Japanese, Hindi, Chinese, and Turkish. The app auto-detects your browser language. You can also change it manually in Settings.',
+    ru: 'XionNET поддерживает 14 языков: английский, русский, украинский, испанский, португальский, французский, немецкий, польский, вьетнамский, корейский, японский, хинди, китайский и турецкий. Приложение автоматически определяет язык браузера. Также можно сменить вручную в Настройках.',
+    ua: 'XionNET підтримує 14 мов: англійська, російська, українська, іспанська, португальська, французька, німецька, польська, в\'єтнамська, корейська, японська, хінді, китайська та турецька. Додаток автоматично визначає мову браузера. Також можна змінити вручну в Налаштуваннях.',
+    es: 'XionNET soporta 14 idiomas: inglés, ruso, ucraniano, español, portugués, francés, alemán, polaco, vietnamita, coreano, japonés, hindi, chino y turco. La app detecta automáticamente el idioma del navegador. También puedes cambiarlo en Ajustes.',
+    pt: 'XionNET suporta 14 idiomas: inglês, russo, ucraniano, espanhol, português, francês, alemão, polonês, vietnamita, coreano, japonês, hindi, chinês e turco. O app detecta automaticamente o idioma do navegador. Você também pode alterá-lo em Configurações.',
+    fr: 'XionNET prend en charge 14 langues : anglais, russe, ukrainien, espagnol, portugais, français, allemand, polonais, vietnamien, coréen, japonais, hindi, chinois et turc. L\'app détecte automatiquement la langue du navigateur. Vous pouvez aussi la changer dans les Paramètres.',
+    de: 'XionNET unterstützt 14 Sprachen: Englisch, Russisch, Ukrainisch, Spanisch, Portugiesisch, Französisch, Deutsch, Polnisch, Vietnamesisch, Koreanisch, Japanisch, Hindi, Chinesisch und Türkisch. Die App erkennt automatisch die Browsersprache. Sie können sie auch in den Einstellungen ändern.',
+    pl: 'XionNET obsługuje 14 języków: angielski, rosyjski, ukraiński, hiszpański, portugalski, francuski, niemiecki, polski, wietnamski, koreański, japoński, hindi, chiński i turecki. Aplikacja automatycznie wykrywa język przeglądarki. Można też zmienić ręcznie w Ustawieniach.',
+    vi: 'XionNET hỗ trợ 14 ngôn ngữ: Anh, Nga, Ukraine, Tây Ban Nha, Bồ Đào Nha, Pháp, Đức, Ba Lan, Việt, Hàn, Nhật, Hindi, Trung, và Thổ Nhĩ Kỳ. Ứng dụng tự phát hiện ngôn ngữ trình duyệt. Bạn cũng có thể thay đổi trong Cài đặt.',
+    ko: 'XionNET은 14개 언어를 지원합니다: 영어, 러시아어, 우크라이나어, 스페인어, 포르투갈어, 프랑스어, 독일어, 폴란드어, 베트남어, 한국어, 일본어, 힌디어, 중국어, 터키어. 브라우저 언어를 자동 감지합니다. 설정에서 수동으로 변경할 수도 있습니다.',
+    ja: 'XionNETは14言語をサポート：英語、ロシア語、ウクライナ語、スペイン語、ポルトガル語、フランス語、ドイツ語、ポーランド語、ベトナム語、韓国語、日本語、ヒンディー語、中国語、トルコ語。ブラウザ言語を自動検出します。設定で手動変更も可能です。',
+    hi: 'XionNET 14 भाषाओं का समर्थन करता है: अंग्रेजी, रूसी, यूक्रेनी, स्पेनिश, पुर्तगाली, फ्रेंच, जर्मन, पोलिश, वियतनामी, कोरियाई, जापानी, हिंदी, चीनी, और तुर्की। ऐप ब्राउज़र भाषा का स्वतः पता लगाता है। सेटिंग्स में मैन्युअल भी बदल सकते हैं।',
+    zh: 'XionNET支持14种语言：英语、俄语、乌克兰语、西班牙语、葡萄牙语、法语、德语、波兰语、越南语、韩语、日语、印地语、中文和土耳其语。应用会自动检测浏览器语言。您也可以在设置中手动更改。',
+    tr: 'XionNET 14 dili destekler: İngilizce, Rusça, Ukraynaca, İspanyolca, Portekizce, Fransızca, Almanca, Lehçe, Vietnamca, Korece, Japonca, Hintçe, Çince ve Türkçe. Uygulama tarayıcı dilini otomatik algılar. Ayarlardan da değiştirebilirsiniz.',
+  },
+
   // ==================== FAQ ANSWERS ====================
   faq_autounlock_a: {
     en: 'When slot 2 fills and you don\'t own the next level, your funds are temporarily held. When slot 3 fills, both payments combine to auto-purchase the next level — completely free, no activation fee charged. Two payments at level N = one next level.',
@@ -810,7 +920,18 @@ const T = {
 };
 
 // Get translation for current language
-let currentLang = localStorage.getItem('xn_lang') || 'en';
+// Auto-detect language from browser/system
+function detectLang() {
+  const saved = localStorage.getItem('xn_lang');
+  if (saved && LANGS[saved]) return saved;
+  // Try browser language
+  const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  const short = browserLang.split('-')[0];
+  // Map browser codes to our codes
+  const map = { en:'en', ru:'ru', uk:'ua', ua:'ua', es:'es', pt:'pt', fr:'fr', de:'de', pl:'pl', vi:'vi', ko:'ko', ja:'ja', hi:'hi', zh:'zh', tr:'tr' };
+  return map[short] || 'en';
+}
+let currentLang = detectLang();
 
 function t(key) {
   const entry = T[key];
