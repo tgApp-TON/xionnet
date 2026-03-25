@@ -482,7 +482,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
+    <div class="card-hdr"><span class="card-title" data-t="dash_level_overview">Level Overview</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[1],'levels')">Full view</button></div>
     <div class="lvl-grid" id="dash-lvls"></div>
   </div>
 
@@ -494,9 +494,9 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card">
-    <div class="card-hdr"><span class="card-title">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
+    <div class="card-hdr"><span class="card-title" data-t="dash_recent">Recent Activity</span><button class="ghost-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'history')">All</button></div>
     <div class="fi-feed" id="dashRecentFeed">
-      <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No activity yet</div>
+      <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px" data-t="no_activity">No activity yet</div>
     </div>
   </div>
 </div>
@@ -504,7 +504,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <!-- ==================== LEVELS ==================== -->
 <div id="screen-levels" class="screen">
   <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
-    <div style="font-size:14px;font-weight:800">My Levels</div>
+    <div style="font-size:14px;font-weight:800" data-t="my_levels">My Levels</div>
     <div style="font-size:11px;color:var(--text3)">17 levels &middot; auto-purchase always on</div>
   </div>
   <div id="lvlDetail"></div>
@@ -514,13 +514,13 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <!-- ==================== HISTORY ==================== -->
 <div id="screen-history" class="screen">
   <div class="filter-chips">
-    <button class="chip on" onclick="filterHistory(this,'all')">All</button>
-    <button class="chip" onclick="filterHistory(this,'payout')">💰 Payouts</button>
-    <button class="chip" onclick="filterHistory(this,'frozen')">❄️ Frozen</button>
-    <button class="chip" onclick="filterHistory(this,'spillover')">⬆️ Spillover</button>
-    <button class="chip" onclick="filterHistory(this,'reactivation')">🔄 Reactivation</button>
-    <button class="chip" onclick="filterHistory(this,'bonus')" id="bonusFilterChip" style="display:none">🎁 Bonus</button>
-    <button class="chip" onclick="filterHistory(this,'auto')">⚡ Auto-open</button>
+    <button class="chip on" onclick="filterHistory(this,'all')" data-t="all">All</button>
+    <button class="chip" onclick="filterHistory(this,'payout')" data-t="payouts">💰 Payouts</button>
+    <button class="chip" onclick="filterHistory(this,'frozen')" data-t="frozen_filter">❄️ Frozen</button>
+    <button class="chip" onclick="filterHistory(this,'spillover')" data-t="spillover_filter">⬆️ Spillover</button>
+    <button class="chip" onclick="filterHistory(this,'reactivation')" data-t="reactivation_filter">🔄 Reactivation</button>
+    <button class="chip" onclick="filterHistory(this,'bonus')" id="bonusFilterChip" style="display:none" data-t="bonus_filter">🎁 Bonus</button>
+    <button class="chip" onclick="filterHistory(this,'auto')" data-t="auto_open">⚡ Auto-open</button>
   </div>
   <div class="card" style="padding:0;overflow:hidden" id="historyFeed">
     <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No activity yet</div>
@@ -540,7 +540,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     View Referral Tree
   </button>
   <div id="refListContainer">
-    <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No referrals yet. Share your link!</div>
+    <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px" data-t="no_referrals">No referrals yet. Share your link!</div>
   </div>
 </div>
 
@@ -559,13 +559,13 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div class="card-title">My Earnings</div>
+      <div class="card-title" data-t="my_earnings">My Earnings</div>
       <div style="display:flex;gap:4px;flex-wrap:wrap">
-        <button class="chip on" onclick="switchChart(this,'all')">All</button>
-        <button class="chip" onclick="switchChart(this,'day')">Today</button>
-        <button class="chip" onclick="switchChart(this,'week')">Week</button>
-        <button class="chip" onclick="switchChart(this,'month')">Month</button>
-        <button class="chip" onclick="switchChart(this,'year')">Year</button>
+        <button class="chip on" onclick="switchChart(this,'all')" data-t="all">All</button>
+        <button class="chip" onclick="switchChart(this,'day')" data-t="today">Today</button>
+        <button class="chip" onclick="switchChart(this,'week')" data-t="week">Week</button>
+        <button class="chip" onclick="switchChart(this,'month')" data-t="month">Month</button>
+        <button class="chip" onclick="switchChart(this,'year')" data-t="year">Year</button>
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;margin:12px 0">
@@ -577,39 +577,39 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <!-- EARNINGS CALCULATOR -->
   <div class="card">
-    <div class="card-title" style="margin-bottom:12px">Earnings Calculator</div>
+    <div class="card-title" style="margin-bottom:12px" data-t="earnings_calc">Earnings Calculator</div>
 
     <div style="margin-bottom:12px">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Your direct referrals</div>
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px" data-t="your_direct_refs">Your direct referrals</div>
       <input type="range" id="calcRefs" min="1" max="50" value="10" oninput="runCalc()" style="width:100%;accent-color:var(--poly)">
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>1</span><span id="calcRefsVal" style="color:var(--poly2);font-weight:700">10</span><span>50</span></div>
     </div>
 
     <div style="margin-bottom:12px">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Each referral brings</div>
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px" data-t="each_ref_brings">Each referral brings</div>
       <input type="range" id="calcSubs" min="0" max="30" value="5" oninput="runCalc()" style="width:100%;accent-color:var(--green)">
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>0</span><span id="calcSubsVal" style="color:var(--green);font-weight:700">5</span><span>30</span></div>
     </div>
 
     <div style="margin-bottom:14px">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Everyone buys up to level</div>
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px" data-t="everyone_buys_to">Everyone buys up to level</div>
       <input type="range" id="calcMaxLvl" min="1" max="17" value="7" oninput="runCalc()" style="width:100%;accent-color:var(--gold)">
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>L1</span><span id="calcMaxLvlVal" style="color:var(--gold);font-weight:700">L7</span><span>L17</span></div>
     </div>
 
     <div style="display:flex;gap:8px;margin-bottom:12px">
       <div style="flex:1;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase">Network size</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase" data-t="network_size">Network size</div>
         <div style="font-size:18px;font-weight:900;color:var(--poly2)" id="calcNetwork">60</div>
       </div>
       <div style="flex:1;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase">Your investment</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase" data-t="your_investment">Your investment</div>
         <div style="font-size:18px;font-weight:900;color:var(--orange)" id="calcInvest">$0</div>
       </div>
     </div>
 
     <div style="background:linear-gradient(135deg,var(--bg3),var(--bg4));border:1px solid rgba(6,214,160,.2);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Estimated earnings</div>
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px" data-t="estimated_earnings">Estimated earnings</div>
       <div style="font-size:36px;font-weight:900;color:var(--green);letter-spacing:-1px;text-shadow:0 0 20px rgba(6,214,160,.3)" id="calcEarnings">$0</div>
       <div style="font-size:12px;color:var(--poly2);font-weight:700;margin-top:4px" id="calcROI">ROI: ×0</div>
     </div>
@@ -618,9 +618,9 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   </div>
 
   <div class="card" style="padding:0;overflow:hidden">
-    <div style="padding:14px 14px 0;font-weight:800;font-size:13px;margin-bottom:6px">Leaderboard</div>
+    <div style="padding:14px 14px 0;font-weight:800;font-size:13px;margin-bottom:6px" data-t="leaderboard">Leaderboard</div>
     <div id="leaderboardList">
-      <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No data yet</div>
+      <div style="padding:20px;text-align:center;color:var(--text3);font-size:12px" data-t="no_data">No data yet</div>
     </div>
   </div>
 </div>
@@ -836,7 +836,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
         <text x="60" y="84" text-anchor="middle" font-family="Syne,sans-serif" font-weight="900" font-size="16" fill="#fff" style="animation:giftBounce 2s ease-in-out infinite">L8</text>
       </svg>
     </div>
-    <div class="congrats-title">Level 8 Unlocked FREE!</div>
+    <div class="congrats-title" data-t="congrats_title">Level 8 Unlocked FREE!</div>
     <div class="congrats-sub">You bought 7 levels within 180 minutes and earned a free Level 8 activation. Your sponsor received nothing for this — it's pure bonus for you!</div>
     <div class="congrats-value" style="position:relative;overflow:hidden;padding:20px 14px">
       <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%)">
@@ -850,7 +850,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
           <circle cx="155" cy="20" r="1.5" fill="var(--poly2)" style="animation:spark4 2.1s ease-out infinite"/>
         </svg>
       </div>
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">You saved</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px" data-t="you_saved">You saved</div>
       <div style="font-size:48px;font-weight:900;color:var(--green);letter-spacing:-2px;line-height:1;text-shadow:0 0 30px rgba(6,214,160,.4),0 0 60px rgba(6,214,160,.2)">$422.40</div>
       <div style="display:flex;justify-content:center;gap:12px;margin-top:10px">
         <div style="background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--green)">$384 Level 8</div>
@@ -866,14 +866,14 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <div class="ref-sheet">
     <div class="modal-handle"></div>
     <button class="modal-close" onclick="closeRefModal()">✕</button>
-    <div style="text-align:center;font-weight:900;font-size:16px;margin-bottom:4px">Share Referral Link</div>
-    <div style="text-align:center;font-size:11px;color:var(--text3);margin-bottom:8px">Invite friends and earn from their activity</div>
+    <div style="text-align:center;font-weight:900;font-size:16px;margin-bottom:4px" data-t="share_title">Share Referral Link</div>
+    <div style="text-align:center;font-size:11px;color:var(--text3);margin-bottom:8px" data-t="share_sub">Invite friends and earn from their activity</div>
     <div class="ref-qr"><canvas id="qrCanvas"></canvas></div>
     <div class="ref-url-box">
       <div class="ref-url-text" id="refUrlText">https://xionnet.vercel.app?ref=0x...</div>
       <button class="ref-copy-btn" onclick="copyRefLink(this)">Copy</button>
     </div>
-    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Share via</div>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px" data-t="share_via">Share via</div>
     <div class="ref-share-grid">
       <a class="ref-share-btn" id="shareTelegram" target="_blank">
         <div class="rs-icon" style="background:rgba(0,136,204,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#0088cc"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.492-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
@@ -912,7 +912,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       <div class="m-step" id="mStep2"><div class="m-step-num" id="ms2n">2</div><div><div class="m-step-text">Activate Level</div><div class="m-step-sub">Confirm purchase transaction</div></div></div>
     </div>
     <div class="modal-btns">
-      <button class="ghost-btn" onclick="closeModal()">Cancel</button>
+      <button class="ghost-btn" onclick="closeModal()" data-t="cancel">Cancel</button>
       <button class="buy-btn" id="modalAction" onclick="doStep()"><span class="btn-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Approve USDC</button>
     </div>
   </div>
@@ -923,18 +923,18 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <div class="settings-sheet">
     <div class="modal-handle"></div>
     <button class="modal-close" onclick="closeSettings()">✕</button>
-    <div style="font-weight:900;font-size:16px;margin-bottom:16px">Settings</div>
+    <div style="font-weight:900;font-size:16px;margin-bottom:16px" data-t="settings">Settings</div>
 
     <div class="setting-row">
-      <div><div class="setting-label">Theme</div><div class="setting-sub">Switch between Dark and B&W</div></div>
+      <div><div class="setting-label" data-t="theme">Theme</div><div class="setting-sub" data-t="theme_sub">Switch between Dark and B&W</div></div>
       <div style="display:flex;gap:6px">
-        <button class="chip on" id="themeDark" onclick="setTheme('dark')">Dark</button>
-        <button class="chip" id="themeBW" onclick="setTheme('bw')">B&W</button>
+        <button class="chip on" id="themeDark" onclick="setTheme('dark')" data-t="dark">Dark</button>
+        <button class="chip" id="themeBW" onclick="setTheme('bw')" data-t="bw">B&W</button>
       </div>
     </div>
 
     <div class="setting-row">
-      <div><div class="setting-label">Sound</div><div class="setting-sub">Sounds on actions and notifications</div></div>
+      <div><div class="setting-label" data-t="sound">Sound</div><div class="setting-sub" data-t="sound_sub">Sounds on actions and notifications</div></div>
       <label class="ab-switch"><input type="checkbox" id="soundToggle" checked onchange="toggleSound(this.checked)"><span class="ab-slider"></span></label>
     </div>
 
@@ -953,7 +953,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <!-- ==================== TREE FULLSCREEN ==================== -->
 <div id="treeModal" class="hidden" style="position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
-    <div style="font-weight:900;font-size:15px">Referral Tree</div>
+    <div style="font-weight:900;font-size:15px" data-t="view_tree">Referral Tree</div>
     <button class="modal-close" onclick="closeTreeModal()" style="position:static">✕</button>
   </div>
   <div id="treeZoomWrap" style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:20px;touch-action:manipulation">
@@ -962,10 +962,10 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     </div>
   </div>
   <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-    <span style="font-size:10px;color:var(--text3)">Pinch to zoom</span>
+    <span style="font-size:10px;color:var(--text3)" data-t="pinch_zoom">Pinch to zoom</span>
     <div style="display:flex;gap:8px">
       <button class="ghost-btn" onclick="treeZoom(-0.2)" style="padding:4px 10px;font-size:14px">−</button>
-      <button class="ghost-btn" onclick="treeZoomReset()" style="padding:4px 10px;font-size:10px">Reset</button>
+      <button class="ghost-btn" onclick="treeZoomReset()" style="padding:4px 10px;font-size:10px" data-t="reset">Reset</button>
       <button class="ghost-btn" onclick="treeZoom(0.2)" style="padding:4px 10px;font-size:14px">+</button>
     </div>
   </div>

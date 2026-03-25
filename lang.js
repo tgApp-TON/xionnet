@@ -431,6 +431,79 @@ const T = {
     de: 'Automatischer Kauf der Stufe', pl: 'Automatyczny zakup poziomu', vi: 'Tự động mua cấp', ko: '레벨 자동 구매', ja: 'レベル自動購入', hi: 'स्तर ऑटो-खरीद', zh: '自动购买级别', tr: 'Seviye Otomatik Satın Al',
   },
 
+  // ==================== FILTER CHIPS ====================
+  payouts: {
+    en: 'Payouts', ru: 'Выплаты', ua: 'Виплати', es: 'Pagos', pt: 'Pagamentos', fr: 'Paiements',
+    de: 'Auszahlungen', pl: 'Wypłaty', vi: 'Thanh toán', ko: '지급', ja: '支払い', hi: 'भुगतान', zh: '支付', tr: 'Ödemeler',
+  },
+  frozen_filter: {
+    en: 'Frozen', ru: 'Заморозка', ua: 'Заморозка', es: 'Congelado', pt: 'Congelado', fr: 'Gelé',
+    de: 'Eingefroren', pl: 'Zamrożone', vi: 'Đóng băng', ko: '동결', ja: '凍結', hi: 'फ्रोज़न', zh: '冻结', tr: 'Dondurulmuş',
+  },
+  spillover_filter: {
+    en: 'Spillover', ru: 'Спиловер', ua: 'Спіловер', es: 'Desborde', pt: 'Transbordamento', fr: 'Débordement',
+    de: 'Spillover', pl: 'Spillover', vi: 'Tràn', ko: '스필오버', ja: 'スピルオーバー', hi: 'स्पिलओवर', zh: '溢出', tr: 'Taşma',
+  },
+  reactivation_filter: {
+    en: 'Reactivation', ru: 'Реактивация', ua: 'Реактивація', es: 'Reactivación', pt: 'Reativação', fr: 'Réactivation',
+    de: 'Reaktivierung', pl: 'Reaktywacja', vi: 'Kích hoạt lại', ko: '재활성화', ja: '再活性化', hi: 'पुनः सक्रियण', zh: '重新激活', tr: 'Yeniden etkinleştirme',
+  },
+  bonus_filter: {
+    en: 'Bonus', ru: 'Бонус', ua: 'Бонус', es: 'Bono', pt: 'Bônus', fr: 'Bonus',
+    de: 'Bonus', pl: 'Bonus', vi: 'Thưởng', ko: '보너스', ja: 'ボーナス', hi: 'बोनस', zh: '奖金', tr: 'Bonus',
+  },
+  auto_open: {
+    en: 'Auto-open', ru: 'Автооткрытие', ua: 'Автовідкриття', es: 'Apertura automática', pt: 'Abertura automática', fr: 'Ouverture auto',
+    de: 'Auto-Öffnung', pl: 'Autootwarcie', vi: 'Tự mở', ko: '자동열림', ja: '自動開放', hi: 'ऑटो-ओपन', zh: '自动开启', tr: 'Otomatik açma',
+  },
+  congrats_title: {
+    en: 'Level 8 Unlocked FREE!', ru: 'Уровень 8 открыт БЕСПЛАТНО!', ua: 'Рівень 8 відкритий БЕЗКОШТОВНО!',
+    es: '¡Nivel 8 desbloqueado GRATIS!', pt: 'Nível 8 desbloqueado GRÁTIS!', fr: 'Niveau 8 débloqué GRATUITEMENT !',
+    de: 'Stufe 8 KOSTENLOS freigeschaltet!', pl: 'Poziom 8 odblokowany ZA DARMO!', vi: 'Cấp 8 mở khóa MIỄN PHÍ!',
+    ko: '레벨 8 무료 해제!', ja: 'レベル8無料解除！', hi: 'लेवल 8 मुफ्त अनलॉक!', zh: '第8级免费解锁！', tr: 'Seviye 8 ÜCRETSİZ açıldı!',
+  },
+  you_saved: {
+    en: 'You saved', ru: 'Вы сэкономили', ua: 'Ви зекономили', es: 'Ahorraste', pt: 'Você economizou', fr: 'Vous avez économisé',
+    de: 'Sie haben gespart', pl: 'Zaoszczędziłeś', vi: 'Bạn tiết kiệm', ko: '절약 금액', ja: '節約額', hi: 'आपने बचाया', zh: '您节省了', tr: 'Tasarruf ettiniz',
+  },
+  lets_go: {
+    en: "LET'S GO!", ru: 'ПОЕХАЛИ!', ua: 'ПОЇХАЛИ!', es: '¡VAMOS!', pt: 'VAMOS!', fr: "C'EST PARTI !",
+    de: "LOS GEHT'S!", pl: 'JEDZIEMY!', vi: 'BẮT ĐẦU!', ko: '시작!', ja: 'さあ行こう！', hi: 'चलो शुरू करें!', zh: '开始吧！', tr: 'HADI BAŞLAYALIM!',
+  },
+  pinch_zoom: {
+    en: 'Pinch to zoom', ru: 'Щипок для масштаба', ua: 'Щипок для масштабу', es: 'Pellizca para zoom', pt: 'Aperte para zoom',
+    fr: 'Pincez pour zoomer', de: 'Zum Zoomen zusammendrücken', pl: 'Ściśnij aby powiększyć', vi: 'Chụm để thu phóng',
+    ko: '핀치로 확대/축소', ja: 'ピンチでズーム', hi: 'ज़ूम के लिए पिंच करें', zh: '捏合缩放', tr: 'Yakınlaştırmak için sıkıştırın',
+  },
+  reset: {
+    en: 'Reset', ru: 'Сброс', ua: 'Скинути', es: 'Restablecer', pt: 'Redefinir', fr: 'Réinitialiser',
+    de: 'Zurücksetzen', pl: 'Resetuj', vi: 'Đặt lại', ko: '초기화', ja: 'リセット', hi: 'रीसेट', zh: '重置', tr: 'Sıfırla',
+  },
+  dark: {
+    en: 'Dark', ru: 'Тёмная', ua: 'Темна', es: 'Oscuro', pt: 'Escuro', fr: 'Sombre',
+    de: 'Dunkel', pl: 'Ciemny', vi: 'Tối', ko: '다크', ja: 'ダーク', hi: 'डार्क', zh: '深色', tr: 'Koyu',
+  },
+  bw: {
+    en: 'B&W', ru: 'Ч/Б', ua: 'Ч/Б', es: 'B&N', pt: 'P&B', fr: 'N&B',
+    de: 'S/W', pl: 'Cz/B', vi: 'Đ/T', ko: '흑백', ja: 'モノクロ', hi: 'ब/व', zh: '黑白', tr: 'S/B',
+  },
+  today: {
+    en: 'Today', ru: 'Сегодня', ua: 'Сьогодні', es: 'Hoy', pt: 'Hoje', fr: "Aujourd'hui",
+    de: 'Heute', pl: 'Dzisiaj', vi: 'Hôm nay', ko: '오늘', ja: '今日', hi: 'आज', zh: '今天', tr: 'Bugün',
+  },
+  week: {
+    en: 'Week', ru: 'Неделя', ua: 'Тиждень', es: 'Semana', pt: 'Semana', fr: 'Semaine',
+    de: 'Woche', pl: 'Tydzień', vi: 'Tuần', ko: '주간', ja: '週間', hi: 'सप्ताह', zh: '周', tr: 'Hafta',
+  },
+  month: {
+    en: 'Month', ru: 'Месяц', ua: 'Місяць', es: 'Mes', pt: 'Mês', fr: 'Mois',
+    de: 'Monat', pl: 'Miesiąc', vi: 'Tháng', ko: '월간', ja: '月間', hi: 'महीना', zh: '月', tr: 'Ay',
+  },
+  year: {
+    en: 'Year', ru: 'Год', ua: 'Рік', es: 'Año', pt: 'Ano', fr: 'Année',
+    de: 'Jahr', pl: 'Rok', vi: 'Năm', ko: '연간', ja: '年間', hi: 'वर्ष', zh: '年', tr: 'Yıl',
+  },
+
   // ==================== FAQ ====================
   faq_bonus_title: {
     en: 'How do I get Level 8 for free?', ru: 'Как получить Уровень 8 бесплатно?', ua: 'Як отримати Рівень 8 безкоштовно?',
