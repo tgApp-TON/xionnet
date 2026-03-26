@@ -855,13 +855,49 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       </div>
     </div>
 
-    <!-- Contract link -->
-    <div id="cs-contract" style="text-align:center;margin-bottom:24px">
-      <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span data-t="land_contract_link">Verified Smart Contract on Polygonscan</span>
-      </a>
-      <div style="margin-top:6px;font-size:9px;color:var(--text3);word-break:break-all">0x8F14178823b89da0a4b027235968eF508689e8e2</div>
+    <!-- Token addresses & Contract -->
+    <div id="cs-contract" style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
+      <div data-t="land_tokens_title" style="font-size:15px;font-weight:900;margin-bottom:6px;text-align:center">Verify Token Addresses</div>
+      <div data-t="land_tokens_warn" style="font-size:11px;color:var(--text2);text-align:center;margin-bottom:14px">Always check addresses before adding tokens. Scammers create fakes!</div>
+
+      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2775ca,#3b99fc);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff">$</div>
+            <div><div style="font-weight:700;font-size:13px">USDC</div><div style="font-size:10px;color:var(--text3)">USD Coin · Polygon</div></div>
+          </div>
+          <button onclick="navigator.clipboard.writeText('0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:6px;padding:4px 10px;cursor:pointer">Copy</button>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);word-break:break-all">0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359</div>
+        <a href="https://polygonscan.com/token/0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359" target="_blank" style="font-size:10px;color:var(--poly2);margin-top:4px;display:inline-block">View on Polygonscan ↗</a>
+      </div>
+
+      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7b3fe4,#a855f7);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff">P</div>
+            <div><div style="font-weight:700;font-size:13px">POL</div><div style="font-size:10px;color:var(--text3)">Gas token · Polygon</div></div>
+          </div>
+          <button onclick="navigator.clipboard.writeText('0x0000000000000000000000000000000000001010');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:6px;padding:4px 10px;cursor:pointer">Copy</button>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);word-break:break-all">0x0000000000000000000000000000000000001010</div>
+        <a href="https://polygonscan.com/token/0x0000000000000000000000000000000000001010" target="_blank" style="font-size:10px;color:var(--poly2);margin-top:4px;display:inline-block">View on Polygonscan ↗</a>
+      </div>
+
+      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06d6a0,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#000">XN</div>
+            <div><div style="font-weight:700;font-size:13px">XiaonNET</div><div style="font-size:10px;color:var(--text3)">Smart Contract · Verified</div></div>
+          </div>
+          <button onclick="navigator.clipboard.writeText('0x8F14178823b89da0a4b027235968eF508689e8e2');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:6px;padding:4px 10px;cursor:pointer">Copy</button>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);word-break:break-all">0x8F14178823b89da0a4b027235968eF508689e8e2</div>
+        <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link" style="margin-top:6px">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span data-t="land_contract_link">Verified Smart Contract on Polygonscan</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>
