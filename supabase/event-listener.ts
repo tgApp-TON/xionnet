@@ -8,8 +8,8 @@ import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
 import "dotenv/config";
 
-const CONTRACT_ADDRESS = "0x14160fC843204507E224552D0141B34B975f0850";
-const RPC_URL = process.env.RPC_URL || "https://ethereum-sepolia-rpc.publicnode.com";
+const CONTRACT_ADDRESS = "0x8F14178823b89da0a4b027235968eF508689e8e2";
+const RPC_URL = process.env.RPC_URL || "https://polygon-rpc.com";
 const POLL_INTERVAL = 5000; // 5 seconds
 
 const supabase = createClient(
@@ -42,13 +42,15 @@ const today = (unix: number) => new Date(unix * 1000).toISOString().split("T")[0
 
 async function handleUserRegistered(user: string, referrer: string, timestamp: number, txHash: string, block: number) {
   console.log(`  [UserRegistered] ${w(user)} → ${w(referrer)}`);
-  await supabase.from("users").upsert({
+  const { error: regErr } = await supabase.from("users").upsert({
     wallet: w(user), referrer_wallet: w(referrer), registered_at: ts(timestamp),
     block_registered: block, tx_hash_registered: txHash,
   });
+  if (regErr) throw new Error(`DB error (users upsert): ${regErr.message}`);
   const levels = [];
   for (let i = 1; i <= 17; i++) levels.push({ wallet: w(user), level_num: i });
-  await supabase.from("user_levels").upsert(levels, { onConflict: "wallet,level_num" });
+  const { error: lvlErr } = await supabase.from("user_levels").upsert(levels, { onConflict: "wallet,level_num" });
+  if (lvlErr) throw new Error(`DB error (user_levels upsert): ${lvlErr.message}`);
   await supabase.from("referrals").upsert(
     { referrer_wallet: w(referrer), referred_wallet: w(user), block_number: block, tx_hash: txHash },
     { onConflict: "referred_wallet" }
@@ -58,15 +60,17 @@ async function handleUserRegistered(user: string, referrer: string, timestamp: n
 
 async function handleLevelActivated(user: string, level: number, price: bigint, actType: number, timestamp: number, txHash: string, block: number) {
   console.log(`  [LevelActivated] ${w(user)} L${level} type=${actType}`);
-  await supabase.from("user_levels").update({
+  const { error: actErr } = await supabase.from("user_levels").update({
     active: true, activation_type: actType, activated_at: ts(timestamp),
   }).eq("wallet", w(user)).eq("level_num", level);
+  if (actErr) throw new Error(`DB error (level activate): ${actErr.message}`);
 
   // Recalculate active levels
   const { data } = await supabase.from("user_levels").select("level_num").eq("wallet", w(user)).eq("active", true);
-  await supabase.from("users").update({
+  const { error: usrErr } = await supabase.from("users").update({
     active_levels: data?.length || 0, last_activity_at: ts(timestamp),
   }).eq("wallet", w(user));
+  if (usrErr) throw new Error(`DB error (users update): ${usrErr.message}`);
 
   if (actType === 1) {
     const total = Number(price) + Number(price) / 10;
@@ -85,19 +89,19 @@ async function handleSlotFilled(owner: string, source: string, level: number, sl
   await supabase.from("user_levels").update({
     [slotField]: w(source), slots_filled: slot,
   }).eq("wallet", w(owner)).eq("level_num", level);
-  await supabase.from("slot_events").insert({
+  await supabase.from("slot_events").upsert({
     owner_wallet: w(owner), source_wallet: w(source), level_num: level,
     slot_num: slot, amount: Number(amount), source_type: srcType,
     tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,owner_wallet,slot_num" });
 }
 
 async function handlePayoutSent(receiver: string, sender: string, level: number, slot: number, amount: bigint, timestamp: number, txHash: string, block: number) {
   console.log(`  [PayoutSent] ${w(receiver)} +$${Number(amount)/1e6} L${level}`);
-  await supabase.from("payouts").insert({
+  await supabase.from("payouts").upsert({
     receiver_wallet: w(receiver), sender_wallet: w(sender), level_num: level,
     slot_num: slot, amount: Number(amount), tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,receiver_wallet,slot_num" });
   const { data: usr } = await supabase.from("users").select("total_received").eq("wallet", w(receiver)).single();
   await supabase.from("users").update({
     total_received: (usr?.total_received || 0) + Number(amount),
@@ -140,10 +144,10 @@ async function handleFundsReturned(user: string, level: number, amount: bigint, 
 
 async function handleSpilloverSent(from: string, to: string, level: number, amount: bigint, hops: number, timestamp: number, txHash: string, block: number) {
   console.log(`  [SpilloverSent] ${w(from)} → ${w(to)} L${level} hops=${hops}`);
-  await supabase.from("spillovers").insert({
+  await supabase.from("spillovers").upsert({
     from_wallet: w(from), to_wallet: w(to), level_num: level,
     amount: Number(amount), hops, tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,from_wallet" });
   await incrementStat("total_spillovers", 1);
 }
 
@@ -154,49 +158,43 @@ async function handleLevelReactivated(user: string, level: number, cycleCount: n
     slot3_wallet: null, slot4_wallet: null, frozen_amount: 0,
     is_frozen: false, cycle_count: cycleCount,
   }).eq("wallet", w(user)).eq("level_num", level);
-  await supabase.from("reactivations").insert({
+  await supabase.from("reactivations").upsert({
     wallet: w(user), level_num: level, cycle_count: cycleCount,
     tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,wallet" });
   await incrementStat("total_reactivations", 1);
 }
 
 async function handleCommissionTaken(user: string, level: number, amount: bigint, timestamp: number, txHash: string, block: number) {
   console.log(`  [CommissionTaken] ${w(user)} L${level} $${Number(amount)/1e6}`);
-  await supabase.from("commissions").insert({
+  await supabase.from("commissions").upsert({
     from_wallet: w(user), level_num: level, amount: Number(amount),
     tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,from_wallet" });
   await incrementStat("total_fees", Number(amount));
 }
 
 async function handleBounced(user: string, level: number, reason: number, timestamp: number, txHash: string, block: number) {
   console.log(`  [BOUNCED!] ${w(user)} L${level} reason=${reason}`);
-  await supabase.from("bounced").insert({
+  await supabase.from("bounced").upsert({
     wallet: w(user), level_num: level, reason,
     tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,wallet" });
 }
 
 async function handleAutoBuyToggled(user: string, level: number, enabled: boolean, txHash: string, block: number) {
   console.log(`  [AutoBuyToggled] ${w(user)} L${level} ${enabled}`);
   await supabase.from("user_levels").update({ auto_buy_enabled: enabled })
     .eq("wallet", w(user)).eq("level_num", level);
-  await supabase.from("autobuy_events").insert({
+  await supabase.from("autobuy_events").upsert({
     wallet: w(user), level_num: level, enabled, tx_hash: txHash, block_number: block,
-  });
+  }, { onConflict: "tx_hash,block_number,wallet,level_num" });
 }
 
 // ==================== HELPERS ====================
 
 async function incrementStat(field: string, val: number) {
-  const { data } = await supabase.from("system_stats").select(field).eq("id", 1).single();
-  if (data) {
-    await supabase.from("system_stats").update({
-      [field]: (data as any)[field] + val,
-      updated_at: new Date().toISOString(),
-    }).eq("id", 1);
-  }
+  await supabase.rpc("increment_stat", { field, val });
 }
 
 async function updateMonitor(block: number, txHash: string) {
