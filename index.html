@@ -904,17 +904,19 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 </div>
 
 <script src="lang.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
 // Polyfill for Node.js globals required by WalletConnect SDK
-if (typeof globalThis.process === 'undefined') {
-  globalThis.process = { env: {}, version: '', platform: 'browser', nextTick: function(fn){ setTimeout(fn, 0); } };
-}
-if (typeof globalThis.global === 'undefined') {
-  globalThis.global = globalThis;
-}
+// Must resist MetaMask SES lockdown removal
+(function(){
+  var proc = { env: {}, version: '', platform: 'browser', nextTick: function(fn){ setTimeout(fn, 0); } };
+  try { Object.defineProperty(globalThis, 'process', { value: proc, writable: true, configurable: true, enumerable: true }); } catch(e){}
+  try { Object.defineProperty(window, 'process', { value: proc, writable: true, configurable: true, enumerable: true }); } catch(e){}
+  if (typeof globalThis.global === 'undefined') { try { Object.defineProperty(globalThis, 'global', { value: globalThis, writable: true, configurable: true }); } catch(e){} }
+  if (typeof globalThis.Buffer === 'undefined') { globalThis.Buffer = { isBuffer: function(){ return false; } }; }
+})();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js" defer></script>
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js"></script>
 <script>
 // ==================== HTML SANITIZER ====================
 function esc(s) {
