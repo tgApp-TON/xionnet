@@ -9,7 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 import "dotenv/config";
 
 const CONTRACT_ADDRESS = "0x8F14178823b89da0a4b027235968eF508689e8e2";
-const RPC_URL = process.env.RPC_URL || "https://polygon-rpc.com";
+const RPC_URL = process.env.RPC_URL || "https://polygon-bor-rpc.publicnode.com";
 const POLL_INTERVAL = 5000; // 5 seconds
 
 const supabase = createClient(

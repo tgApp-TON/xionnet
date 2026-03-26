@@ -6,7 +6,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { ethers } from "https://esm.sh/ethers@6";
 
 const CONTRACT_ADDRESS = "0x8F14178823b89da0a4b027235968eF508689e8e2";
-const RPC_URL = "https://polygon-rpc.com";
+const RPC_URL = "https://polygon-bor-rpc.publicnode.com";
 
 const ABI = [
   "event UserRegistered(address indexed user, address indexed referrer, uint32 timestamp)",
