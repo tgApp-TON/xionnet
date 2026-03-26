@@ -1530,31 +1530,41 @@ async function connectWallet(btn, walletType) {
     // Show mint button on testnet
     if (IS_TESTNET) document.getElementById('mintBtn').style.display = 'flex';
 
-    // Auto-register if not registered
+    // Check registration status
+    let needsRegister = false;
     try {
       const info = await xionContract.getUserInfo(connectedWallet);
-      if (!info.registered) {
-        btn.className = 'cs-btn cs-registering';
-        btn.innerHTML = connectShieldIcon + ' Registering...';
-        const urlParams = new URLSearchParams(window.location.search);
-        const ref = urlParams.get('ref') || ethers.ZeroAddress;
-        const regTx = await xionContract.register(ref);
+      console.log('[connect] getUserInfo:', { registered: info.registered, referrer: info.referrer, isMaster: info.isMaster });
+      needsRegister = !info.registered;
+    } catch (e) {
+      console.warn('[connect] getUserInfo failed:', e.reason || e.message);
+    }
+
+    if (!needsRegister) {
+      btn.className = 'cs-btn cs-registering';
+      btn.innerHTML = connectCheckIcon + ' Connected!';
+      soundSuccess();
+    }
+
+    // Load real data from contract (don't wait for register)
+    await loadUserData();
+
+    // Register in background AFTER app is shown (no blocking)
+    if (needsRegister) {
+      btn.className = 'cs-btn cs-registering';
+      btn.innerHTML = connectShieldIcon + ' Registering...';
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref') || ethers.ZeroAddress;
+      xionContract.register(ref).then(async (regTx) => {
         await regTx.wait();
         btn.innerHTML = connectCheckIcon + ' Welcome!';
         soundBonus();
-      } else {
-        btn.className = 'cs-btn cs-registering';
+        loadUserData(); // refresh after register
+      }).catch(e => {
+        console.warn('[connect] register failed:', e.reason || e.message);
         btn.innerHTML = connectCheckIcon + ' Connected!';
-        soundSuccess();
-      }
-    } catch (e) {
-      console.warn('Auto-register:', e.reason || e.message);
-      btn.className = 'cs-btn cs-registering';
-      btn.innerHTML = connectCheckIcon + ' Connected!';
+      });
     }
-
-    // Load real data from contract
-    await loadUserData();
 
     document.getElementById('connectScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
