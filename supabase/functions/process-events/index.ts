@@ -113,24 +113,31 @@ Deno.serve(async (req) => {
           }
           case "SlotFilled": {
             const [owner, source, level, slot, amount, srcType] = [args[0], args[1], Number(args[2]), Number(args[3]), args[4], Number(args[5])];
+            const { data: existSlot } = await supabase.from("slot_events")
+              .select("id").eq("tx_hash", txHash).eq("block_number", block)
+              .eq("owner_wallet", w(owner)).eq("slot_num", slot).limit(1);
+            if (existSlot && existSlot.length > 0) break;
             await supabase.from("user_levels").update({
               [`slot${slot}_wallet`]: w(source), slots_filled: slot,
             }).eq("wallet", w(owner)).eq("level_num", level);
-            // Fix 8: Upsert instead of insert
-            await supabase.from("slot_events").upsert({
+            await supabase.from("slot_events").insert({
               owner_wallet: w(owner), source_wallet: w(source), level_num: level,
               slot_num: slot, amount: Number(amount), source_type: srcType,
               tx_hash: txHash, block_number: block,
-            }, { onConflict: "tx_hash,block_number,owner_wallet,slot_num" });
+            });
             break;
           }
           case "PayoutSent": {
             const [receiver, sender, level, slot, amount] = [args[0], args[1], Number(args[2]), Number(args[3]), args[4]];
-            // Fix 8: Upsert instead of insert
-            await supabase.from("payouts").upsert({
+            // Check if already recorded (idempotent)
+            const { data: existing } = await supabase.from("payouts")
+              .select("id").eq("tx_hash", txHash).eq("block_number", block)
+              .eq("receiver_wallet", w(receiver)).eq("slot_num", slot).limit(1);
+            if (existing && existing.length > 0) break; // already processed
+            await supabase.from("payouts").insert({
               receiver_wallet: w(receiver), sender_wallet: w(sender), level_num: level,
               slot_num: slot, amount: Number(amount), tx_hash: txHash, block_number: block,
-            }, { onConflict: "tx_hash,block_number,receiver_wallet,slot_num" });
+            });
             const { data: usr } = await supabase.from("users").select("total_received").eq("wallet", w(receiver)).single();
             if (usr) await supabase.from("users").update({ total_received: (usr.total_received || 0) + Number(amount) }).eq("wallet", w(receiver));
             await incStat(supabase, "total_payouts", Number(amount));
