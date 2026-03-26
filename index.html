@@ -1612,12 +1612,13 @@ function resetWalletButtons() {
 // Load user data from contract
 let _loadingUserData = false;
 async function loadUserData() {
-  if (!xionContract || !connectedWallet) return;
+  console.log('[loadUserData] called, xionContract=', !!xionContract, 'wallet=', connectedWallet, 'loading=', _loadingUserData);
+  if (!xionContract || !connectedWallet) { console.warn('[loadUserData] SKIP: no contract or wallet'); return; }
   if (_loadingUserData) { console.log('[loadUserData] skipped — already running'); return; }
   _loadingUserData = true;
   try {
     const info = await xionContract.getUserInfo(connectedWallet);
-    console.log('User info:', {
+    console.log('[loadUserData] User info:', {
       registered: info.registered,
       referrer: info.referrer,
       isMaster: info.isMaster,
@@ -1657,6 +1658,9 @@ async function loadUserData() {
     }
 
     // Re-render levels with fresh contract data
+    const activeLvls = LEVELS.filter(l => l.active).length;
+    const filledTotal = LEVELS.reduce((s, l) => s + l.slots.reduce((a, b) => a + b, 0), 0);
+    console.log('[loadUserData] DONE: active=' + activeLvls + ' filledSlots=' + filledTotal);
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
 
@@ -1683,7 +1687,7 @@ async function loadUserData() {
     const usdcBal = await usdcContract.balanceOf(connectedWallet);
     console.log('USDC balance:', Number(usdcBal) / 1e6);
   } catch (err) {
-    console.warn('loadUserData error:', err);
+    console.error('[loadUserData] ERROR:', err);
   } finally {
     _loadingUserData = false;
   }
