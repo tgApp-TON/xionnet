@@ -448,6 +448,47 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     </div>
     <div class="cs-net"><div class="cs-net-dot"></div><span data-t="cs_network_req">Polygon Network Required</span></div>
   </div>
+
+  <!-- Landing block for visitors without wallet -->
+  <div id="landingBlock" style="display:none;width:100%;max-width:500px;margin-top:24px">
+    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:24px;text-align:center">
+      <div style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,var(--green),var(--poly2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Decentralized Earning System</div>
+      <div style="color:var(--text3);font-size:13px;line-height:1.6;margin-bottom:20px">
+        17-level smart contract on Polygon. USDC payouts directly to your wallet. No middlemen, no delays, fully on-chain.
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
+          <div style="font-size:20px;font-weight:900;color:var(--green)">17</div>
+          <div style="font-size:10px;color:var(--text3)">Levels</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
+          <div style="font-size:20px;font-weight:900;color:var(--poly2)">USDC</div>
+          <div style="font-size:10px;color:var(--text3)">Payouts</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
+          <div style="font-size:20px;font-weight:900;color:var(--orange)">$3</div>
+          <div style="font-size:10px;color:var(--text3)">Start from</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px">To get started, open in a Web3 wallet:</div>
+
+      <a href="https://metamask.app.link/dapp/xiaonnet.com" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#E27625,#c76620);color:#fff;font-weight:800;font-size:14px;padding:14px;border-radius:12px;text-decoration:none;margin-bottom:10px">
+        <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M22.3 2L13.2 8.8l1.7-4L22.3 2z" fill="#fff"/><path d="M1.7 2l9 6.9-1.6-4.1L1.7 2z" fill="#fff"/></svg>
+        Open in MetaMask
+      </a>
+
+      <div style="display:flex;gap:8px">
+        <a href="https://metamask.io/download/" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)">
+          Download MetaMask
+        </a>
+        <a href="https://trustwallet.com/download" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)">
+          Download Trust Wallet
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ==================== MAIN APP ==================== -->
@@ -2792,10 +2833,17 @@ function soundError() {
   setTimeout(() => playBell(494, 0.2, 0.03), 130);
 }
 
-// ==================== AUTO-CONNECT ====================
-// If wallet was previously connected, auto-reconnect without user click
+// ==================== LANDING / AUTO-CONNECT ====================
 (async function autoConnect() {
-  if (!window.ethereum) return;
+  const hasWallet = !!(window.ethereum || window.coinbaseWalletExtension);
+  if (!hasWallet) {
+    // No wallet detected — show landing page, hide wallet buttons
+    document.querySelector('.wallet-options').style.display = 'none';
+    document.querySelector('.cs-net').style.display = 'none';
+    document.getElementById('landingBlock').style.display = 'block';
+    return;
+  }
+  // Auto-reconnect if previously connected
   try {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     if (accounts && accounts.length > 0) {
