@@ -24,7 +24,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);-webki
 #connectScreen{max-width:500px;margin:0 auto;padding:24px;padding-top:20px}
 #mainApp{overflow-y:auto;overflow-x:hidden;position:fixed;top:0;left:0;right:0;bottom:0;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:env(safe-area-inset-bottom)}
 #mainApp>*{max-width:500px;margin:0 auto}
-.lang-flags{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-bottom:12px}
+.lang-flags{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;margin-bottom:12px;max-width:400px}
 .lang-flags button{background:none;border:1px solid transparent;border-radius:6px;font-size:18px;cursor:pointer;padding:4px 3px;line-height:1;transition:all .15s}
 .lang-flags button:hover,.lang-flags button.active{border-color:var(--poly);background:var(--bg4)}
 .cs-nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px;margin-bottom:8px}
