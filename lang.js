@@ -2910,6 +2910,42 @@ const T = {
     tr: 'Akıllı sözleşme Polygonscan\'de tamamen doğrulanmış ve açık kaynaklıdır. Herkes kodu okuyabilir ve kuralların değiştirilemeyeceğini doğrulayabilir.'
   },
 
+  faq_trust_section: { en: 'Trust & Security', ru: 'Доверие и безопасность', ua: 'Довіра та безпека', es: 'Confianza y seguridad' },
+  faq_pyramid_q: { en: 'Is this a pyramid scheme?', ru: 'Это пирамида?', ua: 'Це піраміда?', es: '¿Es esto un esquema piramidal?' },
+  faq_pyramid_a: {
+    en: 'No. In a pyramid, money flows only upward and early participants profit at the expense of later ones. In XiaonNET, every level cycles infinitely — each time 4 slots fill, you receive 3 payouts and the level resets. There\'s no cap on earnings and no one gets stuck. Payouts come from level activations, not from recruiting — you can earn even without referrals through spillover.',
+    ru: 'Нет. В пирамиде деньги идут только вверх, и ранние участники зарабатывают за счёт поздних. В XiaonNET каждый уровень циклится бесконечно — каждые 4 заполнения вы получаете 3 выплаты и уровень сбрасывается. Нет лимита заработка и никто не застревает. Выплаты приходят от активации уровней, а не от рекрутинга — можно зарабатывать даже без рефералов через spillover.',
+    ua: 'Ні. В піраміді гроші йдуть тільки вгору. В XiaonNET кожен рівень циклиться нескінченно — кожні 4 заповнення ви отримуєте 3 виплати і рівень скидається. Немає ліміту заробітку. Виплати приходять від активації рівнів, не від рекрутингу.',
+    es: 'No. En una pirámide, el dinero fluye solo hacia arriba. En XiaonNET, cada nivel cicla infinitamente — cada 4 llenados recibes 3 pagos y el nivel se reinicia. Sin límite de ganancias. Los pagos vienen de activaciones de nivel, no de reclutamiento.'
+  },
+  faq_money_q: { en: 'Where does the money come from?', ru: 'Откуда берутся деньги?', ua: 'Звідки гроші?', es: '¿De dónde viene el dinero?' },
+  faq_money_a: {
+    en: 'Every dollar comes from a participant activating a level. When someone pays $3 for Level 1, the contract distributes $3 as a payout to the slot owner. 10% goes to the protocol as a fee. No hidden pool, no loans, no external funding. Every transaction is verifiable on Polygonscan.',
+    ru: 'Каждый доллар приходит от участника, активирующего уровень. Когда кто-то платит $3 за Уровень 1, контракт распределяет $3 как выплату владельцу слота. 10% идёт протоколу как комиссия. Нет скрытого пула, нет кредитов, нет внешнего финансирования. Каждая транзакция проверяема на Polygonscan.',
+    ua: 'Кожен долар приходить від учасника, що активує рівень. 10% йде протоколу як комісія. Немає прихованого пулу, немає кредитів. Кожна транзакція перевіряється на Polygonscan.',
+    es: 'Cada dólar viene de un participante que activa un nivel. 10% va al protocolo como tarifa. Sin pool oculto, sin préstamos. Cada transacción es verificable en Polygonscan.'
+  },
+  faq_admin_q: { en: 'Can the admin steal funds?', ru: 'Может ли админ украсть средства?', ua: 'Чи може адмін вкрасти кошти?', es: '¿Puede el admin robar fondos?' },
+  faq_admin_a: {
+    en: 'No. The contract is non-custodial — payouts go directly to participant wallets. The admin can only withdraw accumulated protocol fees (10%) and cannot touch participant funds or frozen balances. The contract is verified and publicly auditable on Polygonscan.',
+    ru: 'Нет. Контракт некастодиальный — выплаты идут напрямую на кошельки участников. Админ может вывести только накопленные комиссии протокола (10%) и не может трогать средства участников или замороженные балансы. Контракт верифицирован и публично проверяем на Polygonscan.',
+    ua: 'Ні. Контракт некастодіальний — виплати йдуть напряму на гаманці учасників. Адмін може вивести тільки комісії протоколу (10%) і не може чіпати кошти учасників.',
+    es: 'No. El contrato es no-custodial — los pagos van directamente a las billeteras. El admin solo puede retirar las tarifas del protocolo (10%) y no puede tocar fondos de participantes.'
+  },
+  faq_spillover_q: { en: 'What is spillover?', ru: 'Что такое спилловер?', ua: 'Що таке спіловер?', es: '¿Qué es el spillover?' },
+  faq_spillover_a: {
+    en: 'If your sponsor doesn\'t have a particular level active, the payout spills over to the next person above who does. You can receive payouts from people you didn\'t directly invite — the network routes payments to active participants automatically. No payout is ever lost.',
+    ru: 'Если ваш спонсор не имеет определённого уровня, выплата переливается к следующему человеку выше, у которого он есть. Вы можете получать выплаты от людей, которых не приглашали напрямую — сеть автоматически направляет платежи активным участникам. Ни одна выплата не теряется.',
+    ua: 'Якщо ваш спонсор не має певного рівня, виплата переливається до наступної людини вище. Ви можете отримувати виплати від людей, яких не запрошували — мережа автоматично направляє платежі активним учасникам.',
+    es: 'Si tu patrocinador no tiene un nivel activo, el pago se desborda al siguiente que lo tenga. Puedes recibir pagos de personas que no invitaste — la red dirige pagos a participantes activos automáticamente.'
+  },
+  faq_autobuy_q: { en: 'What is auto-buy?', ru: 'Что такое авто-покупка?', ua: 'Що таке авто-покупка?', es: '¿Qué es la auto-compra?' },
+  faq_autobuy_a: {
+    en: 'When auto-buy is enabled, slot 2 freezes the payout instead of sending it to you. When slot 3 fills, the frozen amount + new payout combine to automatically purchase the next level. You progress through levels without paying anything extra — the system reinvests for you.',
+    ru: 'Когда авто-покупка включена, слот 2 замораживает выплату вместо отправки вам. Когда слот 3 заполняется, замороженная сумма + новая выплата объединяются для автоматической покупки следующего уровня. Вы продвигаетесь по уровням без дополнительных затрат — система реинвестирует за вас.',
+    ua: 'Коли авто-покупка увімкнена, слот 2 заморожує виплату. Коли слот 3 заповнюється, заморожена сума + нова виплата об\'єднуються для автоматичної покупки наступного рівня.',
+    es: 'Cuando la auto-compra está activada, el slot 2 congela el pago. Cuando el slot 3 se llena, el monto congelado + nuevo pago se combinan para comprar automáticamente el siguiente nivel.'
+  },
   land_tokens_title: {
     en: 'Verify Token Addresses', ru: 'Проверьте адреса токенов', ua: 'Перевірте адреси токенів', es: 'Verifica las direcciones de tokens'
   },

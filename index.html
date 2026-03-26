@@ -1193,6 +1193,33 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div class="faq-a" data-th="faq_languages_a">XiaonNET supports 14 languages: English, Russian, Ukrainian, Spanish, Portuguese, French, German, Polish, Vietnamese, Korean, Japanese, Hindi, Chinese, and Turkish. The app auto-detects your browser language. You can also change it manually in Settings.</div>
   </div>
 
+  <div class="faq-section-label" data-t="faq_trust_section">🛡 Trust & Security</div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_pyramid_q">Is this a pyramid scheme?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-th="faq_pyramid_a">No. In a pyramid, money flows only upward and early participants profit at the expense of later ones. In XiaonNET, every level cycles infinitely — each time 4 slots fill, you receive 3 payouts and the level resets. There's no cap on earnings and no one gets stuck. Payouts come from level activations, not from recruiting — you can earn even without referrals through spillover.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_money_q">Where does the money come from?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-th="faq_money_a">Every dollar comes from a participant activating a level. When someone pays $3 for Level 1, the contract distributes $3 as a payout to the slot owner. 10% goes to the protocol as a fee. No hidden pool, no loans, no external funding. Every transaction is verifiable on Polygonscan.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_admin_q">Can the admin steal funds?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-th="faq_admin_a">No. The contract is non-custodial — payouts go directly to participant wallets. The admin can only withdraw accumulated protocol fees (10%) and cannot touch participant funds or frozen balances. The contract is verified and publicly auditable on Polygonscan.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_spillover_q">What is spillover?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-th="faq_spillover_a">If your sponsor doesn't have a particular level active, the payout spills over to the next person above who does. You can receive payouts from people you didn't directly invite — the network routes payments to active participants automatically. No payout is ever lost.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_autobuy_q">What is auto-buy?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a" data-th="faq_autobuy_a">When auto-buy is enabled, slot 2 freezes the payout instead of sending it to you. When slot 3 fills, the frozen amount + new payout combine to automatically purchase the next level. You progress through levels without paying anything extra — the system reinvests for you.</div>
+  </div>
+
   <div class="faq-section-label">🔗 Smart Contract</div>
 
   <div class="faq-item open">
@@ -1454,7 +1481,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <button class="bt-action" id="btAction" onclick="goToPrevLevel()">Go to Level 4</button>
 </div>
 
-<script src="lang.js?v=8"></script>
+<script src="lang.js?v=9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
 // Polyfill Node.js globals for WalletConnect SDK
