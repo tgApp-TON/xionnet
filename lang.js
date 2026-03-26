@@ -4293,6 +4293,81 @@ const T = {
     ua: 'Кожна активація рівня включає 10% комісію. Ця комісія фінансує команду розробки, підтримку платформи та розвиток екосистеми метавсесвіту XiaonNET — зростаючий набір продуктів для всіх учасників.',
     es: 'Cada activación incluye una tarifa del 10%. Esta tarifa financia al equipo de desarrollo, mantenimiento de la plataforma y el desarrollo del ecosistema metaverso de XiaonNET — un conjunto creciente de productos a los que todos los participantes tendrán acceso.'
   },
+
+  // ==================== VISUAL SCENARIO DESCRIPTIONS ====================
+  land_vis1_title: {
+    en: 'Scenario A: All Payouts (auto-buy OFF)',
+    ru: 'Сценарий A: Все выплаты (авто-покупка ВЫКЛ)',
+    ua: 'Сценарій A: Усі виплати (авто-покупка ВИМК)',
+    es: 'Escenario A: Todos los pagos (auto-compra OFF)'
+  },
+  land_vis1_sub: {
+    en: 'You own Level 1 + Level 2. Someone activates your Level 1.',
+    ru: 'У вас есть Уровень 1 + Уровень 2. Кто-то активирует ваш Уровень 1.',
+    ua: 'У вас є Рівень 1 + Рівень 2. Хтось активує ваш Рівень 1.',
+    es: 'Tienes Nivel 1 + Nivel 2. Alguien activa tu Nivel 1.'
+  },
+  land_vis1_desc: {
+    en: 'This is the basic earning scenario. You have activated Level 1 and Level 2, with auto-buy turned OFF. When three new users join through your referral link and each activates Level 1 ($3.30 including fee), your slots fill one by one. Slots 1, 2, and 3 each pay you $3 directly to your wallet — that is $9 total. When Slot 4 fills, it triggers a level reset: your level cycles and all four slots are cleared, ready to accept new members again. The Slot 4 payment goes up the chain as a spillover to your sponsor. You keep $9 from a $3 investment — a 3x return per cycle.',
+    ru: 'Это базовый сценарий заработка. У вас активированы Уровень 1 и Уровень 2, авто-покупка выключена. Когда три новых пользователя присоединяются по вашей реферальной ссылке и активируют Уровень 1 ($3.30 с комиссией), ваши слоты заполняются один за другим. Слоты 1, 2 и 3 выплачивают вам по $3 напрямую на кошелёк — итого $9. Когда заполняется Слот 4, уровень сбрасывается: все четыре слота очищаются и готовы принимать новых участников. Выплата за Слот 4 уходит вверх по цепочке как спилловер вашему спонсору. Вы получаете $9 при вложении $3 — трёхкратный возврат за цикл.',
+    ua: 'Це базовий сценарій заробітку. У вас активовано Рівень 1 та Рівень 2, авто-покупка вимкнена. Коли три нових користувачі приєднуються за вашим реферальним посиланням і активують Рівень 1 ($3.30 з комісією), ваші слоти заповнюються один за одним. Слоти 1, 2 і 3 виплачують вам по $3 напряму на гаманець — разом $9. Коли заповнюється Слот 4, рівень скидається: всі чотири слоти очищаються і готові приймати нових учасників. Виплата за Слот 4 йде вгору по ланцюжку як спіловер вашому спонсору. Ви отримуєте $9 при вкладенні $3 — трикратне повернення за цикл.',
+    es: 'Este es el escenario básico de ganancias. Tienes activados Nivel 1 y Nivel 2, con auto-compra desactivada. Cuando tres nuevos usuarios se unen a través de tu enlace de referido y activan Nivel 1 ($3.30 con comisión), tus slots se llenan uno por uno. Los Slots 1, 2 y 3 te pagan $3 directamente a tu wallet — $9 en total. Cuando el Slot 4 se llena, el nivel se reinicia: los cuatro slots se vacían y están listos para nuevos miembros. El pago del Slot 4 sube por la cadena como spillover a tu patrocinador. Ganas $9 con una inversión de $3 — un retorno de 3x por ciclo.'
+  },
+  land_vis2_title: {
+    en: 'Scenario B: Auto-Buy (next level opens free)',
+    ru: 'Сценарий B: Авто-покупка (следующий уровень бесплатно)',
+    ua: 'Сценарій B: Авто-покупка (наступний рівень безкоштовно)',
+    es: 'Escenario B: Auto-compra (siguiente nivel gratis)'
+  },
+  land_vis2_sub: {
+    en: 'You own Level 1 but NOT Level 2. Auto-buy is ON.',
+    ru: 'У вас есть Уровень 1, но НЕТ Уровня 2. Авто-покупка ВКЛ.',
+    ua: 'У вас є Рівень 1, але НЕМАЄ Рівня 2. Авто-покупка УВІМК.',
+    es: 'Tienes Nivel 1 pero NO Nivel 2. Auto-compra está ON.'
+  },
+  land_vis2_desc: {
+    en: 'This scenario shows the auto-buy feature in action. You have Level 1 active but you do NOT own Level 2 yet, and auto-buy is turned ON. As your slots fill: Slot 1 pays you $3 directly. Slot 2 freezes $3 toward the cost of Level 2. Slot 3 freezes another $3 — now you have $6 frozen ($3+$3), which is exactly the cost of Level 2. The smart contract automatically opens Level 2 for you at no extra cost. Slot 4 triggers a spillover to your sponsor. In the end, you received $3 in cash plus Level 2 was activated for free. Auto-buy lets you grow without spending more money out of pocket.',
+    ru: 'Этот сценарий показывает функцию авто-покупки в действии. У вас активирован Уровень 1, но Уровня 2 ещё нет, и авто-покупка включена. По мере заполнения слотов: Слот 1 выплачивает вам $3. Слот 2 замораживает $3 на покупку Уровня 2. Слот 3 замораживает ещё $3 — теперь у вас заморожено $6 ($3+$3), что равно стоимости Уровня 2. Смарт-контракт автоматически открывает Уровень 2 без дополнительных затрат. Слот 4 отправляет спилловер вашему спонсору. В итоге вы получили $3 наличными и Уровень 2 бесплатно. Авто-покупка позволяет расти без дополнительных вложений.',
+    ua: 'Цей сценарій показує функцію авто-покупки в дії. У вас активовано Рівень 1, але Рівня 2 ще немає, і авто-покупка увімкнена. По мірі заповнення слотів: Слот 1 виплачує вам $3. Слот 2 заморожує $3 на купівлю Рівня 2. Слот 3 заморожує ще $3 — тепер у вас заморожено $6 ($3+$3), що дорівнює вартості Рівня 2. Смарт-контракт автоматично відкриває Рівень 2 без додаткових витрат. Слот 4 відправляє спіловер вашому спонсору. В результаті ви отримали $3 готівкою і Рівень 2 безкоштовно. Авто-покупка дозволяє рости без додаткових вкладень.',
+    es: 'Este escenario muestra la función de auto-compra en acción. Tienes Nivel 1 activo pero NO tienes Nivel 2 todavía, y auto-compra está activada. A medida que se llenan tus slots: Slot 1 te paga $3. Slot 2 congela $3 para el costo de Nivel 2. Slot 3 congela otros $3 — ahora tienes $6 congelados ($3+$3), exactamente el costo de Nivel 2. El contrato inteligente abre Nivel 2 automáticamente sin costo extra. Slot 4 envía un spillover a tu patrocinador. Al final, recibiste $3 en efectivo y Nivel 2 se activó gratis. Auto-compra te permite crecer sin gastar más dinero de tu bolsillo.'
+  },
+  land_vis3_title: {
+    en: 'Scenario C: Spillover',
+    ru: 'Сценарий C: Спилловер',
+    ua: 'Сценарій C: Спіловер',
+    es: 'Escenario C: Spillover (desbordamiento)'
+  },
+  land_vis3_sub: {
+    en: 'New user buys Level 2 ($6.60). Sponsor B doesn\'t have L2 — payout bypasses B and goes to Sponsor A.',
+    ru: 'Новый пользователь покупает Уровень 2 ($6.60). У Спонсора B нет L2 — выплата обходит B и идёт к Спонсору A.',
+    ua: 'Новий користувач купує Рівень 2 ($6.60). У Спонсора B немає L2 — виплата обходить B і йде до Спонсора A.',
+    es: 'Un nuevo usuario compra Nivel 2 ($6.60). El Patrocinador B no tiene L2 — el pago salta a B y va al Patrocinador A.'
+  },
+  land_vis3_desc: {
+    en: 'In this scenario there are three people in a referral chain: Sponsor A (top), Sponsor B (middle), and the New User (bottom). The New User buys Level 2 for $6.60 (which includes the 10% protocol fee). The $6 payout should go to their direct sponsor — Sponsor B. However, Sponsor B does NOT have Level 2 active, so the smart contract skips them automatically. The payout travels up the chain to Sponsor A, who does have Level 2. Sponsor A receives the full $6. Sponsor B earned nothing because they hadn\'t activated Level 2. The lesson: always activate your levels before your referrals do, or you will lose payouts to the person above you.',
+    ru: 'В этом сценарии три человека в реферальной цепочке: Спонсор A (вверху), Спонсор B (посередине) и Новый Пользователь (внизу). Новый Пользователь покупает Уровень 2 за $6.60 (включая 10% комиссию). Выплата $6 должна идти прямому спонсору — Спонсору B. Но у Спонсора B НЕТ активного Уровня 2, поэтому смарт-контракт автоматически его пропускает. Выплата поднимается по цепочке к Спонсору A, у которого есть Уровень 2. Спонсор A получает полные $6. Спонсор B не заработал ничего, потому что не активировал Уровень 2. Урок: всегда активируйте уровни раньше своих рефералов, иначе выплаты уйдут человеку выше вас.',
+    ua: 'У цьому сценарії три людини в реферальному ланцюжку: Спонсор A (вгорі), Спонсор B (посередині) і Новий Користувач (внизу). Новий Користувач купує Рівень 2 за $6.60 (включно з 10% комісією). Виплата $6 має йти прямому спонсору — Спонсору B. Але у Спонсора B НЕМАЄ активного Рівня 2, тому смарт-контракт автоматично його пропускає. Виплата піднімається по ланцюжку до Спонсора A, у якого є Рівень 2. Спонсор A отримує повні $6. Спонсор B нічого не заробив, бо не активував Рівень 2. Урок: завжди активуйте рівні раніше своїх рефералів, інакше виплати підуть людині вище вас.',
+    es: 'En este escenario hay tres personas en la cadena de referidos: Patrocinador A (arriba), Patrocinador B (medio) y el Nuevo Usuario (abajo). El Nuevo Usuario compra Nivel 2 por $6.60 (incluida la comisión del 10%). El pago de $6 debería ir al patrocinador directo — Patrocinador B. Pero Patrocinador B NO tiene Nivel 2 activo, así que el contrato inteligente lo salta automáticamente. El pago sube por la cadena hasta Patrocinador A, que sí tiene Nivel 2. Patrocinador A recibe los $6 completos. Patrocinador B no ganó nada porque no activó Nivel 2. La lección: siempre activa tus niveles antes que tus referidos, o perderás pagos a favor de la persona encima de ti.'
+  },
+  land_vis4_title: {
+    en: 'Scenario D: Missed Payout',
+    ru: 'Сценарий D: Пропущенная выплата',
+    ua: 'Сценарій D: Пропущена виплата',
+    es: 'Escenario D: Pago perdido'
+  },
+  land_vis4_sub: {
+    en: 'Your referral buys Level 3, but you only have L1 and L2. The payout skips you.',
+    ru: 'Ваш реферал покупает Уровень 3, но у вас есть только L1 и L2. Выплата проходит мимо вас.',
+    ua: 'Ваш реферал купує Рівень 3, але у вас є лише L1 та L2. Виплата проходить повз вас.',
+    es: 'Tu referido compra Nivel 3, pero solo tienes L1 y L2. El pago te salta.'
+  },
+  land_vis4_desc: {
+    en: 'This diagram shows what happens when your referral activates a level you haven\'t bought yet. Your Referral buys Level 3 for $13.20 (including 10% fee). The $12 payout should go to you as their direct sponsor. But you only have Level 1 and Level 2 — you never activated Level 3. The smart contract cannot send you a payout for a level you don\'t own, so it skips you entirely. The payout goes up the chain to Your Sponsor, who has Level 3 active. Your Sponsor gets $12 that should have been yours. To prevent this, always stay ahead of your referrals — activate higher levels before they do, so you never miss a payout.',
+    ru: 'Эта диаграмма показывает, что происходит, когда ваш реферал активирует уровень, который вы ещё не купили. Ваш Реферал покупает Уровень 3 за $13.20 (включая 10% комиссию). Выплата $12 должна идти вам как прямому спонсору. Но у вас есть только Уровень 1 и Уровень 2 — вы так и не активировали Уровень 3. Смарт-контракт не может отправить выплату за уровень, которого у вас нет, поэтому пропускает вас полностью. Выплата уходит вверх по цепочке вашему Спонсору, у которого есть Уровень 3. Ваш Спонсор получает $12, которые должны были быть вашими. Чтобы этого избежать, всегда опережайте своих рефералов — активируйте более высокие уровни до того, как это сделают они.',
+    ua: 'Ця діаграма показує, що відбувається, коли ваш реферал активує рівень, який ви ще не купили. Ваш Реферал купує Рівень 3 за $13.20 (включно з 10% комісією). Виплата $12 має йти вам як прямому спонсору. Але у вас є лише Рівень 1 та Рівень 2 — ви так і не активували Рівень 3. Смарт-контракт не може відправити виплату за рівень, якого у вас немає, тому пропускає вас повністю. Виплата йде вгору по ланцюжку вашому Спонсору, у якого є Рівень 3. Ваш Спонсор отримує $12, які мали бути вашими. Щоб цього уникнути, завжди випереджайте своїх рефералів — активуйте вищі рівні до того, як це зроблять вони.',
+    es: 'Este diagrama muestra qué sucede cuando tu referido activa un nivel que tú no has comprado. Tu Referido compra Nivel 3 por $13.20 (incluida la comisión del 10%). El pago de $12 debería ir a ti como su patrocinador directo. Pero tú solo tienes Nivel 1 y Nivel 2 — nunca activaste Nivel 3. El contrato inteligente no puede enviarte un pago por un nivel que no tienes, así que te salta por completo. El pago sube por la cadena hasta Tu Patrocinador, que tiene Nivel 3 activo. Tu Patrocinador recibe $12 que deberían haber sido tuyos. Para evitar esto, siempre mantente por delante de tus referidos — activa niveles más altos antes que ellos para nunca perder un pago.'
+  },
+
   land_nav_faq: {
     en: 'FAQ', ru: 'Вопросы', ua: 'Питання',
     es: 'FAQ', pt: 'FAQ', fr: 'FAQ',

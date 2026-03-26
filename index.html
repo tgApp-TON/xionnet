@@ -590,6 +590,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
           <text x="170" y="152" text-anchor="middle" fill="#06d6a0" font-size="12" font-weight="800" font-family="sans-serif">Total: $9 earned → level resets</text>
           <defs><marker id="arrowG" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#06d6a0"/></marker></defs>
         </svg>
+        <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px" data-t="land_vis1_desc">This is the basic earning scenario. You have activated Level 1 and Level 2, with auto-buy turned OFF. When three new users join through your referral link and each activates Level 1 ($3.30 including fee), your slots fill one by one. Slots 1, 2, and 3 each pay you $3 directly to your wallet — that is $9 total. When Slot 4 fills, it triggers a level reset: your level cycles and all four slots are cleared, ready to accept new members again. The Slot 4 payment goes up the chain as a spillover to your sponsor. You keep $9 from a $3 investment — a 3x return per cycle.</div>
       </div>
 
       <!-- Visual: Scenario 2 — Auto-buy ON -->
@@ -622,74 +623,79 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
           <rect x="40" y="175" width="260" height="28" rx="8" fill="#06d6a0" fill-opacity=".1" stroke="#06d6a0" stroke-width="1"/>
           <text x="170" y="193" text-anchor="middle" fill="#06d6a0" font-size="11" font-weight="700" font-family="sans-serif">You got: $3 cash + Level 2 free</text>
         </svg>
+        <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px" data-t="land_vis2_desc">This scenario shows the auto-buy feature in action. You have Level 1 active but you do NOT own Level 2 yet, and auto-buy is turned ON. As your slots fill: Slot 1 pays you $3 directly. Slot 2 freezes $3 toward the cost of Level 2. Slot 3 freezes another $3 — now you have $6 frozen ($3+$3), which is exactly the cost of Level 2. The smart contract automatically opens Level 2 for you at no extra cost. Slot 4 triggers a spillover to your sponsor. In the end, you received $3 in cash plus Level 2 was activated for free. Auto-buy lets you grow without spending more money out of pocket.</div>
       </div>
 
-      <!-- Visual: Scenario 3 — Spillover -->
-      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
+      <!-- Visual: Scenario 3 — Spillover (sponsor doesn't have the level) -->
+      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
         <div style="font-size:13px;font-weight:800;margin-bottom:4px;color:var(--orange)" data-t="land_vis3_title">Scenario C: Spillover</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px" data-t="land_vis3_sub">Slot 4 fires. Payout goes UP the referral chain to nearest active sponsor.</div>
-        <svg viewBox="0 0 340 190" style="width:100%;max-width:340px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
-          <!-- Grandparent -->
-          <rect x="120" y="8" width="100" height="28" rx="7" fill="#06d6a0" fill-opacity=".12" stroke="#06d6a0" stroke-width="1.5"/>
-          <text x="170" y="26" text-anchor="middle" fill="#06d6a0" font-size="10" font-weight="700" font-family="sans-serif">SPONSOR A (L2 ✓)</text>
-          <!-- Parent — no L2 -->
-          <rect x="120" y="58" width="100" height="28" rx="7" fill="#fb4e6d" fill-opacity=".1" stroke="#fb4e6d" stroke-width="1" stroke-dasharray="4,3"/>
-          <text x="170" y="76" text-anchor="middle" fill="#fb4e6d" font-size="10" font-weight="700" font-family="sans-serif">SPONSOR B (no L2)</text>
-          <!-- You -->
-          <rect x="120" y="108" width="100" height="28" rx="7" fill="#1e2238" stroke="#7c3aed" stroke-width="1.5"/>
-          <text x="170" y="126" text-anchor="middle" fill="#b0b8cc" font-size="10" font-weight="700" font-family="sans-serif">YOU (L2)</text>
-          <!-- Slot 4 fires -->
-          <rect x="240" y="108" width="80" height="28" rx="7" fill="#f59e0b" fill-opacity=".15" stroke="#f59e0b" stroke-width="1"/>
-          <text x="280" y="126" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700" font-family="sans-serif">Slot 4 fills</text>
-          <!-- Arrows -->
-          <line x1="170" y1="88" x2="170" y2="106" stroke="#7a84a0" stroke-width="1" stroke-dasharray="3,2"/>
-          <line x1="170" y1="38" x2="170" y2="56" stroke="#7a84a0" stroke-width="1" stroke-dasharray="3,2"/>
-          <!-- Spillover arrow bypassing B → to A -->
-          <path d="M240,122 L235,122 L235,72 L222,72" stroke="#fb4e6d" stroke-width="1.5" fill="none" marker-end="url(#arrowR)"/>
-          <text x="248" y="95" fill="#fb4e6d" font-size="8" font-weight="600" font-family="sans-serif">skip</text>
-          <path d="M120,72 L100,72 L100,22 L118,22" stroke="#06d6a0" stroke-width="2" fill="none" marker-end="url(#arrowG2)"/>
-          <text x="80" y="48" fill="#06d6a0" font-size="8" font-weight="700" font-family="sans-serif" text-anchor="middle">$6</text>
-          <!-- Result -->
-          <rect x="50" y="155" width="240" height="28" rx="8" fill="#06d6a0" fill-opacity=".1" stroke="#06d6a0" stroke-width="1"/>
-          <text x="170" y="173" text-anchor="middle" fill="#06d6a0" font-size="11" font-weight="700" font-family="sans-serif">Sponsor A gets $6 (B skipped — no L2)</text>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px" data-t="land_vis3_sub">New user buys Level 2 ($6.60). Sponsor B doesn't have L2 — payout bypasses B and goes to Sponsor A.</div>
+        <svg viewBox="0 0 300 240" style="width:100%;max-width:300px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+          <!-- Level labels on the right -->
+          <text x="260" y="32" fill="#7a84a0" font-size="8" font-family="sans-serif">Level 1</text>
+          <text x="260" y="97" fill="#7a84a0" font-size="8" font-family="sans-serif">Level 2</text>
+          <text x="260" y="162" fill="#7a84a0" font-size="8" font-family="sans-serif">Level 3</text>
+          <!-- Sponsor A — top, has L2 -->
+          <rect x="75" y="14" width="170" height="36" rx="8" fill="#06d6a0" fill-opacity=".10" stroke="#06d6a0" stroke-width="1.5"/>
+          <text x="160" y="30" text-anchor="middle" fill="#06d6a0" font-size="11" font-weight="800" font-family="sans-serif">SPONSOR A</text>
+          <text x="160" y="44" text-anchor="middle" fill="#06d6a0" font-size="9" font-family="sans-serif">has L2 ✓</text>
+          <!-- Sponsor B — middle, NO L2 -->
+          <rect x="75" y="78" width="170" height="36" rx="8" fill="#fb4e6d" fill-opacity=".08" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="160" y="94" text-anchor="middle" fill="#fb4e6d" font-size="11" font-weight="800" font-family="sans-serif">SPONSOR B</text>
+          <text x="160" y="108" text-anchor="middle" fill="#fb4e6d" font-size="9" font-family="sans-serif">NO L2 ✗</text>
+          <!-- New User — bottom -->
+          <rect x="75" y="142" width="170" height="36" rx="8" fill="#1e2238" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="160" y="158" text-anchor="middle" fill="#b0b8cc" font-size="11" font-weight="800" font-family="sans-serif">NEW USER</text>
+          <text x="160" y="172" text-anchor="middle" fill="#7c3aed" font-size="9" font-family="sans-serif">buys L2 — pays $6.60</text>
+          <!-- Arrow: New User → Sponsor B (blocked, red X) -->
+          <line x1="55" y1="142" x2="55" y2="116" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="42" y="132" fill="#fb4e6d" font-size="14" font-weight="900" font-family="sans-serif">✗</text>
+          <!-- Arrow: bypasses B, goes to Sponsor A (green $6) -->
+          <path d="M55,116 L35,116 L35,32 L73,32" stroke="#06d6a0" stroke-width="2" fill="none" marker-end="url(#arrowGC)"/>
+          <text x="20" y="72" fill="#06d6a0" font-size="12" font-weight="800" font-family="sans-serif" text-anchor="middle">$6</text>
+          <!-- Result box -->
+          <rect x="30" y="198" width="240" height="32" rx="8" fill="#06d6a0" fill-opacity=".1" stroke="#06d6a0" stroke-width="1"/>
+          <text x="150" y="218" text-anchor="middle" fill="#06d6a0" font-size="10" font-weight="700" font-family="sans-serif">Sponsor A receives $6 (B was skipped)</text>
           <defs>
-            <marker id="arrowR" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#fb4e6d"/></marker>
-            <marker id="arrowG2" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#06d6a0"/></marker>
+            <marker id="arrowGC" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#06d6a0"/></marker>
           </defs>
         </svg>
+        <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px" data-t="land_vis3_desc">In this scenario there are three people in a referral chain: Sponsor A (top), Sponsor B (middle), and the New User (bottom). The New User buys Level 2 for $6.60 (which includes the 10% protocol fee). The $6 payout should go to their direct sponsor — Sponsor B. However, Sponsor B does NOT have Level 2 active, so the smart contract skips them automatically. The payout travels up the chain to Sponsor A, who does have Level 2. Sponsor A receives the full $6. Sponsor B earned nothing because they hadn't activated Level 2. The lesson: always activate your levels before your referrals do, or you will lose payouts to the person above you.</div>
       </div>
 
-      <!-- Visual: Scenario 4 — Your referral buys a level you don't have -->
+      <!-- Visual: Scenario 4 — You don't have the level your referral buys -->
       <div style="background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
-        <div style="font-size:13px;font-weight:800;margin-bottom:4px;color:var(--red)" data-t="land_vis4_title">Scenario D: Referral buys a level you don't have</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px" data-t="land_vis4_sub">Your referral activates Level 3, but you only have Level 1 and 2. The payout skips you and goes to the nearest sponsor who has Level 3.</div>
-        <svg viewBox="0 0 340 230" style="width:100%;max-width:340px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
-          <!-- Top sponsor with L3 -->
-          <rect x="110" y="5" width="120" height="30" rx="7" fill="#06d6a0" fill-opacity=".12" stroke="#06d6a0" stroke-width="1.5"/>
-          <text x="170" y="24" text-anchor="middle" fill="#06d6a0" font-size="10" font-weight="700" font-family="sans-serif">YOUR SPONSOR (L3 ✓)</text>
-          <!-- You — no L3 -->
-          <rect x="110" y="60" width="120" height="30" rx="7" fill="#fb4e6d" fill-opacity=".1" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="5,3"/>
-          <text x="170" y="79" text-anchor="middle" fill="#fb4e6d" font-size="10" font-weight="700" font-family="sans-serif">YOU (L1, L2 only ✗)</text>
-          <!-- Your referral -->
-          <rect x="110" y="115" width="120" height="30" rx="7" fill="#1e2238" stroke="#7c3aed" stroke-width="1.5"/>
-          <text x="170" y="134" text-anchor="middle" fill="#b0b8cc" font-size="10" font-weight="700" font-family="sans-serif">YOUR REFERRAL</text>
-          <!-- Buys L3 -->
-          <rect x="245" y="115" width="85" height="30" rx="7" fill="#7c3aed" fill-opacity=".15" stroke="#7c3aed" stroke-width="1"/>
-          <text x="287" y="134" text-anchor="middle" fill="#7c3aed" font-size="9" font-weight="700" font-family="sans-serif">Buys L3 ($12)</text>
-          <!-- Arrow from referral up to you — crossed out -->
-          <line x1="170" y1="113" x2="170" y2="92" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="188" y="105" fill="#fb4e6d" font-size="16" font-weight="900" font-family="sans-serif">✗</text>
-          <text x="250" y="80" fill="#fb4e6d" font-size="8" font-weight="600" font-family="sans-serif">You don't have L3</text>
-          <text x="250" y="90" fill="#fb4e6d" font-size="8" font-weight="600" font-family="sans-serif">→ payout skips you!</text>
-          <!-- Arrow bypassing you to sponsor -->
-          <path d="M108,75 L80,75 L80,20 L108,20" stroke="#06d6a0" stroke-width="2" fill="none" marker-end="url(#arrowG3)"/>
-          <text x="60" y="48" fill="#06d6a0" font-size="11" font-weight="800" font-family="sans-serif" text-anchor="middle">$12</text>
-          <!-- Result -->
-          <rect x="25" y="165" width="290" height="50" rx="8" fill="rgba(251,78,109,.06)" stroke="#fb4e6d" stroke-width="1"/>
-          <text x="170" y="183" text-anchor="middle" fill="#fb4e6d" font-size="10" font-weight="700" font-family="sans-serif">You LOST $12 because you didn't have L3!</text>
-          <text x="170" y="202" text-anchor="middle" fill="#06d6a0" font-size="10" font-weight="700" font-family="sans-serif">Solution: activate levels BEFORE your referrals do</text>
-          <defs><marker id="arrowG3" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#06d6a0"/></marker></defs>
+        <div style="font-size:13px;font-weight:800;margin-bottom:4px;color:var(--red)" data-t="land_vis4_title">Scenario D: Missed Payout</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px" data-t="land_vis4_sub">Your referral buys Level 3, but you only have L1 and L2. The payout skips you.</div>
+        <svg viewBox="0 0 300 250" style="width:100%;max-width:300px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+          <!-- Your Sponsor — top, has L3 -->
+          <rect x="75" y="14" width="170" height="36" rx="8" fill="#06d6a0" fill-opacity=".10" stroke="#06d6a0" stroke-width="1.5"/>
+          <text x="160" y="30" text-anchor="middle" fill="#06d6a0" font-size="11" font-weight="800" font-family="sans-serif">YOUR SPONSOR</text>
+          <text x="160" y="44" text-anchor="middle" fill="#06d6a0" font-size="9" font-family="sans-serif">has L3 ✓</text>
+          <!-- You — middle, only L1+L2, NO L3 -->
+          <rect x="75" y="82" width="170" height="36" rx="8" fill="#fb4e6d" fill-opacity=".08" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="160" y="98" text-anchor="middle" fill="#fb4e6d" font-size="11" font-weight="800" font-family="sans-serif">YOU</text>
+          <text x="160" y="112" text-anchor="middle" fill="#fb4e6d" font-size="9" font-family="sans-serif">only L1, L2 — NO L3 ✗</text>
+          <!-- Your Referral — bottom -->
+          <rect x="75" y="150" width="170" height="36" rx="8" fill="#1e2238" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="160" y="166" text-anchor="middle" fill="#b0b8cc" font-size="11" font-weight="800" font-family="sans-serif">YOUR REFERRAL</text>
+          <text x="160" y="180" text-anchor="middle" fill="#7c3aed" font-size="9" font-family="sans-serif">buys L3 — pays $13.20</text>
+          <!-- Arrow: Referral → You (blocked, red X) -->
+          <line x1="55" y1="150" x2="55" y2="120" stroke="#fb4e6d" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="42" y="138" fill="#fb4e6d" font-size="14" font-weight="900" font-family="sans-serif">✗</text>
+          <text x="62" y="140" fill="#fb4e6d" font-size="7" font-weight="600" font-family="sans-serif">no L3!</text>
+          <!-- Arrow: bypasses You, goes to Your Sponsor (green $12) -->
+          <path d="M55,120 L30,120 L30,32 L73,32" stroke="#06d6a0" stroke-width="2" fill="none" marker-end="url(#arrowGD)"/>
+          <text x="16" y="76" fill="#06d6a0" font-size="12" font-weight="800" font-family="sans-serif" text-anchor="middle">$12</text>
+          <!-- Result box — warning -->
+          <rect x="20" y="204" width="260" height="38" rx="8" fill="rgba(251,78,109,.06)" stroke="#fb4e6d" stroke-width="1"/>
+          <text x="150" y="220" text-anchor="middle" fill="#fb4e6d" font-size="10" font-weight="700" font-family="sans-serif">You LOST $12 — you didn't have L3!</text>
+          <text x="150" y="235" text-anchor="middle" fill="#06d6a0" font-size="9" font-weight="700" font-family="sans-serif">Fix: activate levels BEFORE your referrals do</text>
+          <defs>
+            <marker id="arrowGD" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="#06d6a0"/></marker>
+          </defs>
         </svg>
+        <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px" data-t="land_vis4_desc">This diagram shows what happens when your referral activates a level you haven't bought yet. Your Referral buys Level 3 for $13.20 (including 10% fee). The $12 payout should go to you as their direct sponsor. But you only have Level 1 and Level 2 — you never activated Level 3. The smart contract cannot send you a payout for a level you don't own, so it skips you entirely. The payout goes up the chain to Your Sponsor, who has Level 3 active. Your Sponsor gets $12 that should have been yours. To prevent this, always stay ahead of your referrals — activate higher levels before they do, so you never miss a payout.</div>
       </div>
 
       <div style="font-size:13px;font-weight:700;margin-bottom:8px" data-t="land_mech_example_title">Example: You activated Level 1 ($3)</div>
