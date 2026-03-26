@@ -3718,6 +3718,594 @@ const T = {
     fa: 'ژانویه,فوریه,مارس,آوریل,مه,ژوئن,ژوئیه,اوت,سپتامبر,اکتبر,نوامبر,دسامبر',
     bn: 'জানু,ফেব,মার্চ,এপ্রি,মে,জুন,জুল,আগ,সেপ,অক্টো,নভে,ডিসে',
     sw: 'Jan,Feb,Mac,Apr,Mei,Jun,Jul,Ago,Sep,Okt,Nov,Des'
+  },
+
+  // ==================== LANDING PAGE ====================
+  land_hero_title: {
+    en: 'Decentralized Earning System',
+    ru: 'Децентрализованная система заработка',
+    ua: 'Децентралізована система заробітку',
+    es: 'Sistema de ganancias descentralizado',
+    pt: 'Sistema de ganhos descentralizado',
+    fr: 'Système de revenus décentralisé',
+    de: 'Dezentrales Verdienstsystem',
+    pl: 'Zdecentralizowany system zarobków',
+    vi: 'Hệ thống thu nhập phi tập trung',
+    ko: '탈중앙화 수익 시스템',
+    ja: '分散型収益システム',
+    hi: 'विकेंद्रीकृत कमाई प्रणाली',
+    zh: '去中心化收益系统',
+    tr: 'Merkezi olmayan kazanç sistemi'
+  },
+  land_hero_desc: {
+    en: 'A smart contract-based platform on Polygon where participants earn USDC through a transparent, fully on-chain level system. Every transaction is verifiable, every payout is instant.',
+    ru: 'Платформа на смарт-контракте в сети Polygon, где участники зарабатывают USDC через прозрачную систему уровней полностью на блокчейне. Каждая транзакция проверяема, каждая выплата мгновенна.',
+    ua: 'Платформа на смарт-контракті в мережі Polygon, де учасники заробляють USDC через прозору систему рівнів повністю на блокчейні. Кожна транзакція перевіряється, кожна виплата миттєва.',
+    es: 'Una plataforma basada en contratos inteligentes en Polygon donde los participantes ganan USDC a través de un sistema de niveles transparente y completamente en cadena. Cada transacción es verificable, cada pago es instantáneo.',
+    pt: 'Uma plataforma baseada em contrato inteligente na Polygon onde participantes ganham USDC através de um sistema de níveis transparente e totalmente on-chain. Cada transação é verificável, cada pagamento é instantâneo.',
+    fr: 'Une plateforme basée sur un contrat intelligent sur Polygon où les participants gagnent des USDC via un système de niveaux transparent et entièrement on-chain. Chaque transaction est vérifiable, chaque paiement est instantané.',
+    de: 'Eine auf Smart Contracts basierende Plattform auf Polygon, auf der Teilnehmer USDC durch ein transparentes, vollständig on-chain Level-System verdienen. Jede Transaktion ist überprüfbar, jede Auszahlung sofort.',
+    pl: 'Platforma oparta na smart kontrakcie w sieci Polygon, gdzie uczestnicy zarabiają USDC poprzez przejrzysty system poziomów w pełni on-chain. Każda transakcja jest weryfikowalna, każda wypłata natychmiastowa.',
+    vi: 'Nền tảng dựa trên hợp đồng thông minh trên Polygon, nơi người tham gia kiếm USDC thông qua hệ thống cấp độ minh bạch, hoàn toàn trên chuỗi. Mọi giao dịch đều có thể xác minh, mọi khoản thanh toán đều tức thì.',
+    ko: 'Polygon의 스마트 컨트랙트 기반 플랫폼으로, 참여자들이 투명하고 완전한 온체인 레벨 시스템을 통해 USDC를 수익을 올립니다. 모든 거래는 검증 가능하며, 모든 지급은 즉시 이루어집니다.',
+    ja: 'Polygon上のスマートコントラクトベースのプラットフォームで、参加者は透明で完全にオンチェーンのレベルシステムを通じてUSDCを獲得します。すべての取引は検証可能で、すべての支払いは即時です。',
+    hi: 'Polygon पर एक स्मार्ट कॉन्ट्रैक्ट-आधारित प्लेटफॉर्म जहाँ प्रतिभागी पारदर्शी, पूरी तरह से ऑन-चेन लेवल सिस्टम के माध्यम से USDC कमाते हैं। हर लेनदेन सत्यापन योग्य है, हर भुगतान तत्काल है।',
+    zh: '基于Polygon智能合约的平台，参与者通过透明的、完全链上的等级系统赚取USDC。每笔交易可验证，每笔支付即时到账。',
+    tr: 'Polygon üzerinde akıllı sözleşme tabanlı bir platform; katılımcılar şeffaf ve tamamen zincir üstü seviye sistemi aracılığıyla USDC kazanır. Her işlem doğrulanabilir, her ödeme anındadır.'
+  },
+  land_stat_levels: {
+    en: 'Levels', ru: 'Уровни', ua: 'Рівні',
+    es: 'Niveles', pt: 'Níveis', fr: 'Niveaux',
+    de: 'Stufen', pl: 'Poziomy', vi: 'Cấp độ',
+    ko: '레벨', ja: 'レベル', hi: 'स्तर',
+    zh: '等级', tr: 'Seviyeler'
+  },
+  land_stat_stable: {
+    en: 'Stablecoin', ru: 'Стейблкоин', ua: 'Стейблкоін',
+    es: 'Stablecoin', pt: 'Stablecoin', fr: 'Stablecoin',
+    de: 'Stablecoin', pl: 'Stablecoin', vi: 'Stablecoin',
+    ko: '스테이블코인', ja: 'ステーブルコイン', hi: 'स्टेबलकॉइन',
+    zh: '稳定币', tr: 'Stablecoin'
+  },
+  land_stat_entry: {
+    en: 'Entry', ru: 'Вход', ua: 'Вхід',
+    es: 'Entrada', pt: 'Entrada', fr: 'Entrée',
+    de: 'Einstieg', pl: 'Wejście', vi: 'Tham gia',
+    ko: '입장', ja: 'エントリー', hi: 'प्रवेश',
+    zh: '入门', tr: 'Giriş'
+  },
+  land_open_mm: {
+    en: 'Open in MetaMask', ru: 'Открыть в MetaMask', ua: 'Відкрити в MetaMask',
+    es: 'Abrir en MetaMask', pt: 'Abrir no MetaMask', fr: 'Ouvrir dans MetaMask',
+    de: 'In MetaMask öffnen', pl: 'Otwórz w MetaMask', vi: 'Mở trong MetaMask',
+    ko: 'MetaMask에서 열기', ja: 'MetaMaskで開く', hi: 'MetaMask में खोलें',
+    zh: '在MetaMask中打开', tr: "MetaMask'ta aç"
+  },
+  land_dl_mm: {
+    en: 'Download MetaMask', ru: 'Скачать MetaMask', ua: 'Завантажити MetaMask',
+    es: 'Descargar MetaMask', pt: 'Baixar MetaMask', fr: 'Télécharger MetaMask',
+    de: 'MetaMask herunterladen', pl: 'Pobierz MetaMask', vi: 'Tải MetaMask',
+    ko: 'MetaMask 다운로드', ja: 'MetaMaskをダウンロード', hi: 'MetaMask डाउनलोड करें',
+    zh: '下载MetaMask', tr: "MetaMask'ı indir"
+  },
+  land_dl_tw: {
+    en: 'Download Trust Wallet', ru: 'Скачать Trust Wallet', ua: 'Завантажити Trust Wallet',
+    es: 'Descargar Trust Wallet', pt: 'Baixar Trust Wallet', fr: 'Télécharger Trust Wallet',
+    de: 'Trust Wallet herunterladen', pl: 'Pobierz Trust Wallet', vi: 'Tải Trust Wallet',
+    ko: 'Trust Wallet 다운로드', ja: 'Trust Walletをダウンロード', hi: 'Trust Wallet डाउनलोड करें',
+    zh: '下载Trust Wallet', tr: 'Trust Wallet indir'
+  },
+  land_how_title: {
+    en: 'How It Works', ru: 'Как это работает', ua: 'Як це працює',
+    es: 'Cómo funciona', pt: 'Como funciona', fr: 'Comment ça marche',
+    de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
+    ko: '작동 방식', ja: '仕組み', hi: 'यह कैसे काम करता है',
+    zh: '运作方式', tr: 'Nasıl çalışır'
+  },
+  land_step1_title: {
+    en: 'Activate a level', ru: 'Активируйте уровень', ua: 'Активуйте рівень',
+    es: 'Activa un nivel', pt: 'Ative um nível', fr: 'Activez un niveau',
+    de: 'Stufe aktivieren', pl: 'Aktywuj poziom', vi: 'Kích hoạt cấp độ',
+    ko: '레벨 활성화', ja: 'レベルを有効化', hi: 'एक स्तर सक्रिय करें',
+    zh: '激活等级', tr: 'Bir seviye etkinleştir'
+  },
+  land_step1_desc: {
+    en: 'Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.',
+    ru: 'Выберите любой уровень начиная от $3. Ваш платёж в USDC идёт напрямую в смарт-контракт — никто не может получить к нему доступ, кроме протокола.',
+    ua: 'Оберіть будь-який рівень починаючи від $3. Ваш платіж в USDC йде безпосередньо до смарт-контракту — ніхто не має доступу до нього, крім протоколу.',
+    es: 'Elige cualquier nivel a partir de $3. Tu pago en USDC va directamente al contrato inteligente — nadie puede acceder a él excepto el protocolo.',
+    pt: 'Escolha qualquer nível a partir de $3. Seu pagamento em USDC vai diretamente para o contrato inteligente — ninguém pode acessá-lo exceto o protocolo.',
+    fr: 'Choisissez un niveau à partir de 3$. Votre paiement USDC va directement au contrat intelligent — personne ne peut y accéder sauf le protocole.',
+    de: 'Wählen Sie eine Stufe ab 3$. Ihre USDC-Zahlung geht direkt an den Smart Contract — niemand außer dem Protokoll kann darauf zugreifen.',
+    pl: 'Wybierz dowolny poziom od 3$. Twoja płatność USDC trafia bezpośrednio do smart kontraktu — nikt poza protokołem nie ma do niej dostępu.',
+    vi: 'Chọn bất kỳ cấp độ nào bắt đầu từ $3. Khoản thanh toán USDC của bạn đi trực tiếp đến hợp đồng thông minh — không ai có thể truy cập ngoài giao thức.',
+    ko: '$3부터 시작하는 레벨을 선택하세요. USDC 결제는 스마트 컨트랙트로 직접 전송됩니다 — 프로토콜 외에는 아무도 접근할 수 없습니다.',
+    ja: '$3から始まるレベルを選択してください。USDCの支払いはスマートコントラクトに直接送られます — プロトコル以外は誰もアクセスできません。',
+    hi: '$3 से शुरू होने वाला कोई भी स्तर चुनें। आपका USDC भुगतान सीधे स्मार्ट कॉन्ट्रैक्ट में जाता है — प्रोटोकॉल के अलावा कोई भी इसे एक्सेस नहीं कर सकता।',
+    zh: '从$3起选择任意等级。您的USDC付款直接进入智能合约——除了协议之外没有人可以访问它。',
+    tr: "$3'tan başlayan herhangi bir seviye seçin. USDC ödemeniz doğrudan akıllı sözleşmeye gider — protokol dışında kimse erişemez."
+  },
+  land_step2_title: {
+    en: 'Receive payouts', ru: 'Получайте выплаты', ua: 'Отримуйте виплати',
+    es: 'Recibe pagos', pt: 'Receba pagamentos', fr: 'Recevez des paiements',
+    de: 'Auszahlungen erhalten', pl: 'Otrzymuj wypłaty', vi: 'Nhận thanh toán',
+    ko: '보상 수령', ja: '報酬を受け取る', hi: 'भुगतान प्राप्त करें',
+    zh: '接收支付', tr: 'Ödeme al'
+  },
+  land_step2_desc: {
+    en: 'When other participants activate the same level, the smart contract distributes USDC payouts directly to your wallet. 3 out of 4 slot fills pay you.',
+    ru: 'Когда другие участники активируют тот же уровень, смарт-контракт распределяет выплаты в USDC напрямую на ваш кошелёк. 3 из 4 заполнений слотов платят вам.',
+    ua: 'Коли інші учасники активують той самий рівень, смарт-контракт розподіляє виплати в USDC безпосередньо на ваш гаманець. 3 з 4 заповнень слотів платять вам.',
+    es: 'Cuando otros participantes activan el mismo nivel, el contrato inteligente distribuye pagos en USDC directamente a tu billetera. 3 de cada 4 llenados de slots te pagan.',
+    pt: 'Quando outros participantes ativam o mesmo nível, o contrato inteligente distribui pagamentos em USDC diretamente para sua carteira. 3 de 4 preenchimentos de slots pagam você.',
+    fr: 'Lorsque d\'autres participants activent le même niveau, le contrat intelligent distribue les paiements USDC directement dans votre portefeuille. 3 remplissages de slots sur 4 vous paient.',
+    de: 'Wenn andere Teilnehmer dieselbe Stufe aktivieren, verteilt der Smart Contract USDC-Auszahlungen direkt an Ihr Wallet. 3 von 4 Slot-Füllungen zahlen an Sie.',
+    pl: 'Gdy inni uczestnicy aktywują ten sam poziom, smart kontrakt wypłaca USDC bezpośrednio na Twój portfel. 3 z 4 wypełnień slotów płacą Ci.',
+    vi: 'Khi người tham gia khác kích hoạt cùng cấp độ, hợp đồng thông minh phân phối USDC trực tiếp vào ví của bạn. 3 trong 4 lần lấp đầy slot trả cho bạn.',
+    ko: '다른 참여자들이 같은 레벨을 활성화하면, 스마트 컨트랙트가 USDC 보상을 직접 지갑으로 분배합니다. 4개 슬롯 중 3개가 채워지면 보상을 받습니다.',
+    ja: '他の参加者が同じレベルを有効化すると、スマートコントラクトがUSDCの支払いをあなたのウォレットに直接配布します。4つのスロットのうち3つがあなたに支払います。',
+    hi: 'जब अन्य प्रतिभागी उसी स्तर को सक्रिय करते हैं, स्मार्ट कॉन्ट्रैक्ट USDC भुगतान सीधे आपके वॉलेट में वितरित करता है। 4 में से 3 स्लॉट भरने पर आपको भुगतान मिलता है।',
+    zh: '当其他参与者激活相同等级时，智能合约将USDC支付直接分配到您的钱包。每4次槽位填充中有3次向您支付。',
+    tr: 'Diğer katılımcılar aynı seviyeyi etkinleştirdiğinde, akıllı sözleşme USDC ödemelerini doğrudan cüzdanınıza dağıtır. 4 slot dolumundan 3\'ü size ödeme yapar.'
+  },
+  land_step3_title: {
+    en: 'Auto-cycle', ru: 'Авто-цикл', ua: 'Авто-цикл',
+    es: 'Auto-ciclo', pt: 'Auto-ciclo', fr: 'Auto-cycle',
+    de: 'Auto-Zyklus', pl: 'Auto-cykl', vi: 'Tự động lặp lại',
+    ko: '자동 순환', ja: '自動サイクル', hi: 'ऑटो-साइकल',
+    zh: '自动循环', tr: 'Otomatik döngü'
+  },
+  land_step3_desc: {
+    en: 'After 4 fills your level resets automatically and starts earning again. No limit on cycles — the system works indefinitely.',
+    ru: 'После 4 заполнений ваш уровень сбрасывается автоматически и начинает зарабатывать снова. Ограничений по циклам нет — система работает бесконечно.',
+    ua: 'Після 4 заповнень ваш рівень скидається автоматично і починає заробляти знову. Обмежень по циклах немає — система працює безкінечно.',
+    es: 'Después de 4 llenados, tu nivel se reinicia automáticamente y comienza a ganar de nuevo. Sin límite de ciclos — el sistema funciona indefinidamente.',
+    pt: 'Após 4 preenchimentos, seu nível reinicia automaticamente e começa a ganhar novamente. Sem limite de ciclos — o sistema funciona indefinidamente.',
+    fr: 'Après 4 remplissages, votre niveau se réinitialise automatiquement et recommence à gagner. Pas de limite de cycles — le système fonctionne indéfiniment.',
+    de: 'Nach 4 Füllungen wird Ihre Stufe automatisch zurückgesetzt und verdient erneut. Keine Begrenzung der Zyklen — das System funktioniert unbegrenzt.',
+    pl: 'Po 4 wypełnieniach Twój poziom resetuje się automatycznie i zaczyna zarabiać ponownie. Brak limitu cykli — system działa w nieskończoność.',
+    vi: 'Sau 4 lần lấp đầy, cấp độ của bạn tự động đặt lại và bắt đầu kiếm lại. Không giới hạn số chu kỳ — hệ thống hoạt động vô thời hạn.',
+    ko: '4회 채움 후 레벨이 자동으로 초기화되어 다시 수익을 올립니다. 순환 횟수 제한 없이 시스템은 무한히 작동합니다.',
+    ja: '4回のスロット充填後、レベルは自動的にリセットされ、再び収益を得られます。サイクルに制限はなく、システムは無期限に動作します。',
+    hi: '4 बार भरने के बाद आपका स्तर स्वचालित रूप से रीसेट हो जाता है और फिर से कमाई शुरू करता है। साइकल की कोई सीमा नहीं — सिस्टम अनिश्चित काल तक काम करता है।',
+    zh: '4次填充后，您的等级自动重置并重新开始赚钱。循环次数无限——系统无限期运行。',
+    tr: '4 doldurma sonrası seviyeniz otomatik olarak sıfırlanır ve tekrar kazanmaya başlar. Döngü sınırı yok — sistem süresiz çalışır.'
+  },
+  land_step4_title: {
+    en: 'Grow your network', ru: 'Расширяйте сеть', ua: 'Розширюйте мережу',
+    es: 'Haz crecer tu red', pt: 'Expanda sua rede', fr: 'Développez votre réseau',
+    de: 'Netzwerk ausbauen', pl: 'Rozwijaj swoją sieć', vi: 'Phát triển mạng lưới',
+    ko: '네트워크 확장', ja: 'ネットワークを拡大', hi: 'अपना नेटवर्क बढ़ाएं',
+    zh: '拓展您的网络', tr: 'Ağınızı büyütün'
+  },
+  land_step4_desc: {
+    en: 'Share your referral link. When someone joins through you, their activity fills your slots. The bigger your team, the more active your levels.',
+    ru: 'Поделитесь своей реферальной ссылкой. Когда кто-то присоединяется через вас, его активность заполняет ваши слоты. Чем больше ваша команда, тем активнее ваши уровни.',
+    ua: 'Поділіться своїм реферальним посиланням. Коли хтось приєднується через вас, їхня активність заповнює ваші слоти. Чим більша ваша команда, тим активніші ваші рівні.',
+    es: 'Comparte tu enlace de referido. Cuando alguien se une a través de ti, su actividad llena tus slots. Cuanto más grande tu equipo, más activos tus niveles.',
+    pt: 'Compartilhe seu link de indicação. Quando alguém entra através de você, a atividade deles preenche seus slots. Quanto maior sua equipe, mais ativos seus níveis.',
+    fr: 'Partagez votre lien de parrainage. Quand quelqu\'un rejoint via vous, son activité remplit vos slots. Plus votre équipe est grande, plus vos niveaux sont actifs.',
+    de: 'Teilen Sie Ihren Empfehlungslink. Wenn jemand über Sie beitritt, füllt dessen Aktivität Ihre Slots. Je größer Ihr Team, desto aktiver Ihre Stufen.',
+    pl: 'Udostępnij swój link polecający. Gdy ktoś dołączy przez Ciebie, jego aktywność wypełnia Twoje sloty. Im większy Twój zespół, tym aktywniejsze Twoje poziomy.',
+    vi: 'Chia sẻ liên kết giới thiệu của bạn. Khi ai đó tham gia qua bạn, hoạt động của họ lấp đầy slot của bạn. Đội ngũ càng lớn, cấp độ càng hoạt động.',
+    ko: '추천 링크를 공유하세요. 누군가가 당신을 통해 가입하면, 그들의 활동이 당신의 슬롯을 채웁니다. 팀이 클수록 레벨이 더 활발해집니다.',
+    ja: '紹介リンクを共有してください。あなたを通じて参加した人の活動があなたのスロットを埋めます。チームが大きいほど、レベルがより活発になります。',
+    hi: 'अपना रेफरल लिंक साझा करें। जब कोई आपके माध्यम से जुड़ता है, तो उनकी गतिविधि आपके स्लॉट भरती है। आपकी टीम जितनी बड़ी, आपके स्तर उतने अधिक सक्रिय।',
+    zh: '分享您的推荐链接。当有人通过您加入时，他们的活动会填充您的槽位。团队越大，等级越活跃。',
+    tr: 'Referans bağlantınızı paylaşın. Birisi sizin aracılığınızla katıldığında, aktiviteleri slotlarınızı doldurur. Ekibiniz ne kadar büyükse, seviyeleriniz o kadar aktif olur.'
+  },
+  land_why_title: {
+    en: 'Why XiaonNET', ru: 'Почему XiaonNET', ua: 'Чому XiaonNET',
+    es: 'Por qué XiaonNET', pt: 'Por que XiaonNET', fr: 'Pourquoi XiaonNET',
+    de: 'Warum XiaonNET', pl: 'Dlaczego XiaonNET', vi: 'Tại sao XiaonNET',
+    ko: 'XiaonNET을 선택하는 이유', ja: 'XiaonNETを選ぶ理由', hi: 'XiaonNET क्यों',
+    zh: '为什么选择XiaonNET', tr: 'Neden XiaonNET'
+  },
+  land_why1_title: {
+    en: '100% On-Chain', ru: '100% на блокчейне', ua: '100% на блокчейні',
+    es: '100% en cadena', pt: '100% on-chain', fr: '100% on-chain',
+    de: '100% on-chain', pl: '100% on-chain', vi: '100% trên chuỗi',
+    ko: '100% 온체인', ja: '100%オンチェーン', hi: '100% ऑन-चेन',
+    zh: '100%链上', tr: '100% zincir üstü'
+  },
+  land_why1_desc: {
+    en: 'All logic lives in a verified smart contract. No admin can freeze your funds or change the rules.',
+    ru: 'Вся логика находится в верифицированном смарт-контракте. Ни один администратор не может заморозить ваши средства или изменить правила.',
+    ua: 'Вся логіка знаходиться у верифікованому смарт-контракті. Жоден адміністратор не може заморозити ваші кошти або змінити правила.',
+    es: 'Toda la lógica vive en un contrato inteligente verificado. Ningún administrador puede congelar tus fondos ni cambiar las reglas.',
+    pt: 'Toda a lógica reside em um contrato inteligente verificado. Nenhum administrador pode congelar seus fundos ou alterar as regras.',
+    fr: 'Toute la logique réside dans un contrat intelligent vérifié. Aucun administrateur ne peut geler vos fonds ou changer les règles.',
+    de: 'Die gesamte Logik befindet sich in einem verifizierten Smart Contract. Kein Admin kann Ihre Gelder einfrieren oder die Regeln ändern.',
+    pl: 'Cała logika znajduje się w zweryfikowanym smart kontrakcie. Żaden administrator nie może zamrozić Twoich środków ani zmienić zasad.',
+    vi: 'Toàn bộ logic nằm trong hợp đồng thông minh đã được xác minh. Không ai có thể đóng băng tiền của bạn hoặc thay đổi quy tắc.',
+    ko: '모든 로직은 검증된 스마트 컨트랙트에 있습니다. 관리자가 자금을 동결하거나 규칙을 변경할 수 없습니다.',
+    ja: 'すべてのロジックは検証済みのスマートコントラクトにあります。管理者が資金を凍結したりルールを変更したりすることはできません。',
+    hi: 'सारा तर्क एक सत्यापित स्मार्ट कॉन्ट्रैक्ट में है। कोई भी व्यवस्थापक आपके फंड को फ्रीज नहीं कर सकता या नियम नहीं बदल सकता।',
+    zh: '所有逻辑都在经过验证的智能合约中。没有管理员可以冻结您的资金或更改规则。',
+    tr: 'Tüm mantık doğrulanmış bir akıllı sözleşmede yaşar. Hiçbir yönetici fonlarınızı donduramaz veya kuralları değiştiremez.'
+  },
+  land_why2_title: {
+    en: 'USDC Stablecoin', ru: 'Стейблкоин USDC', ua: 'Стейблкоін USDC',
+    es: 'Stablecoin USDC', pt: 'Stablecoin USDC', fr: 'Stablecoin USDC',
+    de: 'USDC-Stablecoin', pl: 'Stablecoin USDC', vi: 'Stablecoin USDC',
+    ko: 'USDC 스테이블코인', ja: 'USDCステーブルコイン', hi: 'USDC स्टेबलकॉइन',
+    zh: 'USDC稳定币', tr: 'USDC Stablecoin'
+  },
+  land_why2_desc: {
+    en: 'Payouts in USDC — no volatile tokens. $1 in = $1 out. Stable, liquid, universally accepted.',
+    ru: 'Выплаты в USDC — никаких волатильных токенов. $1 вход = $1 выход. Стабильно, ликвидно, принимается повсеместно.',
+    ua: 'Виплати в USDC — жодних волатильних токенів. $1 вхід = $1 вихід. Стабільно, ліквідно, приймається скрізь.',
+    es: 'Pagos en USDC — sin tokens volátiles. $1 entrada = $1 salida. Estable, líquido, aceptado universalmente.',
+    pt: 'Pagamentos em USDC — sem tokens voláteis. $1 entrada = $1 saída. Estável, líquido, universalmente aceito.',
+    fr: 'Paiements en USDC — pas de jetons volatils. 1$ entré = 1$ sorti. Stable, liquide, universellement accepté.',
+    de: 'Auszahlungen in USDC — keine volatilen Token. 1$ rein = 1$ raus. Stabil, liquide, universell akzeptiert.',
+    pl: 'Wypłaty w USDC — żadnych niestabilnych tokenów. 1$ wpłata = 1$ wypłata. Stabilne, płynne, powszechnie akceptowane.',
+    vi: 'Thanh toán bằng USDC — không có token biến động. $1 vào = $1 ra. Ổn định, thanh khoản, được chấp nhận toàn cầu.',
+    ko: 'USDC로 지급 — 변동성 토큰 없음. $1 입금 = $1 출금. 안정적이고 유동적이며 보편적으로 인정됩니다.',
+    ja: 'USDCでの支払い — 変動性トークンなし。1ドル入金 = 1ドル出金。安定的、流動的、世界中で受け入れ。',
+    hi: 'USDC में भुगतान — कोई अस्थिर टोकन नहीं। $1 अंदर = $1 बाहर। स्थिर, तरल, सार्वभौमिक रूप से स्वीकृत।',
+    zh: 'USDC支付——无波动代币。$1入=$1出。稳定、流动性强、全球通用。',
+    tr: 'USDC ile ödemeler — değişken token yok. 1$ giriş = 1$ çıkış. Stabil, likit, evrensel olarak kabul edilen.'
+  },
+  land_why3_title: {
+    en: 'Instant Payouts', ru: 'Мгновенные выплаты', ua: 'Миттєві виплати',
+    es: 'Pagos instantáneos', pt: 'Pagamentos instantâneos', fr: 'Paiements instantanés',
+    de: 'Sofortige Auszahlungen', pl: 'Natychmiastowe wypłaty', vi: 'Thanh toán tức thì',
+    ko: '즉시 지급', ja: '即時支払い', hi: 'तत्काल भुगतान',
+    zh: '即时支付', tr: 'Anında ödemeler'
+  },
+  land_why3_desc: {
+    en: 'No waiting periods, no approval queues. Payouts are sent in the same transaction — within seconds.',
+    ru: 'Нет периодов ожидания, нет очередей на одобрение. Выплаты отправляются в той же транзакции — за секунды.',
+    ua: 'Немає періодів очікування, немає черг на схвалення. Виплати надсилаються в тій же транзакції — за секунди.',
+    es: 'Sin períodos de espera, sin colas de aprobación. Los pagos se envían en la misma transacción — en segundos.',
+    pt: 'Sem períodos de espera, sem filas de aprovação. Os pagamentos são enviados na mesma transação — em segundos.',
+    fr: 'Pas de délais d\'attente, pas de files d\'approbation. Les paiements sont envoyés dans la même transaction — en quelques secondes.',
+    de: 'Keine Wartezeiten, keine Genehmigungswarteschlangen. Auszahlungen werden in derselben Transaktion gesendet — innerhalb von Sekunden.',
+    pl: 'Brak okresów oczekiwania, brak kolejek zatwierdzania. Wypłaty wysyłane są w tej samej transakcji — w ciągu sekund.',
+    vi: 'Không có thời gian chờ, không có hàng đợi phê duyệt. Thanh toán được gửi trong cùng giao dịch — trong vài giây.',
+    ko: '대기 기간 없음, 승인 대기열 없음. 같은 트랜잭션에서 몇 초 내에 지급됩니다.',
+    ja: '待機期間なし、承認キューなし。同じトランザクションで数秒以内に支払いが送信されます。',
+    hi: 'कोई प्रतीक्षा अवधि नहीं, कोई स्वीकृति कतार नहीं। भुगतान उसी लेनदेन में भेजे जाते हैं — सेकंडों में।',
+    zh: '无等待期，无审批队列。支付在同一笔交易中发送——几秒钟内完成。',
+    tr: 'Bekleme süresi yok, onay kuyruğu yok. Ödemeler aynı işlemde gönderilir — saniyeler içinde.'
+  },
+  land_why4_title: {
+    en: 'Verified Contract', ru: 'Верифицированный контракт', ua: 'Верифікований контракт',
+    es: 'Contrato verificado', pt: 'Contrato verificado', fr: 'Contrat vérifié',
+    de: 'Verifizierter Vertrag', pl: 'Zweryfikowany kontrakt', vi: 'Hợp đồng đã xác minh',
+    ko: '검증된 컨트랙트', ja: '検証済みコントラクト', hi: 'सत्यापित अनुबंध',
+    zh: '已验证合约', tr: 'Doğrulanmış sözleşme'
+  },
+  land_why4_desc: {
+    en: 'Source code published and verified on Polygonscan. Anyone can audit exactly how funds flow.',
+    ru: 'Исходный код опубликован и верифицирован на Polygonscan. Любой может проверить, как именно движутся средства.',
+    ua: 'Вихідний код опублікований та верифікований на Polygonscan. Будь-хто може перевірити, як саме рухаються кошти.',
+    es: 'Código fuente publicado y verificado en Polygonscan. Cualquiera puede auditar exactamente cómo fluyen los fondos.',
+    pt: 'Código-fonte publicado e verificado no Polygonscan. Qualquer pessoa pode auditar exatamente como os fundos fluem.',
+    fr: 'Code source publié et vérifié sur Polygonscan. N\'importe qui peut auditer exactement comment les fonds circulent.',
+    de: 'Quellcode veröffentlicht und auf Polygonscan verifiziert. Jeder kann genau prüfen, wie die Gelder fließen.',
+    pl: 'Kod źródłowy opublikowany i zweryfikowany na Polygonscan. Każdy może sprawdzić, jak dokładnie przepływają środki.',
+    vi: 'Mã nguồn được công bố và xác minh trên Polygonscan. Bất kỳ ai cũng có thể kiểm tra chính xác dòng tiền.',
+    ko: '소스 코드가 Polygonscan에 게시 및 검증되었습니다. 누구나 자금 흐름을 정확히 감사할 수 있습니다.',
+    ja: 'ソースコードはPolygonscanで公開・検証済みです。誰でも資金の流れを正確に監査できます。',
+    hi: 'स्रोत कोड Polygonscan पर प्रकाशित और सत्यापित। कोई भी ठीक से ऑडिट कर सकता है कि फंड कैसे प्रवाहित होते हैं।',
+    zh: '源代码已在Polygonscan上发布并验证。任何人都可以审计资金的确切流向。',
+    tr: 'Kaynak kodu Polygonscan\'da yayınlandı ve doğrulandı. Herkes fonların tam olarak nasıl aktığını denetleyebilir.'
+  },
+  land_levels_title: {
+    en: 'Level Structure', ru: 'Структура уровней', ua: 'Структура рівнів',
+    es: 'Estructura de niveles', pt: 'Estrutura de níveis', fr: 'Structure des niveaux',
+    de: 'Stufenstruktur', pl: 'Struktura poziomów', vi: 'Cấu trúc cấp độ',
+    ko: '레벨 구조', ja: 'レベル構造', hi: 'स्तर संरचना',
+    zh: '等级结构', tr: 'Seviye yapısı'
+  },
+  land_levels_desc: {
+    en: 'Each level costs more but pays proportionally more. You earn 3 payouts per cycle.',
+    ru: 'Каждый уровень стоит дороже, но платит пропорционально больше. Вы получаете 3 выплаты за цикл.',
+    ua: 'Кожен рівень коштує більше, але платить пропорційно більше. Ви отримуєте 3 виплати за цикл.',
+    es: 'Cada nivel cuesta más pero paga proporcionalmente más. Ganas 3 pagos por ciclo.',
+    pt: 'Cada nível custa mais, mas paga proporcionalmente mais. Você ganha 3 pagamentos por ciclo.',
+    fr: 'Chaque niveau coûte plus cher mais paie proportionnellement plus. Vous gagnez 3 paiements par cycle.',
+    de: 'Jede Stufe kostet mehr, zahlt aber proportional mehr. Sie erhalten 3 Auszahlungen pro Zyklus.',
+    pl: 'Każdy poziom kosztuje więcej, ale płaci proporcjonalnie więcej. Otrzymujesz 3 wypłaty na cykl.',
+    vi: 'Mỗi cấp độ có giá cao hơn nhưng trả nhiều hơn tương ứng. Bạn kiếm 3 khoản thanh toán mỗi chu kỳ.',
+    ko: '각 레벨은 비용이 더 많지만 비례적으로 더 많이 지급합니다. 사이클당 3회 보상을 받습니다.',
+    ja: '各レベルはコストが高くなりますが、比例してより多く支払います。1サイクルにつき3回の支払いを受け取ります。',
+    hi: 'प्रत्येक स्तर की लागत अधिक है लेकिन आनुपातिक रूप से अधिक भुगतान करता है। आप प्रति चक्र 3 भुगतान कमाते हैं।',
+    zh: '每个等级成本更高但按比例支付更多。每个循环您赚取3次支付。',
+    tr: 'Her seviye daha maliyetli ama orantılı olarak daha fazla öder. Döngü başına 3 ödeme kazanırsınız.'
+  },
+  land_tbl_level: {
+    en: 'Level', ru: 'Уровень', ua: 'Рівень',
+    es: 'Nivel', pt: 'Nível', fr: 'Niveau',
+    de: 'Stufe', pl: 'Poziom', vi: 'Cấp độ',
+    ko: '레벨', ja: 'レベル', hi: 'स्तर',
+    zh: '等级', tr: 'Seviye'
+  },
+  land_tbl_price: {
+    en: 'Price', ru: 'Цена', ua: 'Ціна',
+    es: 'Precio', pt: 'Preço', fr: 'Prix',
+    de: 'Preis', pl: 'Cena', vi: 'Giá',
+    ko: '가격', ja: '価格', hi: 'कीमत',
+    zh: '价格', tr: 'Fiyat'
+  },
+  land_tbl_earn: {
+    en: 'Earn / cycle', ru: 'Доход / цикл', ua: 'Дохід / цикл',
+    es: 'Ganar / ciclo', pt: 'Ganho / ciclo', fr: 'Gain / cycle',
+    de: 'Verdienst / Zyklus', pl: 'Zysk / cykl', vi: 'Thu nhập / chu kỳ',
+    ko: '수익 / 사이클', ja: '収益 / サイクル', hi: 'कमाई / चक्र',
+    zh: '每周期收益', tr: 'Kazanç / döngü'
+  },
+  land_faq_title: {
+    en: 'FAQ', ru: 'Вопросы и ответы', ua: 'Питання і відповіді',
+    es: 'Preguntas frecuentes', pt: 'Perguntas frequentes', fr: 'FAQ',
+    de: 'FAQ', pl: 'FAQ', vi: 'Câu hỏi thường gặp',
+    ko: '자주 묻는 질문', ja: 'よくある質問', hi: 'सामान्य प्रश्न',
+    zh: '常见问题', tr: 'SSS'
+  },
+  land_faq1_q: {
+    en: 'What exactly is XiaonNET?', ru: 'Что такое XiaonNET?', ua: 'Що таке XiaonNET?',
+    es: '¿Qué es exactamente XiaonNET?', pt: 'O que é exatamente o XiaonNET?', fr: 'Qu\'est-ce que XiaonNET exactement?',
+    de: 'Was genau ist XiaonNET?', pl: 'Czym dokładnie jest XiaonNET?', vi: 'XiaonNET chính xác là gì?',
+    ko: 'XiaonNET은 정확히 무엇인가요?', ja: 'XiaonNETとは正確には何ですか？', hi: 'XiaonNET वास्तव में क्या है?',
+    zh: 'XiaonNET到底是什么？', tr: 'XiaonNET tam olarak nedir?'
+  },
+  land_faq1_a: {
+    en: 'XiaonNET is a decentralized platform built on a smart contract on the Polygon blockchain. It operates a level-based system where participants activate levels and receive USDC payouts when their slots are filled by other participants. All rules are coded into the contract — no human intervention possible.',
+    ru: 'XiaonNET — это децентрализованная платформа, построенная на смарт-контракте в блокчейне Polygon. Она работает по системе уровней, где участники активируют уровни и получают выплаты в USDC, когда их слоты заполняются другими участниками. Все правила закодированы в контракте — вмешательство человека невозможно.',
+    ua: 'XiaonNET — це децентралізована платформа, побудована на смарт-контракті в блокчейні Polygon. Вона працює за системою рівнів, де учасники активують рівні та отримують виплати в USDC, коли їхні слоти заповнюються іншими учасниками. Усі правила закодовані в контракті — втручання людини неможливе.',
+    es: 'XiaonNET es una plataforma descentralizada construida sobre un contrato inteligente en la blockchain de Polygon. Opera un sistema basado en niveles donde los participantes activan niveles y reciben pagos en USDC cuando sus slots son llenados por otros participantes. Todas las reglas están codificadas en el contrato — no es posible la intervención humana.',
+    pt: 'XiaonNET é uma plataforma descentralizada construída em um contrato inteligente na blockchain Polygon. Opera um sistema baseado em níveis onde participantes ativam níveis e recebem pagamentos em USDC quando seus slots são preenchidos por outros participantes. Todas as regras são codificadas no contrato — nenhuma intervenção humana é possível.',
+    fr: 'XiaonNET est une plateforme décentralisée construite sur un contrat intelligent sur la blockchain Polygon. Elle fonctionne avec un système de niveaux où les participants activent des niveaux et reçoivent des paiements en USDC lorsque leurs slots sont remplis par d\'autres participants. Toutes les règles sont codées dans le contrat — aucune intervention humaine possible.',
+    de: 'XiaonNET ist eine dezentrale Plattform, die auf einem Smart Contract auf der Polygon-Blockchain aufgebaut ist. Sie betreibt ein stufenbasiertes System, bei dem Teilnehmer Stufen aktivieren und USDC-Auszahlungen erhalten, wenn ihre Slots von anderen Teilnehmern gefüllt werden. Alle Regeln sind im Vertrag codiert — kein menschliches Eingreifen möglich.',
+    pl: 'XiaonNET to zdecentralizowana platforma zbudowana na smart kontrakcie w blockchainie Polygon. Działa w systemie poziomów, w którym uczestnicy aktywują poziomy i otrzymują wypłaty w USDC, gdy ich sloty są wypełniane przez innych uczestników. Wszystkie zasady są zakodowane w kontrakcie — interwencja człowieka jest niemożliwa.',
+    vi: 'XiaonNET là một nền tảng phi tập trung được xây dựng trên hợp đồng thông minh trên blockchain Polygon. Nó vận hành hệ thống dựa trên cấp độ, nơi người tham gia kích hoạt cấp độ và nhận thanh toán USDC khi slot của họ được lấp đầy bởi người tham gia khác. Tất cả quy tắc được mã hóa trong hợp đồng — không thể can thiệp bởi con người.',
+    ko: 'XiaonNET은 Polygon 블록체인의 스마트 컨트랙트로 구축된 탈중앙화 플랫폼입니다. 참여자가 레벨을 활성화하고 다른 참여자가 슬롯을 채우면 USDC 보상을 받는 레벨 기반 시스템을 운영합니다. 모든 규칙은 컨트랙트에 코딩되어 있어 인간의 개입이 불가능합니다.',
+    ja: 'XiaonNETはPolygonブロックチェーン上のスマートコントラクトで構築された分散型プラットフォームです。参加者がレベルを有効化し、他の参加者がスロットを埋めるとUSDCの支払いを受け取るレベルベースのシステムを運営しています。すべてのルールはコントラクトにコーディングされており、人間の介入は不可能です。',
+    hi: 'XiaonNET Polygon ब्लॉकचेन पर एक स्मार्ट कॉन्ट्रैक्ट पर बनाया गया एक विकेंद्रीकृत प्लेटफॉर्म है। यह एक स्तर-आधारित प्रणाली संचालित करता है जहाँ प्रतिभागी स्तरों को सक्रिय करते हैं और जब उनके स्लॉट अन्य प्रतिभागियों द्वारा भरे जाते हैं तो USDC भुगतान प्राप्त करते हैं। सभी नियम कॉन्ट्रैक्ट में कोडित हैं — मानव हस्तक्षेप संभव नहीं है।',
+    zh: 'XiaonNET是一个建立在Polygon区块链智能合约上的去中心化平台。它运营一个基于等级的系统，参与者激活等级，当其槽位被其他参与者填充时获得USDC支付。所有规则都编码在合约中——不可能进行人为干预。',
+    tr: 'XiaonNET, Polygon blok zincirinde bir akıllı sözleşme üzerine kurulmuş merkezi olmayan bir platformdur. Katılımcıların seviye etkinleştirdiği ve slotları diğer katılımcılar tarafından doldurulduğunda USDC ödemeleri aldığı seviye tabanlı bir sistem işletir. Tüm kurallar sözleşmeye kodlanmıştır — insan müdahalesi mümkün değildir.'
+  },
+  land_faq2_q: {
+    en: 'Is this a pyramid scheme?', ru: 'Это финансовая пирамида?', ua: 'Це фінансова піраміда?',
+    es: '¿Es esto un esquema piramidal?', pt: 'Isso é um esquema de pirâmide?', fr: 'Est-ce un système pyramidal?',
+    de: 'Ist das ein Schneeballsystem?', pl: 'Czy to piramida finansowa?', vi: 'Đây có phải là mô hình ponzi?',
+    ko: '이것은 피라미드 사기인가요?', ja: 'これはピラミッドスキームですか？', hi: 'क्या यह एक पिरामिड स्कीम है?',
+    zh: '这是传销吗？', tr: 'Bu bir saadet zinciri mi?'
+  },
+  land_faq2_a: {
+    en: 'No. In a pyramid, money flows only upward and early participants profit at the expense of later ones. In XiaonNET, every level cycles infinitely — each time 4 slots fill, you receive 3 payouts and the level resets. There\'s no cap on earnings and no one gets stuck. The system works through continuous participation, not by exhausting a pool of funds. Additionally, payouts come from other participants\' level activations, not from recruiting — you can earn even without referrals through spillover from the network.',
+    ru: 'Нет. В пирамиде деньги текут только вверх, и ранние участники зарабатывают за счёт поздних. В XiaonNET каждый уровень циклируется бесконечно — каждый раз, когда заполняются 4 слота, вы получаете 3 выплаты, и уровень сбрасывается. Нет ограничений по заработку, и никто не застревает. Система работает благодаря постоянному участию, а не за счёт исчерпания пула средств. Кроме того, выплаты поступают от активаций уровней других участников, а не от рекрутинга — вы можете зарабатывать даже без рефералов благодаря спилловеру из сети.',
+    ua: 'Ні. У піраміді гроші йдуть тільки вгору, і ранні учасники заробляють за рахунок пізніших. У XiaonNET кожен рівень циклується нескінченно — кожного разу, коли заповнюються 4 слоти, ви отримуєте 3 виплати, і рівень скидається. Немає обмежень на заробіток, і ніхто не застряє. Система працює завдяки постійній участі, а не за рахунок вичерпання пулу коштів. Крім того, виплати надходять від активацій рівнів інших учасників, а не від рекрутингу — ви можете заробляти навіть без рефералів завдяки спілловеру з мережі.',
+    es: 'No. En una pirámide, el dinero fluye solo hacia arriba y los primeros participantes ganan a costa de los últimos. En XiaonNET, cada nivel se recicla infinitamente — cada vez que se llenan 4 slots, recibes 3 pagos y el nivel se reinicia. No hay límite de ganancias y nadie se queda atascado. El sistema funciona a través de la participación continua, no agotando un fondo. Además, los pagos provienen de las activaciones de niveles de otros participantes, no del reclutamiento — puedes ganar incluso sin referidos a través del spillover de la red.',
+    pt: 'Não. Em uma pirâmide, o dinheiro flui apenas para cima e os primeiros participantes lucram às custas dos últimos. No XiaonNET, cada nível cicla infinitamente — cada vez que 4 slots são preenchidos, você recebe 3 pagamentos e o nível reinicia. Não há limite de ganhos e ninguém fica preso. O sistema funciona através da participação contínua, não esgotando um pool de fundos.',
+    fr: 'Non. Dans une pyramide, l\'argent ne monte que vers le haut et les premiers participants profitent aux dépens des derniers. Dans XiaonNET, chaque niveau cycle à l\'infini — chaque fois que 4 slots sont remplis, vous recevez 3 paiements et le niveau se réinitialise. Il n\'y a pas de plafond de gains et personne ne reste bloqué.',
+    de: 'Nein. In einem Pyramidensystem fließt Geld nur nach oben und frühe Teilnehmer profitieren auf Kosten späterer. Bei XiaonNET zykliert jede Stufe unendlich — jedes Mal wenn 4 Slots gefüllt werden, erhalten Sie 3 Auszahlungen und die Stufe wird zurückgesetzt. Es gibt keine Obergrenze für Verdienste und niemand bleibt stecken.',
+    pl: 'Nie. W piramidzie pieniądze płyną tylko w górę, a wcześni uczestnicy zarabiają kosztem późniejszych. W XiaonNET każdy poziom cykluje się w nieskończoność — za każdym razem, gdy 4 sloty się wypełnią, otrzymujesz 3 wypłaty i poziom się resetuje. Nie ma limitu zarobków i nikt nie utknął.',
+    vi: 'Không. Trong mô hình ponzi, tiền chỉ chảy lên trên và người tham gia sớm lợi nhuận trên chi phí của người tham gia sau. Trong XiaonNET, mỗi cấp độ lặp vô hạn — mỗi lần 4 slot được lấp đầy, bạn nhận 3 khoản thanh toán và cấp độ đặt lại.',
+    ko: '아닙니다. 피라미드에서는 돈이 위로만 흐르고 초기 참여자가 후발 참여자를 희생시켜 이익을 얻습니다. XiaonNET에서는 모든 레벨이 무한히 순환합니다 — 4개 슬롯이 채워질 때마다 3회 보상을 받고 레벨이 리셋됩니다.',
+    ja: 'いいえ。ピラミッドでは、お金は上にしか流れず、早期参加者が後発者の犠牲の上に利益を得ます。XiaonNETでは、すべてのレベルが無限にサイクルします — 4つのスロットが埋まるたびに3回の支払いを受け取り、レベルがリセットされます。',
+    hi: 'नहीं। पिरामिड में पैसा केवल ऊपर की ओर बहता है और शुरुआती प्रतिभागी बाद वालों की कीमत पर लाभ कमाते हैं। XiaonNET में हर स्तर अनंत रूप से चक्रित होता है — हर बार 4 स्लॉट भरने पर आपको 3 भुगतान मिलते हैं और स्तर रीसेट हो जाता है।',
+    zh: '不是。在传销中，钱只往上流，早期参与者以后来者为代价获利。在XiaonNET中，每个等级无限循环——每次4个槽位被填满，您获得3次支付，等级重置。收益没有上限，没有人会被困住。',
+    tr: 'Hayır. Bir piramitte para sadece yukarı akar ve erken katılımcılar sonrakilerin pahasına kar eder. XiaonNET\'te her seviye sonsuz döngü yapar — her 4 slot dolduğunda 3 ödeme alırsınız ve seviye sıfırlanır. Kazanç sınırı yoktur ve kimse takılmaz.'
+  },
+  land_faq3_q: {
+    en: 'Where does the money come from?', ru: 'Откуда берутся деньги?', ua: 'Звідки беруться гроші?',
+    es: '¿De dónde viene el dinero?', pt: 'De onde vem o dinheiro?', fr: 'D\'où vient l\'argent?',
+    de: 'Woher kommt das Geld?', pl: 'Skąd pochodzą pieniądze?', vi: 'Tiền đến từ đâu?',
+    ko: '돈은 어디서 오나요?', ja: 'お金はどこから来ますか？', hi: 'पैसा कहाँ से आता है?',
+    zh: '钱从哪里来？', tr: 'Para nereden geliyor?'
+  },
+  land_faq3_a: {
+    en: 'Every dollar in the system comes from a participant activating a level. When someone pays $3 for Level 1, the contract distributes that $3 as a payout to whoever owns the slot above. 10% goes to the protocol as a fee. There is no hidden pool, no loans, no external funding. You can verify every transaction on Polygonscan — it\'s fully transparent.',
+    ru: 'Каждый доллар в системе поступает от участника, активирующего уровень. Когда кто-то платит $3 за уровень 1, контракт распределяет эти $3 в качестве выплаты тому, кто владеет слотом выше. 10% идёт протоколу в качестве комиссии. Нет скрытого пула, нет займов, нет внешнего финансирования. Вы можете проверить каждую транзакцию на Polygonscan — всё полностью прозрачно.',
+    ua: 'Кожен долар у системі надходить від учасника, який активує рівень. Коли хтось платить $3 за рівень 1, контракт розподіляє ці $3 як виплату тому, хто володіє слотом вище. 10% йде протоколу як комісія. Немає прихованого пулу, немає позик, немає зовнішнього фінансування. Ви можете перевірити кожну транзакцію на Polygonscan — все повністю прозоро.',
+    es: 'Cada dólar en el sistema proviene de un participante que activa un nivel. Cuando alguien paga $3 por el Nivel 1, el contrato distribuye esos $3 como pago a quien posee el slot superior. El 10% va al protocolo como comisión. No hay pool oculto, no hay préstamos, no hay financiación externa. Puedes verificar cada transacción en Polygonscan — es completamente transparente.',
+    pt: 'Cada dólar no sistema vem de um participante ativando um nível. Quando alguém paga $3 pelo Nível 1, o contrato distribui esses $3 como pagamento para quem possui o slot acima. 10% vai para o protocolo como taxa. Não há pool oculto, sem empréstimos, sem financiamento externo.',
+    fr: 'Chaque dollar dans le système provient d\'un participant qui active un niveau. Quand quelqu\'un paie 3$ pour le niveau 1, le contrat distribue ces 3$ en paiement à celui qui possède le slot au-dessus. 10% va au protocole en tant que frais. Il n\'y a pas de pool caché, pas de prêts, pas de financement externe.',
+    de: 'Jeder Dollar im System kommt von einem Teilnehmer, der eine Stufe aktiviert. Wenn jemand 3$ für Stufe 1 bezahlt, verteilt der Vertrag diese 3$ als Auszahlung an den Slot-Inhaber darüber. 10% gehen als Gebühr an das Protokoll. Kein versteckter Pool, keine Kredite, keine externe Finanzierung.',
+    pl: 'Każdy dolar w systemie pochodzi od uczestnika aktywującego poziom. Gdy ktoś płaci 3$ za Poziom 1, kontrakt dystrybuuje te 3$ jako wypłatę do właściciela slotu powyżej. 10% idzie do protokołu jako opłata. Brak ukrytego pula, brak pożyczek, brak zewnętrznego finansowania.',
+    vi: 'Mỗi đô la trong hệ thống đến từ một người tham gia kích hoạt cấp độ. Khi ai đó trả $3 cho Cấp 1, hợp đồng phân phối $3 đó dưới dạng thanh toán cho người sở hữu slot phía trên. 10% đi vào giao thức dưới dạng phí.',
+    ko: '시스템의 모든 달러는 레벨을 활성화하는 참여자로부터 옵니다. 누군가가 레벨 1에 $3를 지불하면 컨트랙트가 위의 슬롯 소유자에게 $3를 보상으로 분배합니다. 10%는 프로토콜 수수료로 갑니다.',
+    ja: 'システム内のすべてのドルは、レベルを有効化する参加者から来ています。誰かがレベル1に3ドルを支払うと、コントラクトはその3ドルを上のスロットの所有者に支払いとして配布します。10%はプロトコル手数料として使われます。',
+    hi: 'सिस्टम में हर डॉलर एक प्रतिभागी द्वारा एक स्तर सक्रिय करने से आता है। जब कोई स्तर 1 के लिए $3 का भुगतान करता है, तो कॉन्ट्रैक्ट उन $3 को ऊपर के स्लॉट मालिक को भुगतान के रूप में वितरित करता है। 10% प्रोटोकॉल शुल्क के रूप में जाता है।',
+    zh: '系统中的每一美元都来自参与者激活等级。当有人为1级支付$3时，合约将这$3作为支付分配给上方槽位的所有者。10%作为手续费归协议。没有隐藏资金池，没有贷款，没有外部资金。',
+    tr: 'Sistemdeki her dolar bir katılımcının seviye etkinleştirmesinden gelir. Birisi Seviye 1 için 3$ ödediğinde, sözleşme bu 3$\'ı üstteki slot sahibine ödeme olarak dağıtır. %10 protokole ücret olarak gider. Gizli havuz yok, kredi yok, dış fonlama yok.'
+  },
+  land_faq4_q: {
+    en: 'Can the admin steal funds?', ru: 'Может ли админ украсть средства?', ua: 'Чи може адмін вкрасти кошти?',
+    es: '¿Puede el administrador robar fondos?', pt: 'O administrador pode roubar fundos?', fr: 'L\'administrateur peut-il voler des fonds?',
+    de: 'Kann der Admin Gelder stehlen?', pl: 'Czy administrator może ukraść środki?', vi: 'Quản trị viên có thể đánh cắp tiền không?',
+    ko: '관리자가 자금을 훔칠 수 있나요?', ja: '管理者が資金を盗むことはできますか？', hi: 'क्या एडमिन फंड चुरा सकता है?',
+    zh: '管理员能偷走资金吗？', tr: 'Yönetici fonları çalabilir mi?'
+  },
+  land_faq4_a: {
+    en: 'No. The contract is non-custodial — it holds USDC only temporarily during slot fills and frozen amounts. Payouts go directly to participant wallets. The admin can only withdraw accumulated protocol fees (10%), and cannot touch participant funds or frozen balances. The contract code is verified and publicly auditable on Polygonscan.',
+    ru: 'Нет. Контракт является некастодиальным — он хранит USDC только временно во время заполнения слотов и замороженных сумм. Выплаты идут напрямую на кошельки участников. Администратор может вывести только накопленные комиссии протокола (10%) и не может трогать средства участников или замороженные балансы. Код контракта верифицирован и доступен для публичного аудита на Polygonscan.',
+    ua: 'Ні. Контракт є некастодіальним — він зберігає USDC лише тимчасово під час заповнення слотів та заморожених сум. Виплати йдуть безпосередньо на гаманці учасників. Адміністратор може вивести лише накопичені комісії протоколу (10%) і не може торкатися коштів учасників або заморожених балансів. Код контракту верифікований та доступний для публічного аудиту на Polygonscan.',
+    es: 'No. El contrato es no custodial — mantiene USDC solo temporalmente durante los llenados de slots y montos congelados. Los pagos van directamente a las billeteras de los participantes. El administrador solo puede retirar las comisiones acumuladas del protocolo (10%) y no puede tocar los fondos de los participantes ni los saldos congelados. El código del contrato está verificado y auditable públicamente en Polygonscan.',
+    pt: 'Não. O contrato é não-custodial — mantém USDC apenas temporariamente durante preenchimentos de slots e valores congelados. Pagamentos vão diretamente para carteiras dos participantes. O administrador só pode retirar taxas acumuladas do protocolo (10%) e não pode tocar nos fundos dos participantes.',
+    fr: 'Non. Le contrat est non-custodial — il ne détient les USDC que temporairement pendant les remplissages de slots et les montants gelés. Les paiements vont directement aux portefeuilles des participants. L\'administrateur ne peut retirer que les frais de protocole accumulés (10%).',
+    de: 'Nein. Der Vertrag ist nicht-verwahrend — er hält USDC nur vorübergehend während Slot-Füllungen und eingefrorener Beträge. Auszahlungen gehen direkt an die Wallets der Teilnehmer. Der Admin kann nur angesammelte Protokollgebühren (10%) abheben.',
+    pl: 'Nie. Kontrakt jest niekustodialny — przechowuje USDC tylko tymczasowo podczas wypełnień slotów i zamrożonych kwot. Wypłaty idą bezpośrednio do portfeli uczestników. Administrator może wypłacić tylko zgromadzone opłaty protokołu (10%).',
+    vi: 'Không. Hợp đồng là phi lưu ký — chỉ giữ USDC tạm thời trong quá trình lấp đầy slot và số tiền đóng băng. Thanh toán đi trực tiếp đến ví người tham gia. Quản trị viên chỉ có thể rút phí giao thức tích lũy (10%).',
+    ko: '아닙니다. 컨트랙트는 비수탁형입니다 — 슬롯 채움과 동결 금액 동안만 일시적으로 USDC를 보유합니다. 보상은 참여자 지갑으로 직접 전송됩니다. 관리자는 누적된 프로토콜 수수료(10%)만 인출할 수 있습니다.',
+    ja: 'いいえ。コントラクトはノンカストディアルです — スロット充填と凍結額の間のみ一時的にUSDCを保持します。支払いは参加者のウォレットに直接送られます。管理者は蓄積されたプロトコル手数料（10%）のみ引き出すことができます。',
+    hi: 'नहीं। कॉन्ट्रैक्ट गैर-कस्टोडियल है — यह केवल स्लॉट भरने और फ्रोजन राशियों के दौरान अस्थायी रूप से USDC रखता है। भुगतान सीधे प्रतिभागी वॉलेट में जाते हैं। एडमिन केवल संचित प्रोटोकॉल शुल्क (10%) निकाल सकता है।',
+    zh: '不能。合约是非托管的——仅在槽位填充和冻结金额期间临时持有USDC。支付直接进入参与者钱包。管理员只能提取累积的协议费用（10%），无法触碰参与者资金或冻结余额。合约代码在Polygonscan上已验证且可公开审计。',
+    tr: 'Hayır. Sözleşme emanet dışıdır — slot dolumları ve donmuş tutarlar sırasında yalnızca geçici olarak USDC tutar. Ödemeler doğrudan katılımcı cüzdanlarına gider. Yönetici yalnızca birikmiş protokol ücretlerini (%10) çekebilir.'
+  },
+  land_faq5_q: {
+    en: 'What is spillover?', ru: 'Что такое спилловер?', ua: 'Що таке спілловер?',
+    es: '¿Qué es el spillover?', pt: 'O que é spillover?', fr: 'Qu\'est-ce que le spillover?',
+    de: 'Was ist Spillover?', pl: 'Czym jest spillover?', vi: 'Spillover là gì?',
+    ko: '스필오버란 무엇인가요?', ja: 'スピルオーバーとは何ですか？', hi: 'स्पिलओवर क्या है?',
+    zh: '什么是溢出（spillover）？', tr: 'Spillover nedir?'
+  },
+  land_faq5_a: {
+    en: 'If your sponsor doesn\'t have a particular level active, the payout "spills over" to the next person above who does. This means you can receive payouts from people you didn\'t directly invite — the network routes payments to active participants automatically. No payout is ever lost.',
+    ru: 'Если у вашего спонсора не активирован определённый уровень, выплата «переливается» следующему человеку выше, у которого он активирован. Это значит, что вы можете получать выплаты от людей, которых вы не приглашали напрямую — сеть автоматически направляет платежи активным участникам. Ни одна выплата никогда не теряется.',
+    ua: 'Якщо у вашого спонсора не активовано певний рівень, виплата «переливається» наступній людині вище, у якої він активований. Це означає, що ви можете отримувати виплати від людей, яких ви не запрошували безпосередньо — мережа автоматично направляє платежі активним учасникам. Жодна виплата ніколи не втрачається.',
+    es: 'Si tu patrocinador no tiene un nivel particular activo, el pago se "desborda" a la siguiente persona arriba que sí lo tiene. Esto significa que puedes recibir pagos de personas que no invitaste directamente — la red dirige los pagos a participantes activos automáticamente. Ningún pago se pierde.',
+    pt: 'Se seu patrocinador não tem um nível específico ativo, o pagamento "transborda" para a próxima pessoa acima que tem. Isso significa que você pode receber pagamentos de pessoas que não convidou diretamente — a rede direciona pagamentos para participantes ativos automaticamente.',
+    fr: 'Si votre parrain n\'a pas un niveau particulier actif, le paiement "déborde" vers la personne suivante au-dessus qui l\'a. Cela signifie que vous pouvez recevoir des paiements de personnes que vous n\'avez pas directement invitées — le réseau achemine les paiements vers les participants actifs automatiquement.',
+    de: 'Wenn Ihr Sponsor eine bestimmte Stufe nicht aktiv hat, "überläuft" die Auszahlung zur nächsten Person darüber, die sie hat. Das bedeutet, Sie können Auszahlungen von Personen erhalten, die Sie nicht direkt eingeladen haben — das Netzwerk leitet Zahlungen automatisch an aktive Teilnehmer weiter.',
+    pl: 'Jeśli Twój sponsor nie ma aktywnego danego poziomu, wypłata "przelewa się" do następnej osoby wyżej, która go ma. Oznacza to, że możesz otrzymywać wypłaty od osób, których nie zaprosiłeś bezpośrednio — sieć automatycznie kieruje płatności do aktywnych uczestników.',
+    vi: 'Nếu người giới thiệu của bạn không kích hoạt một cấp độ cụ thể, khoản thanh toán "tràn" sang người tiếp theo phía trên có cấp độ đó. Điều này có nghĩa bạn có thể nhận thanh toán từ những người bạn không trực tiếp mời.',
+    ko: '후원자가 특정 레벨을 활성화하지 않은 경우 보상이 해당 레벨을 활성화한 상위 다음 사람에게 "넘침"됩니다. 직접 초대하지 않은 사람들로부터도 보상을 받을 수 있습니다.',
+    ja: 'スポンサーが特定のレベルをアクティブにしていない場合、支払いはそのレベルを持つ次の上位者に「スピルオーバー」します。直接招待していない人からも支払いを受け取ることができます。',
+    hi: 'यदि आपके प्रायोजक के पास कोई विशेष स्तर सक्रिय नहीं है, तो भुगतान ऊपर के अगले व्यक्ति को "स्पिल ओवर" हो जाता है जिसके पास वह है। इसका मतलब है कि आप उन लोगों से भुगतान प्राप्त कर सकते हैं जिन्हें आपने सीधे आमंत्रित नहीं किया।',
+    zh: '如果您的推荐人没有激活某个特定等级，支付会"溢出"到上方下一个有该等级的人。这意味着您可以从不是直接邀请的人那里获得支付——网络自动将支付路由给活跃参与者。没有任何支付会丢失。',
+    tr: 'Sponsorunuzun belirli bir seviyesi aktif değilse, ödeme yukarıda aktif olan bir sonraki kişiye "taşar". Bu, doğrudan davet etmediğiniz kişilerden ödeme alabileceğiniz anlamına gelir — ağ ödemeleri otomatik olarak aktif katılımcılara yönlendirir.'
+  },
+  land_faq6_q: {
+    en: 'How do I start?', ru: 'Как начать?', ua: 'Як почати?',
+    es: '¿Cómo empiezo?', pt: 'Como começar?', fr: 'Comment commencer?',
+    de: 'Wie fange ich an?', pl: 'Jak zacząć?', vi: 'Làm sao để bắt đầu?',
+    ko: '어떻게 시작하나요?', ja: 'どうやって始めますか？', hi: 'मैं कैसे शुरू करूँ?',
+    zh: '如何开始？', tr: 'Nasıl başlarım?'
+  },
+  land_faq6_a: {
+    en: '1. Install MetaMask or Trust Wallet on your phone or browser.<br>2. Add the Polygon network and get some USDC.<br>3. Open xiaonnet.com in your wallet browser.<br>4. Connect your wallet and activate Level 1 for $3.30 (price + 10% fee).<br>That\'s it — you\'re in the system and start receiving payouts as your slots fill.',
+    ru: '1. Установите MetaMask или Trust Wallet на телефон или в браузер.<br>2. Добавьте сеть Polygon и получите немного USDC.<br>3. Откройте xiaonnet.com в браузере вашего кошелька.<br>4. Подключите кошелёк и активируйте Уровень 1 за $3.30 (цена + 10% комиссия).<br>Вот и всё — вы в системе и начинаете получать выплаты, когда ваши слоты заполняются.',
+    ua: '1. Встановіть MetaMask або Trust Wallet на телефон або в браузер.<br>2. Додайте мережу Polygon та отримайте трохи USDC.<br>3. Відкрийте xiaonnet.com у браузері вашого гаманця.<br>4. Підключіть гаманець та активуйте Рівень 1 за $3.30 (ціна + 10% комісія).<br>Ось і все — ви в системі та починаєте отримувати виплати, коли ваші слоти заповнюються.',
+    es: '1. Instala MetaMask o Trust Wallet en tu teléfono o navegador.<br>2. Agrega la red Polygon y consigue algo de USDC.<br>3. Abre xiaonnet.com en el navegador de tu billetera.<br>4. Conecta tu billetera y activa el Nivel 1 por $3.30 (precio + 10% de comisión).<br>Eso es todo — estás en el sistema y comienzas a recibir pagos cuando tus slots se llenan.',
+    pt: '1. Instale MetaMask ou Trust Wallet no seu celular ou navegador.<br>2. Adicione a rede Polygon e obtenha USDC.<br>3. Abra xiaonnet.com no navegador da sua carteira.<br>4. Conecte sua carteira e ative o Nível 1 por $3.30 (preço + 10% de taxa).<br>Pronto — você está no sistema e começa a receber pagamentos quando seus slots são preenchidos.',
+    fr: '1. Installez MetaMask ou Trust Wallet sur votre téléphone ou navigateur.<br>2. Ajoutez le réseau Polygon et obtenez des USDC.<br>3. Ouvrez xiaonnet.com dans le navigateur de votre portefeuille.<br>4. Connectez votre portefeuille et activez le Niveau 1 pour 3,30$ (prix + 10% de frais).<br>C\'est tout — vous êtes dans le système et commencez à recevoir des paiements.',
+    de: '1. Installieren Sie MetaMask oder Trust Wallet auf Ihrem Handy oder Browser.<br>2. Fügen Sie das Polygon-Netzwerk hinzu und besorgen Sie sich USDC.<br>3. Öffnen Sie xiaonnet.com im Browser Ihres Wallets.<br>4. Verbinden Sie Ihr Wallet und aktivieren Sie Stufe 1 für 3,30$ (Preis + 10% Gebühr).<br>Das war\'s — Sie sind im System und erhalten Auszahlungen.',
+    pl: '1. Zainstaluj MetaMask lub Trust Wallet na telefonie lub w przeglądarce.<br>2. Dodaj sieć Polygon i zdobądź trochę USDC.<br>3. Otwórz xiaonnet.com w przeglądarce portfela.<br>4. Połącz portfel i aktywuj Poziom 1 za $3.30 (cena + 10% opłata).<br>To wszystko — jesteś w systemie i zaczynasz otrzymywać wypłaty.',
+    vi: '1. Cài đặt MetaMask hoặc Trust Wallet trên điện thoại hoặc trình duyệt.<br>2. Thêm mạng Polygon và nhận USDC.<br>3. Mở xiaonnet.com trong trình duyệt ví.<br>4. Kết nối ví và kích hoạt Cấp 1 với $3.30 (giá + 10% phí).<br>Vậy là xong — bạn đã trong hệ thống.',
+    ko: '1. 휴대폰이나 브라우저에 MetaMask 또는 Trust Wallet을 설치하세요.<br>2. Polygon 네트워크를 추가하고 USDC를 준비하세요.<br>3. 지갑 브라우저에서 xiaonnet.com을 여세요.<br>4. 지갑을 연결하고 레벨 1을 $3.30에 활성화하세요.<br>끝입니다 — 시스템에 들어가 슬롯이 채워지면 보상을 받기 시작합니다.',
+    ja: '1. スマホまたはブラウザにMetaMaskまたはTrust Walletをインストール。<br>2. Polygonネットワークを追加しUSDCを入手。<br>3. ウォレットブラウザでxiaonnet.comを開く。<br>4. ウォレットを接続しレベル1を$3.30で有効化。<br>以上です — システムに参加し、スロットが埋まると支払いを受け取り始めます。',
+    hi: '1. अपने फोन या ब्राउज़र पर MetaMask या Trust Wallet इंस्टॉल करें।<br>2. Polygon नेटवर्क जोड़ें और कुछ USDC प्राप्त करें।<br>3. अपने वॉलेट ब्राउज़र में xiaonnet.com खोलें।<br>4. अपना वॉलेट कनेक्ट करें और $3.30 में स्तर 1 सक्रिय करें।<br>बस — आप सिस्टम में हैं।',
+    zh: '1. 在手机或浏览器上安装MetaMask或Trust Wallet。<br>2. 添加Polygon网络并获取USDC。<br>3. 在钱包浏览器中打开xiaonnet.com。<br>4. 连接钱包并以$3.30激活1级（价格+10%手续费）。<br>就这样——您已进入系统，槽位填满时开始收到支付。',
+    tr: '1. Telefonunuza veya tarayıcınıza MetaMask veya Trust Wallet yükleyin.<br>2. Polygon ağını ekleyin ve biraz USDC edinin.<br>3. Cüzdan tarayıcınızda xiaonnet.com\'u açın.<br>4. Cüzdanınızı bağlayın ve Seviye 1\'i 3,30$\'a etkinleştirin.<br>Hepsi bu — sisteme girdiniz ve slotlarınız dolduğunda ödeme almaya başlarsınız.'
+  },
+  land_faq7_q: {
+    en: 'What is auto-buy?', ru: 'Что такое авто-покупка?', ua: 'Що таке авто-купівля?',
+    es: '¿Qué es la compra automática?', pt: 'O que é auto-compra?', fr: 'Qu\'est-ce que l\'achat automatique?',
+    de: 'Was ist Auto-Kauf?', pl: 'Czym jest auto-zakup?', vi: 'Mua tự động là gì?',
+    ko: '자동 구매란 무엇인가요?', ja: '自動購入とは何ですか？', hi: 'ऑटो-बाय क्या है?',
+    zh: '什么是自动购买？', tr: 'Otomatik satın alma nedir?'
+  },
+  land_faq7_a: {
+    en: 'When auto-buy is enabled for a level, slot 2 freezes the payout instead of sending it to you. When slot 3 fills, the frozen amount + the new payout are combined to automatically purchase the next level. This way you can progress through levels without manually buying each one — the system reinvests for you.',
+    ru: 'Когда авто-покупка включена для уровня, слот 2 замораживает выплату вместо отправки вам. Когда слот 3 заполняется, замороженная сумма + новая выплата объединяются для автоматической покупки следующего уровня. Таким образом, вы можете продвигаться по уровням, не покупая каждый вручную — система реинвестирует за вас.',
+    ua: 'Коли авто-купівля увімкнена для рівня, слот 2 заморожує виплату замість відправки вам. Коли слот 3 заповнюється, заморожена сума + нова виплата об\'єднуються для автоматичної купівлі наступного рівня. Таким чином ви можете просуватися по рівнях, не купуючи кожен вручну — система реінвестує за вас.',
+    es: 'Cuando la compra automática está habilitada para un nivel, el slot 2 congela el pago en lugar de enviártelo. Cuando el slot 3 se llena, el monto congelado + el nuevo pago se combinan para comprar automáticamente el siguiente nivel. De esta manera puedes progresar a través de los niveles sin comprar cada uno manualmente — el sistema reinvierte por ti.',
+    pt: 'Quando a auto-compra está ativada para um nível, o slot 2 congela o pagamento em vez de enviá-lo a você. Quando o slot 3 preenche, o valor congelado + o novo pagamento são combinados para comprar automaticamente o próximo nível. Assim você progride pelos níveis sem comprar manualmente — o sistema reinveste por você.',
+    fr: 'Quand l\'achat automatique est activé pour un niveau, le slot 2 gèle le paiement au lieu de vous l\'envoyer. Quand le slot 3 se remplit, le montant gelé + le nouveau paiement sont combinés pour acheter automatiquement le niveau suivant. Vous progressez ainsi sans acheter manuellement — le système réinvestit pour vous.',
+    de: 'Wenn Auto-Kauf für eine Stufe aktiviert ist, friert Slot 2 die Auszahlung ein, anstatt sie an Sie zu senden. Wenn Slot 3 gefüllt wird, werden der eingefrorene Betrag + die neue Auszahlung kombiniert, um automatisch die nächste Stufe zu kaufen. So können Sie durch die Stufen fortschreiten, ohne jede einzeln zu kaufen — das System reinvestiert für Sie.',
+    pl: 'Gdy auto-zakup jest włączony dla poziomu, slot 2 zamraża wypłatę zamiast wysyłać ją do Ciebie. Gdy slot 3 się wypełni, zamrożona kwota + nowa wypłata łączą się, aby automatycznie kupić następny poziom. W ten sposób możesz awansować przez poziomy bez ręcznego kupowania — system reinwestuje za Ciebie.',
+    vi: 'Khi mua tự động được bật cho một cấp độ, slot 2 đóng băng khoản thanh toán thay vì gửi cho bạn. Khi slot 3 được lấp đầy, số tiền đóng băng + khoản thanh toán mới được kết hợp để tự động mua cấp độ tiếp theo.',
+    ko: '자동 구매가 레벨에 활성화되면 슬롯 2가 보상을 보내는 대신 동결합니다. 슬롯 3이 채워지면 동결된 금액과 새 보상이 결합되어 다음 레벨을 자동 구매합니다. 각 레벨을 수동으로 구매하지 않고 진행할 수 있습니다.',
+    ja: 'レベルの自動購入が有効な場合、スロット2は支払いを送信する代わりに凍結します。スロット3が埋まると、凍結額+新しい支払いが組み合わされて自動的に次のレベルを購入します。手動で購入せずにレベルを進めることができます。',
+    hi: 'जब किसी स्तर के लिए ऑटो-बाय सक्षम होता है, तो स्लॉट 2 भुगतान को भेजने के बजाय फ्रीज कर देता है। जब स्लॉट 3 भरता है, तो फ्रोजन राशि + नया भुगतान अगले स्तर को स्वचालित रूप से खरीदने के लिए संयोजित होते हैं।',
+    zh: '当为某个等级启用自动购买时，槽位2会冻结支付而不是发送给您。当槽位3填满时，冻结金额+新支付合并自动购买下一等级。这样您可以在不手动购买每个等级的情况下进步——系统为您再投资。',
+    tr: 'Bir seviye için otomatik satın alma etkinleştirildiğinde, slot 2 ödemeyi size göndermek yerine dondurur. Slot 3 dolduğunda, donmuş tutar + yeni ödeme bir sonraki seviyeyi otomatik satın almak için birleştirilir. Böylece her birini manuel almadan seviyeler arasında ilerleyebilirsiniz.'
+  },
+  land_contract_link: {
+    en: 'Verified Smart Contract on Polygonscan', ru: 'Верифицированный смарт-контракт на Polygonscan', ua: 'Верифікований смарт-контракт на Polygonscan',
+    es: 'Contrato inteligente verificado en Polygonscan', pt: 'Contrato inteligente verificado no Polygonscan', fr: 'Contrat intelligent vérifié sur Polygonscan',
+    de: 'Verifizierter Smart Contract auf Polygonscan', pl: 'Zweryfikowany smart kontrakt na Polygonscan', vi: 'Hợp đồng thông minh đã xác minh trên Polygonscan',
+    ko: 'Polygonscan에서 검증된 스마트 컨트랙트', ja: 'Polygonscanで検証済みのスマートコントラクト', hi: 'Polygonscan पर सत्यापित स्मार्ट कॉन्ट्रैक्ट',
+    zh: 'Polygonscan上已验证的智能合约', tr: "Polygonscan'da doğrulanmış akıllı sözleşme"
+  },
+  land_nav_how: {
+    en: 'How it works', ru: 'Как это работает', ua: 'Як це працює',
+    es: 'Cómo funciona', pt: 'Como funciona', fr: 'Comment ça marche',
+    de: 'So funktioniert es', pl: 'Jak to działa', vi: 'Cách hoạt động',
+    ko: '작동 방식', ja: '仕組み', hi: 'यह कैसे काम करता है',
+    zh: '运作方式', tr: 'Nasıl çalışır'
+  },
+  land_nav_why: {
+    en: 'Why XiaonNET', ru: 'Почему XiaonNET', ua: 'Чому XiaonNET',
+    es: 'Por qué XiaonNET', pt: 'Por que XiaonNET', fr: 'Pourquoi XiaonNET',
+    de: 'Warum XiaonNET', pl: 'Dlaczego XiaonNET', vi: 'Tại sao XiaonNET',
+    ko: 'XiaonNET 선택 이유', ja: 'XiaonNETの理由', hi: 'XiaonNET क्यों',
+    zh: '为什么选择XiaonNET', tr: 'Neden XiaonNET'
+  },
+  land_nav_levels: {
+    en: 'Levels', ru: 'Уровни', ua: 'Рівні',
+    es: 'Niveles', pt: 'Níveis', fr: 'Niveaux',
+    de: 'Stufen', pl: 'Poziomy', vi: 'Cấp độ',
+    ko: '레벨', ja: 'レベル', hi: 'स्तर',
+    zh: '等级', tr: 'Seviyeler'
+  },
+  land_nav_mech: {
+    en: 'Mechanics', ru: 'Механика', ua: 'Механіка',
+    es: 'Mecánica', pt: 'Mecânica', fr: 'Mécanique',
+    de: 'Mechanik', pl: 'Mechanika', vi: 'Cơ chế',
+    ko: '메커니즘', ja: 'メカニズム', hi: 'तंत्र', zh: '机制', tr: 'Mekanik'
+  },
+  land_mech_title: {
+    en: 'How Payouts Work', ru: 'Как работают выплаты', ua: 'Як працюють виплати',
+    es: 'Cómo funcionan los pagos', pt: 'Como os pagamentos funcionam', fr: 'Comment fonctionnent les paiements',
+    de: 'Wie Auszahlungen funktionieren', pl: 'Jak działają wypłaty', vi: 'Cách thanh toán hoạt động',
+    ko: '지급 방식', ja: '支払いの仕組み', hi: 'भुगतान कैसे काम करता है', zh: '支付如何运作', tr: 'Ödemeler nasıl çalışır'
+  },
+  land_mech_intro: {
+    en: 'Each level has 4 slots. When a new participant activates the same level, they fill a slot on their sponsor\'s level. Here\'s exactly what happens with each slot:',
+    ru: 'Каждый уровень имеет 4 слота. Когда новый участник активирует тот же уровень, он заполняет слот на уровне своего спонсора. Вот что происходит с каждым слотом:',
+    ua: 'Кожен рівень має 4 слоти. Коли новий учасник активує той самий рівень, він заповнює слот на рівні свого спонсора. Ось що відбувається з кожним слотом:',
+    es: 'Cada nivel tiene 4 slots. Cuando un nuevo participante activa el mismo nivel, llena un slot en el nivel de su patrocinador. Esto es exactamente lo que sucede con cada slot:'
+  },
+  land_mech_s1_title: { en: 'Slot 1 — Direct Payout', ru: 'Слот 1 — Прямая выплата', ua: 'Слот 1 — Пряма виплата', es: 'Slot 1 — Pago directo' },
+  land_mech_s1_desc: {
+    en: 'First person fills your slot → you receive the full level price in USDC directly to your wallet. Example: Level 1 = $3 payout.',
+    ru: 'Первый человек заполняет ваш слот → вы получаете полную стоимость уровня в USDC прямо на кошелёк. Пример: Уровень 1 = $3 выплата.',
+    ua: 'Перша людина заповнює ваш слот → ви отримуєте повну вартість рівня в USDC прямо на гаманець.',
+    es: 'La primera persona llena tu slot → recibes el precio completo del nivel en USDC directamente a tu billetera.'
+  },
+  land_mech_s2_title: { en: 'Slot 2 — Payout or Freeze', ru: 'Слот 2 — Выплата или заморозка', ua: 'Слот 2 — Виплата або заморозка', es: 'Slot 2 — Pago o congelación' },
+  land_mech_s2_desc: {
+    en: 'If you already own the next level → direct payout to your wallet. If you don\'t own the next level and auto-buy is ON → funds are frozen (held by smart contract) to auto-purchase the next level when slot 3 fills.',
+    ru: 'Если следующий уровень уже куплен → прямая выплата на кошелёк. Если следующий уровень не куплен и авто-покупка включена → средства замораживаются (удерживаются смарт-контрактом) для автоматической покупки следующего уровня при заполнении слота 3.',
+    ua: 'Якщо наступний рівень вже куплений → пряма виплата. Якщо ні і авто-покупка увімкнена → кошти заморожуються для автоматичної покупки наступного рівня.',
+    es: 'Si ya tienes el siguiente nivel → pago directo. Si no lo tienes y auto-compra está activada → los fondos se congelan para auto-comprar el siguiente nivel.'
+  },
+  land_mech_s3_title: { en: 'Slot 3 — Payout or Auto-Buy', ru: 'Слот 3 — Выплата или авто-покупка', ua: 'Слот 3 — Виплата або авто-покупка', es: 'Slot 3 — Pago o auto-compra' },
+  land_mech_s3_desc: {
+    en: 'If slot 2 was frozen → frozen funds + this payout combine to automatically purchase the next level. You now own a new level without paying anything extra! If slot 2 was a payout → slot 3 is also a direct payout to you.',
+    ru: 'Если слот 2 был заморожен → замороженные средства + эта выплата объединяются для автоматической покупки следующего уровня. Вы получаете новый уровень бесплатно! Если слот 2 был выплатой → слот 3 тоже прямая выплата вам.',
+    ua: 'Якщо слот 2 був заморожений → заморожені кошти + ця виплата об\'єднуються для автоматичної покупки. Якщо слот 2 був виплатою → слот 3 теж пряма виплата.',
+    es: 'Si el slot 2 fue congelado → fondos congelados + este pago se combinan para auto-comprar. Si el slot 2 fue pago → slot 3 también es pago directo.'
+  },
+  land_mech_s4_title: { en: 'Slot 4 — Reset & Spillover', ru: 'Слот 4 — Сброс и спилловер', ua: 'Слот 4 — Скидання та спіловер', es: 'Slot 4 — Reinicio y desbordamiento' },
+  land_mech_s4_desc: {
+    en: 'Your level resets (all slots clear, cycle count +1) and the payout spills over upward to the nearest active sponsor in the referral chain. Your level is now ready to accept new participants again — unlimited cycles.',
+    ru: 'Ваш уровень сбрасывается (все слоты очищаются, счётчик циклов +1) и выплата переливается вверх к ближайшему активному спонсору в реферальной цепочке. Ваш уровень снова готов принимать участников — количество циклов не ограничено.',
+    ua: 'Ваш рівень скидається і виплата переливається вгору до найближчого активного спонсора. Рівень знову готовий — кількість циклів необмежена.',
+    es: 'Tu nivel se reinicia y el pago se desborda hacia arriba al patrocinador activo más cercano. Tu nivel está listo para recibir nuevos participantes — ciclos ilimitados.'
+  },
+  land_mech_example_title: { en: 'Example: You activated Level 1 ($3)', ru: 'Пример: Вы активировали Уровень 1 ($3)', ua: 'Приклад: Ви активували Рівень 1 ($3)', es: 'Ejemplo: Activaste el Nivel 1 ($3)' },
+  land_mech_example_desc: {
+    en: '3 people join after you and activate Level 1 through your referral link. Each of them pays $3.30 ($3 + 10% fee). You receive $3 for slot 1, $3 for slot 2, $3 for slot 3 = $9 total. That\'s 3x return from a $3 investment. Slot 4 resets your level and it starts earning again.',
+    ru: '3 человека присоединяются после вас и активируют Уровень 1 по вашей реферальной ссылке. Каждый платит $3.30 ($3 + 10% комиссия). Вы получаете $3 за слот 1, $3 за слот 2, $3 за слот 3 = $9 итого. Это 3x возврат от вложения $3. Слот 4 сбрасывает уровень и он начинает зарабатывать снова.',
+    ua: '3 людини приєднуються після вас. Кожен платить $3.30. Ви отримуєте $3+$3+$3 = $9. Це 3x повернення від $3. Слот 4 скидає рівень і він знову заробляє.',
+    es: '3 personas se unen después de ti. Cada una paga $3.30. Recibes $3+$3+$3 = $9 total. Eso es 3x retorno de una inversión de $3.'
+  },
+  land_fee_title: { en: '10% Protocol Fee', ru: '10% комиссия протокола', ua: '10% комісія протоколу', es: '10% tarifa del protocolo' },
+  land_fee_desc: {
+    en: 'Every level activation includes a 10% protocol fee. This fee funds the development team, platform maintenance, server infrastructure, and the development of the XiaonNET metaverse ecosystem — a growing suite of products and tools that all participants will have access to. The fee is transparent and built into the smart contract.',
+    ru: 'Каждая активация уровня включает 10% комиссию протокола. Эта комиссия финансирует команду разработки, поддержку платформы, серверную инфраструктуру и развитие экосистемы метавселенной XiaonNET — растущий набор продуктов и инструментов, к которым все участники будут иметь доступ. Комиссия прозрачна и встроена в смарт-контракт.',
+    ua: 'Кожна активація рівня включає 10% комісію. Ця комісія фінансує команду розробки, підтримку платформи та розвиток екосистеми метавсесвіту XiaonNET — зростаючий набір продуктів для всіх учасників.',
+    es: 'Cada activación incluye una tarifa del 10%. Esta tarifa financia al equipo de desarrollo, mantenimiento de la plataforma y el desarrollo del ecosistema metaverso de XiaonNET — un conjunto creciente de productos a los que todos los participantes tendrán acceso.'
+  },
+  land_nav_faq: {
+    en: 'FAQ', ru: 'Вопросы', ua: 'Питання',
+    es: 'FAQ', pt: 'FAQ', fr: 'FAQ',
+    de: 'FAQ', pl: 'FAQ', vi: 'FAQ',
+    ko: 'FAQ', ja: 'FAQ', hi: 'FAQ',
+    zh: 'FAQ', tr: 'SSS'
+  },
+  land_nav_contract: {
+    en: 'Contract', ru: 'Контракт', ua: 'Контракт',
+    es: 'Contrato', pt: 'Contrato', fr: 'Contrat',
+    de: 'Vertrag', pl: 'Kontrakt', vi: 'Hợp đồng',
+    ko: '컨트랙트', ja: 'コントラクト', hi: 'अनुबंध',
+    zh: '合约', tr: 'Sözleşme'
   }
   };
 

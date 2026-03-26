@@ -21,7 +21,10 @@
 html{scroll-behavior:smooth}
 html,body{margin:0;padding:0;scroll-behavior:smooth}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
-#connectScreen{max-width:500px;margin:0 auto;padding:24px;padding-top:20px}
+#connectScreen{max-width:600px;margin:0 auto;padding:16px;padding-top:16px;width:100%;box-sizing:border-box}
+#landingBlock details div{font-size:13px!important;line-height:1.7!important}
+#landingBlock summary{font-size:13px!important}
+@media(min-width:600px){#connectScreen{padding:24px 32px}}
 #mainApp{overflow-y:auto;overflow-x:hidden;position:fixed;top:0;left:0;right:0;bottom:0;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:env(safe-area-inset-bottom)}
 #mainApp>*{max-width:500px;margin:0 auto}
 .lang-flags{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;margin-bottom:12px;max-width:400px}
@@ -463,11 +466,12 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <!-- Navigation -->
   <div class="cs-nav">
-    <a href="#cs-how">How it works</a>
-    <a href="#cs-why">Why XiaonNET</a>
-    <a href="#cs-levels">Levels</a>
-    <a href="#cs-faq">FAQ</a>
-    <a href="#cs-contract">Contract</a>
+    <a href="#cs-how" data-t="land_nav_how">How it works</a>
+    <a href="#cs-mechanics" data-t="land_nav_mech">Mechanics</a>
+    <a href="#cs-why" data-t="land_nav_why">Why XiaonNET</a>
+    <a href="#cs-levels" data-t="land_nav_levels">Levels</a>
+    <a href="#cs-faq" data-t="land_nav_faq">FAQ</a>
+    <a href="#cs-contract" data-t="land_nav_contract">Contract</a>
   </div>
 
   <!-- Info block — visible to everyone -->
@@ -475,92 +479,127 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
     <!-- Hero -->
     <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:24px;text-align:center;margin-bottom:14px">
-      <div style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,var(--green),var(--poly2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Decentralized Earning System</div>
-      <div style="color:var(--text3);font-size:13px;line-height:1.6;margin-bottom:20px">
+      <div data-t="land_hero_title" style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,var(--green),var(--poly2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Decentralized Earning System</div>
+      <div data-t="land_hero_desc" style="color:var(--text3);font-size:13px;line-height:1.6;margin-bottom:20px">
         A smart contract-based platform on Polygon where participants earn USDC through a transparent, fully on-chain level system. Every transaction is verifiable, every payout is instant.
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--green)">17</div>
-          <div style="font-size:10px;color:var(--text3)">Levels</div>
+          <div data-t="land_stat_levels" style="font-size:10px;color:var(--text3)">Levels</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--poly2)">USDC</div>
-          <div style="font-size:10px;color:var(--text3)">Stablecoin</div>
+          <div data-t="land_stat_stable" style="font-size:10px;color:var(--text3)">Stablecoin</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--orange)">$3</div>
-          <div style="font-size:10px;color:var(--text3)">Entry</div>
+          <div data-t="land_stat_entry" style="font-size:10px;color:var(--text3)">Entry</div>
         </div>
       </div>
 
       <a id="mmDeepLink" href="https://metamask.app.link/dapp/xiaonnet.com" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#E27625,#c76620);color:#fff;font-weight:800;font-size:14px;padding:14px;border-radius:12px;text-decoration:none;margin-bottom:10px">
         <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M22.3 2L13.2 8.8l1.7-4L22.3 2z" fill="#fff"/><path d="M1.7 2l9 6.9-1.6-4.1L1.7 2z" fill="#fff"/></svg>
-        Open in MetaMask
+        <span data-t="land_open_mm">Open in MetaMask</span>
       </a>
       <div id="downloadLinks" style="display:flex;gap:8px">
-        <a href="https://metamask.io/download/" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)">Download MetaMask</a>
-        <a href="https://trustwallet.com/download" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)">Download Trust Wallet</a>
+        <a href="https://metamask.io/download/" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)" data-t="land_dl_mm">Download MetaMask</a>
+        <a href="https://trustwallet.com/download" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)" data-t="land_dl_tw">Download Trust Wallet</a>
       </div>
     </div>
 
     <!-- How it works -->
     <div id="cs-how" style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
-      <div style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">How It Works</div>
+      <div data-t="land_how_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">How It Works</div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(6,214,160,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">1</div>
-        <div><div style="font-weight:700;font-size:13px;margin-bottom:2px">Activate a level</div><div style="font-size:11px;color:var(--text3);line-height:1.5">Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.</div></div>
+        <div><div data-t="land_step1_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Activate a level</div><div data-t="land_step1_desc" style="font-size:11px;color:var(--text3);line-height:1.5">Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(124,58,237,.15);color:var(--poly2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">2</div>
-        <div><div style="font-weight:700;font-size:13px;margin-bottom:2px">Receive payouts</div><div style="font-size:11px;color:var(--text3);line-height:1.5">When other participants activate the same level, the smart contract distributes USDC payouts directly to your wallet. 3 out of 4 slot fills pay you.</div></div>
+        <div><div data-t="land_step2_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Receive payouts</div><div data-t="land_step2_desc" style="font-size:11px;color:var(--text3);line-height:1.5">When other participants activate the same level, the smart contract distributes USDC payouts directly to your wallet. 3 out of 4 slot fills pay you.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(96,165,250,.15);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">3</div>
-        <div><div style="font-weight:700;font-size:13px;margin-bottom:2px">Auto-cycle</div><div style="font-size:11px;color:var(--text3);line-height:1.5">After 4 fills your level resets automatically and starts earning again. No limit on cycles — the system works indefinitely.</div></div>
+        <div><div data-t="land_step3_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Auto-cycle</div><div data-t="land_step3_desc" style="font-size:11px;color:var(--text3);line-height:1.5">After 4 fills your level resets automatically and starts earning again. No limit on cycles — the system works indefinitely.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.15);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">4</div>
-        <div><div style="font-weight:700;font-size:13px;margin-bottom:2px">Grow your network</div><div style="font-size:11px;color:var(--text3);line-height:1.5">Share your referral link. When someone joins through you, their activity fills your slots. The bigger your team, the more active your levels.</div></div>
+        <div><div data-t="land_step4_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Grow your network</div><div data-t="land_step4_desc" style="font-size:11px;color:var(--text3);line-height:1.5">Share your referral link. When someone joins through you, their activity fills your slots. The bigger your team, the more active your levels.</div></div>
+      </div>
+    </div>
+
+    <!-- Detailed mechanics -->
+    <div id="cs-mechanics" style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
+      <div data-t="land_mech_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">How Payouts Work</div>
+
+      <div style="font-size:13px;color:var(--text3);line-height:1.7;margin-bottom:16px" data-t="land_mech_intro">Each level has 4 slots. When a new participant activates the same level, they fill a slot on their sponsor's level. Here's exactly what happens with each slot:</div>
+
+      <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">1</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s1_title">Slot 1 — Direct Payout</span></div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s1_desc">First person fills your slot → you receive the full level price in USDC directly to your wallet. Example: Level 1 = $3 payout.</div>
+      </div>
+
+      <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--frozen);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">2</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s2_title">Slot 2 — Payout or Freeze</span></div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s2_desc">If you already own the next level → direct payout to your wallet. If you don't own the next level and auto-buy is ON → funds are frozen (held by smart contract) to auto-purchase the next level when slot 3 fills.</div>
+      </div>
+
+      <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--poly2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff">3</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s3_title">Slot 3 — Payout or Auto-Buy</span></div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s3_desc">If slot 2 was frozen → frozen funds + this payout combine to automatically purchase the next level. You now own a new level without paying anything extra! If slot 2 was a payout → slot 3 is also a direct payout to you.</div>
+      </div>
+
+      <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">4</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s4_title">Slot 4 — Reset & Spillover</span></div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s4_desc">Your level resets (all slots clear, cycle count +1) and the payout spills over upward to the nearest active sponsor in the referral chain. Your level is now ready to accept new participants again — unlimited cycles.</div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px" data-t="land_mech_example_title">Example: You activated Level 1 ($3)</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:16px" data-t="land_mech_example_desc">3 people join after you and activate Level 1 through your referral link. Each of them pays $3.30 ($3 + 10% fee). You receive $3 for slot 1, $3 for slot 2, $3 for slot 3 = $9 total. That's 3x return from a $3 investment. Slot 4 resets your level and it starts earning again.</div>
+
+      <div style="background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(6,214,160,.08));border:1px solid var(--border2);border-radius:10px;padding:14px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px" data-t="land_fee_title">10% Protocol Fee</div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.7" data-t="land_fee_desc">Every level activation includes a 10% protocol fee. This fee funds the development team, platform maintenance, server infrastructure, and the development of the XiaonNET metaverse ecosystem — a growing suite of products and tools that all participants will have access to. The fee is transparent and built into the smart contract.</div>
       </div>
     </div>
 
     <!-- Why trust -->
     <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
-      <div id="cs-why" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">Why XiaonNET</div>
+      <div id="cs-why" data-t="land_why_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">Why XiaonNET</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">🔗</div>
-          <div style="font-weight:700;font-size:11px;margin-bottom:2px">100% On-Chain</div>
-          <div style="font-size:10px;color:var(--text3);line-height:1.4">All logic lives in a verified smart contract. No admin can freeze your funds or change the rules.</div>
+          <div data-t="land_why1_title" style="font-weight:700;font-size:11px;margin-bottom:2px">100% On-Chain</div>
+          <div data-t="land_why1_desc" style="font-size:10px;color:var(--text3);line-height:1.4">All logic lives in a verified smart contract. No admin can freeze your funds or change the rules.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">💵</div>
-          <div style="font-weight:700;font-size:11px;margin-bottom:2px">USDC Stablecoin</div>
-          <div style="font-size:10px;color:var(--text3);line-height:1.4">Payouts in USDC — no volatile tokens. $1 in = $1 out. Stable, liquid, universally accepted.</div>
+          <div data-t="land_why2_title" style="font-weight:700;font-size:11px;margin-bottom:2px">USDC Stablecoin</div>
+          <div data-t="land_why2_desc" style="font-size:10px;color:var(--text3);line-height:1.4">Payouts in USDC — no volatile tokens. $1 in = $1 out. Stable, liquid, universally accepted.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">⚡</div>
-          <div style="font-weight:700;font-size:11px;margin-bottom:2px">Instant Payouts</div>
-          <div style="font-size:10px;color:var(--text3);line-height:1.4">No waiting periods, no approval queues. Payouts are sent in the same transaction — within seconds.</div>
+          <div data-t="land_why3_title" style="font-weight:700;font-size:11px;margin-bottom:2px">Instant Payouts</div>
+          <div data-t="land_why3_desc" style="font-size:10px;color:var(--text3);line-height:1.4">No waiting periods, no approval queues. Payouts are sent in the same transaction — within seconds.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">🔒</div>
-          <div style="font-weight:700;font-size:11px;margin-bottom:2px">Verified Contract</div>
-          <div style="font-size:10px;color:var(--text3);line-height:1.4">Source code published and verified on Polygonscan. Anyone can audit exactly how funds flow.</div>
+          <div data-t="land_why4_title" style="font-weight:700;font-size:11px;margin-bottom:2px">Verified Contract</div>
+          <div data-t="land_why4_desc" style="font-size:10px;color:var(--text3);line-height:1.4">Source code published and verified on Polygonscan. Anyone can audit exactly how funds flow.</div>
         </div>
       </div>
     </div>
 
     <!-- Level table -->
     <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
-      <div id="cs-levels" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">Level Structure</div>
-      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:12px">Each level costs more but pays proportionally more. You earn 3 payouts per cycle.</div>
+      <div id="cs-levels" data-t="land_levels_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">Level Structure</div>
+      <div data-t="land_levels_desc" style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:12px">Each level costs more but pays proportionally more. You earn 3 payouts per cycle.</div>
       <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:0;font-size:11px">
-        <div style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border)">Level</div>
-        <div style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);text-align:right">Price</div>
-        <div style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);text-align:right">Earn / cycle</div>
+        <div data-t="land_tbl_level" style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border)">Level</div>
+        <div data-t="land_tbl_price" style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);text-align:right">Price</div>
+        <div data-t="land_tbl_earn" style="padding:6px 10px;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);text-align:right">Earn / cycle</div>
         <div style="padding:5px 10px;color:var(--green)">L1</div><div style="padding:5px 10px;text-align:right">$3</div><div style="padding:5px 10px;text-align:right;color:var(--green)">$9</div>
         <div style="padding:5px 10px;color:var(--green)">L2</div><div style="padding:5px 10px;text-align:right">$6</div><div style="padding:5px 10px;text-align:right;color:var(--green)">$18</div>
         <div style="padding:5px 10px;color:var(--green)">L3</div><div style="padding:5px 10px;text-align:right">$12</div><div style="padding:5px 10px;text-align:right;color:var(--green)">$36</div>
@@ -573,35 +612,35 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
     <!-- FAQ -->
     <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
-      <div id="cs-faq" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">FAQ</div>
+      <div id="cs-faq" data-t="land_faq_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">FAQ</div>
       <div id="landFaq" style="display:flex;flex-direction:column;gap:10px">
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What exactly is XiaonNET? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">XiaonNET is a decentralized platform built on a smart contract on the Polygon blockchain. It operates a level-based system where participants activate levels and receive USDC payouts when their slots are filled by other participants. All rules are coded into the contract — no human intervention possible.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq1_q">What exactly is XiaonNET?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq1_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">XiaonNET is a decentralized platform built on a smart contract on the Polygon blockchain. It operates a level-based system where participants activate levels and receive USDC payouts when their slots are filled by other participants. All rules are coded into the contract — no human intervention possible.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is this a pyramid scheme? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">No. In a pyramid, money flows only upward and early participants profit at the expense of later ones. In XiaonNET, every level cycles infinitely — each time 4 slots fill, you receive 3 payouts and the level resets. There's no cap on earnings and no one gets stuck. The system works through continuous participation, not by exhausting a pool of funds. Additionally, payouts come from other participants' level activations, not from recruiting — you can earn even without referrals through spillover from the network.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq2_q">Is this a pyramid scheme?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq2_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">No. In a pyramid, money flows only upward and early participants profit at the expense of later ones. In XiaonNET, every level cycles infinitely — each time 4 slots fill, you receive 3 payouts and the level resets. There's no cap on earnings and no one gets stuck. The system works through continuous participation, not by exhausting a pool of funds. Additionally, payouts come from other participants' level activations, not from recruiting — you can earn even without referrals through spillover from the network.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Where does the money come from? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">Every dollar in the system comes from a participant activating a level. When someone pays $3 for Level 1, the contract distributes that $3 as a payout to whoever owns the slot above. 10% goes to the protocol as a fee. There is no hidden pool, no loans, no external funding. You can verify every transaction on Polygonscan — it's fully transparent.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq3_q">Where does the money come from?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq3_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">Every dollar in the system comes from a participant activating a level. When someone pays $3 for Level 1, the contract distributes that $3 as a payout to whoever owns the slot above. 10% goes to the protocol as a fee. There is no hidden pool, no loans, no external funding. You can verify every transaction on Polygonscan — it's fully transparent.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can the admin steal funds? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">No. The contract is non-custodial — it holds USDC only temporarily during slot fills and frozen amounts. Payouts go directly to participant wallets. The admin can only withdraw accumulated protocol fees (10%), and cannot touch participant funds or frozen balances. The contract code is verified and publicly auditable on Polygonscan.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq4_q">Can the admin steal funds?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq4_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">No. The contract is non-custodial — it holds USDC only temporarily during slot fills and frozen amounts. Payouts go directly to participant wallets. The admin can only withdraw accumulated protocol fees (10%), and cannot touch participant funds or frozen balances. The contract code is verified and publicly auditable on Polygonscan.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is spillover? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">If your sponsor doesn't have a particular level active, the payout "spills over" to the next person above who does. This means you can receive payouts from people you didn't directly invite — the network routes payments to active participants automatically. No payout is ever lost.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq5_q">What is spillover?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq5_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">If your sponsor doesn't have a particular level active, the payout "spills over" to the next person above who does. This means you can receive payouts from people you didn't directly invite — the network routes payments to active participants automatically. No payout is ever lost.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How do I start? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">1. Install MetaMask or Trust Wallet on your phone or browser.<br>2. Add the Polygon network and get some USDC.<br>3. Open xiaonnet.com in your wallet browser.<br>4. Connect your wallet and activate Level 1 for $3.30 (price + 10% fee).<br>That's it — you're in the system and start receiving payouts as your slots fill.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq6_q">How do I start?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-th="land_faq6_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">1. Install MetaMask or Trust Wallet on your phone or browser.<br>2. Add the Polygon network and get some USDC.<br>3. Open xiaonnet.com in your wallet browser.<br>4. Connect your wallet and activate Level 1 for $3.30 (price + 10% fee).<br>That's it — you're in the system and start receiving payouts as your slots fill.</div>
         </details>
         <details style="background:var(--bg4);border-radius:10px;padding:12px 14px">
-          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is auto-buy? <span style="color:var(--text3)">▾</span></summary>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">When auto-buy is enabled for a level, slot 2 freezes the payout instead of sending it to you. When slot 3 fills, the frozen amount + the new payout are combined to automatically purchase the next level. This way you can progress through levels without manually buying each one — the system reinvests for you.</div>
+          <summary style="font-weight:700;font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center"><span data-t="land_faq7_q">What is auto-buy?</span> <span style="color:var(--text3)">▾</span></summary>
+          <div data-t="land_faq7_a" style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px">When auto-buy is enabled for a level, slot 2 freezes the payout instead of sending it to you. When slot 3 fills, the frozen amount + the new payout are combined to automatically purchase the next level. This way you can progress through levels without manually buying each one — the system reinvests for you.</div>
         </details>
       </div>
     </div>
@@ -610,7 +649,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div id="cs-contract" style="text-align:center;margin-bottom:24px">
       <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        Verified Smart Contract on Polygonscan
+        <span data-t="land_contract_link">Verified Smart Contract on Polygonscan</span>
       </a>
       <div style="margin-top:6px;font-size:9px;color:var(--text3);word-break:break-all">0x8F14178823b89da0a4b027235968eF508689e8e2</div>
     </div>
