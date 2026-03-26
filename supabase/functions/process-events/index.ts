@@ -33,28 +33,22 @@ Deno.serve(async (req) => {
   );
 
   try {
-    // Fix 6: Concurrency lock — prevent overlapping runs
-    const { data: lockResult, error: lockErr } = await supabase.rpc("try_lock_monitor");
-    if (lockErr) throw new Error(`Lock error: ${lockErr.message}`);
-    if (!lockResult || !lockResult[0]?.locked) {
-      return new Response(JSON.stringify({ status: "skipped", reason: "already processing" }));
-    }
-
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
     const currentBlock = await provider.getBlockNumber();
 
-    let lastBlock = lockResult[0].last_block || 0;
+    // Get last processed block from DB
+    const { data: stateData } = await supabase.from("monitor_state").select("last_block").eq("id", 1).single();
+    let lastBlock = stateData?.last_block || 0;
 
     if (lastBlock === 0) lastBlock = Math.max(0, currentBlock - 5000);
     if (lastBlock >= currentBlock) {
-      await supabase.rpc("unlock_monitor", { new_last_block: lastBlock, new_tx_hash: null });
       return new Response(JSON.stringify({ status: "up_to_date", block: currentBlock }));
     }
 
-    // Process max 2000 blocks per run
+    // Process max 500 blocks per run (public RPC limits)
     const fromBlock = lastBlock + 1;
-    const toBlock = Math.min(currentBlock, fromBlock + 2000);
+    const toBlock = Math.min(currentBlock, fromBlock + 500);
 
     const logs = await provider.getLogs({ address: CONTRACT_ADDRESS, fromBlock, toBlock });
 
@@ -233,7 +227,7 @@ Deno.serve(async (req) => {
 
     // Unlock monitor and update state
     const lastTxHash = logs.length > 0 ? logs[logs.length - 1].transactionHash : null;
-    await supabase.rpc("unlock_monitor", { new_last_block: toBlock, new_tx_hash: lastTxHash });
+    await supabase.from("monitor_state").update({ last_block: toBlock, last_tx_hash: lastTxHash, updated_at: new Date().toISOString() }).eq("id", 1);
 
     return new Response(JSON.stringify({
       status: "ok", from: fromBlock, to: toBlock, events: processed, errors, remaining: currentBlock - toBlock,
