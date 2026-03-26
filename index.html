@@ -1299,34 +1299,32 @@ for (let i = 1; i <= 17; i++) {
 // All levels start empty — real data loaded from contract via loadUserData()
 
 // ==================== RENDER LEVELS ====================
-function renderLevels(containerId) {
-  console.log('[renderLevels]', containerId, 'selectedLevel=', selectedLevel, 'caller=', new Error().stack?.split('\n')[2]?.trim());
-  const el = document.getElementById(containerId);
+// Generates level grid HTML from current LEVELS data
+function buildLevelsHtml() {
   let html = '';
   for (let i = 0; i < 17; i++) {
     const lv = LEVELS[i];
     const n = i + 1;
     const filled = lv.slots.reduce((a, b) => a + b, 0);
-    // Determine if this is the next level to buy
     const isNext = !lv.active && (i === 0 || LEVELS[i - 1].active);
     let cls = 'lvl-card';
     if (isNext) cls += ' lc-next';
     else if (lv.frzState) cls += ' lc-frz';
     else if (lv.active) cls += ' lc-on';
     else cls += ' lc-dim';
+    if (selectedLevel === n) cls += ' lc-sel';
 
     let pips = '';
     for (let s = 0; s < 4; s++) {
       let pc = '';
       if (lv.slots[s]) {
         if (s === 1 && lv.frzState) pc = 'p-frz';
-        else if (s === 3) pc = 'p-reset'; // slot 4 = reset, never "earned"
+        else if (s === 3) pc = 'p-reset';
         else pc = 'p-on';
       }
       pips += '<div class="lc-pip ' + pc + '"></div>';
     }
 
-    // L16 and L17 span full width (3 columns)
     const wide = (n >= 16) ? ' style="grid-column:span 3"' : '';
     html += '<div class="' + cls + '"' + wide + ' onclick="selectLevel(' + n + ')">';
     html += '<div class="lc-top"><span class="lc-label">L' + n + '</span>';
@@ -1338,6 +1336,15 @@ function renderLevels(containerId) {
     if (lv.frzState) html += '<div class="lc-frozen-badge">❄️ ' + f(lv.frozenAmt) + '</div>';
     html += '</div>';
   }
+  return html;
+}
+
+function renderLevels(containerId) {
+  const el = document.getElementById(containerId);
+  const html = buildLevelsHtml();
+  // Skip DOM update if nothing changed — prevents flicker
+  if (el._lastHtml === html) return;
+  el._lastHtml = html;
   el.innerHTML = html;
 }
 
@@ -1406,7 +1413,7 @@ function renderLevelDetail(n) {
     actions = '<button class="ghost-btn" style="width:100%;padding:10px" onclick="copyRef(this)">🔗 ' + t('share_ref_link') + '</button>';
   }
 
-  panel.innerHTML = '<div class="ld-hdr">' +
+  var detailHtml = '<div class="ld-hdr">' +
     '<div class="ld-badge">L' + n + '</div>' +
     '<div class="ld-info"><div class="ld-title">' + t('level_activated') + ' ' + n + '</div><div class="ld-price">' + t('activation_cost') + ': ' + f(buyCost(n)) + ' USDC</div><div class="ld-tags">' + tags + '</div></div></div>' +
     '<div class="slots-grid">' + slotsHtml + '</div>' +
@@ -1414,6 +1421,11 @@ function renderLevelDetail(n) {
     '<div class="ld-info-box">' + infoRows + '</div>' +
     '<div class="ld-actions">' + actions + '</div>';
 
+  // Skip DOM update if nothing changed
+  if (panel._lastHtml !== detailHtml) {
+    panel._lastHtml = detailHtml;
+    panel.innerHTML = detailHtml;
+  }
   panel.classList.add('show');
 }
 
@@ -1427,8 +1439,9 @@ function selectLevel(n) {
   // toggle
   if (selectedLevel === n) {
     panel.classList.remove('show');
+    panel._lastHtml = '';
     selectedLevel = 0;
-    document.querySelectorAll('#main-lvls .lvl-card').forEach(c => c.classList.remove('lc-sel'));
+    renderLevels('main-lvls');
     return;
   }
   selectedLevel = n;
@@ -1612,13 +1625,12 @@ function resetWalletButtons() {
 // Load user data from contract
 let _loadingUserData = false;
 async function loadUserData() {
-  console.log('[loadUserData] called, xionContract=', !!xionContract, 'wallet=', connectedWallet, 'loading=', _loadingUserData);
-  if (!xionContract || !connectedWallet) { console.warn('[loadUserData] SKIP: no contract or wallet'); return; }
+  if (!xionContract || !connectedWallet) return;
   if (_loadingUserData) { console.log('[loadUserData] skipped — already running'); return; }
   _loadingUserData = true;
   try {
     const info = await xionContract.getUserInfo(connectedWallet);
-    console.log('[loadUserData] User info:', {
+    console.log('User info:', {
       registered: info.registered,
       referrer: info.referrer,
       isMaster: info.isMaster,
@@ -1658,17 +1670,11 @@ async function loadUserData() {
     }
 
     // Re-render levels with fresh contract data
-    const activeLvls = LEVELS.filter(l => l.active).length;
-    const filledTotal = LEVELS.reduce((s, l) => s + l.slots.reduce((a, b) => a + b, 0), 0);
-    console.log('[loadUserData] DONE: active=' + activeLvls + ' filledSlots=' + filledTotal);
     renderLevels('dash-lvls');
     renderLevels('main-lvls');
 
-    // Restore selected level highlight and detail panel after re-render
+    // Restore detail panel with fresh data (grid selection handled by buildLevelsHtml)
     if (selectedLevel > 0) {
-      document.querySelectorAll('#main-lvls .lvl-card').forEach((c, i) => {
-        c.classList.toggle('lc-sel', i === selectedLevel - 1);
-      });
       renderLevelDetail(selectedLevel);
     }
 
