@@ -4233,6 +4233,67 @@ const T = {
     ko: '레벨', ja: 'レベル', hi: 'स्तर',
     zh: '等级', tr: 'Seviyeler'
   },
+  land_nav_start: {
+    en: 'Get started', ru: 'Начать', ua: 'Почати', es: 'Empezar', pt: 'Começar',
+    fr: 'Commencer', de: 'Starten', pl: 'Zacznij', vi: 'Bắt đầu',
+    ko: '시작하기', ja: '始める', hi: 'शुरू करें', zh: '开始', tr: 'Başla'
+  },
+  land_start_title: { en: 'Getting Started', ru: 'Как начать', ua: 'Як почати', es: 'Cómo empezar' },
+  land_start_s1_title: { en: 'Install MetaMask', ru: 'Установите MetaMask', ua: 'Встановіть MetaMask', es: 'Instala MetaMask' },
+  land_start_s1_desc: {
+    en: 'Download MetaMask on your phone (iOS / Android) or as a browser extension on PC. MetaMask is a crypto wallet that lets you interact with blockchain apps.',
+    ru: 'Скачайте MetaMask на телефон (iOS / Android) или как расширение для браузера на ПК. MetaMask — это криптокошелёк для взаимодействия с блокчейн-приложениями.',
+    ua: 'Завантажте MetaMask на телефон (iOS / Android) або як розширення для браузера. MetaMask — це криптогаманець для взаємодії з блокчейн-додатками.',
+    es: 'Descarga MetaMask en tu teléfono (iOS / Android) o como extensión de navegador. MetaMask es una billetera crypto para interactuar con apps blockchain.'
+  },
+  land_start_s2_title: { en: 'Open XiaonNET in MetaMask', ru: 'Откройте XiaonNET в MetaMask', ua: 'Відкрийте XiaonNET в MetaMask', es: 'Abre XiaonNET en MetaMask' },
+  land_start_s2_desc: {
+    en: 'In MetaMask app, tap the browser icon (bottom menu) and enter this address:',
+    ru: 'В приложении MetaMask нажмите иконку браузера (нижнее меню) и введите адрес:',
+    ua: 'У додатку MetaMask натисніть іконку браузера (нижнє меню) та введіть адресу:',
+    es: 'En la app de MetaMask, toca el icono del navegador (menú inferior) e ingresa esta dirección:'
+  },
+  land_start_s2_hint: {
+    en: 'On PC: just open xiaonnet.com in Chrome/Brave with MetaMask extension installed.',
+    ru: 'На ПК: просто откройте xiaonnet.com в Chrome/Brave с установленным расширением MetaMask.',
+    ua: 'На ПК: просто відкрийте xiaonnet.com у Chrome/Brave з встановленим розширенням MetaMask.',
+    es: 'En PC: simplemente abre xiaonnet.com en Chrome/Brave con la extensión MetaMask instalada.'
+  },
+  land_start_s3_title: { en: 'Add Polygon Network & Get POL (gas)', ru: 'Добавьте сеть Polygon и получите POL (газ)', ua: 'Додайте мережу Polygon та отримайте POL (газ)', es: 'Agrega la red Polygon y obtén POL (gas)' },
+  land_start_s3_desc: {
+    en: 'When you connect, the app will automatically ask to switch to Polygon network. Just confirm. You\'ll need a small amount of POL token for gas fees.',
+    ru: 'При подключении приложение автоматически предложит переключиться на сеть Polygon. Просто подтвердите. Понадобится немного токена POL для газа.',
+    ua: 'При підключенні додаток автоматично запропонує переключитися на мережу Polygon. Просто підтвердіть. Потрібна невелика кількість токена POL для газу.',
+    es: 'Al conectar, la app pedirá cambiar a la red Polygon. Solo confirma. Necesitarás una pequeña cantidad de token POL para gas.'
+  },
+  land_start_gas_title: { en: 'What is gas?', ru: 'Что такое газ?', ua: 'Що таке газ?', es: '¿Qué es el gas?' },
+  land_start_gas_desc: {
+    en: 'Gas is a tiny fee (less than $0.01) paid to the Polygon network for processing your transaction. It\'s like a postage stamp — you pay it once per action (register, buy level, etc). You need POL tokens for gas. Buy POL on any exchange (Binance, Bybit, OKX) and send to your MetaMask wallet address on Polygon network.',
+    ru: 'Газ — это маленькая комиссия (менее $0.01), которая платится сети Polygon за обработку транзакции. Это как почтовая марка — платите один раз за действие. Для газа нужны токены POL. Купите POL на любой бирже (Binance, Bybit, OKX) и отправьте на адрес MetaMask в сети Polygon.',
+    ua: 'Газ — це маленька комісія (менше $0.01) для обробки транзакції. Це як поштова марка — платите один раз за дію. Для газу потрібні токени POL. Купіть POL на біржі та відправте на адресу MetaMask в мережі Polygon.',
+    es: 'El gas es una tarifa pequeña (menos de $0.01) para procesar tu transacción. Es como un sello postal — pagas una vez por acción. Necesitas tokens POL para gas. Compra POL en cualquier exchange y envía a tu dirección MetaMask en la red Polygon.'
+  },
+  land_start_s4_title: { en: 'Get USDC on Polygon', ru: 'Получите USDC в сети Polygon', ua: 'Отримайте USDC в мережі Polygon', es: 'Obtén USDC en Polygon' },
+  land_start_s4_desc: {
+    en: 'You need USDC stablecoin to activate levels. USDC = digital dollar, always worth $1. To start you need $3.30 USDC (Level 1 price $3 + 10% fee).',
+    ru: 'Для активации уровней нужен стейблкоин USDC. USDC = цифровой доллар, всегда стоит $1. Для старта нужно $3.30 USDC (цена Уровня 1 $3 + 10% комиссия).',
+    ua: 'Для активації рівнів потрібен стейблкоін USDC. USDC = цифровий долар, завжди $1. Для старту потрібно $3.30 USDC (ціна Рівня 1 $3 + 10% комісія).',
+    es: 'Necesitas USDC stablecoin para activar niveles. USDC = dólar digital, siempre vale $1. Para empezar necesitas $3.30 USDC.'
+  },
+  land_start_usdc_title: { en: 'How to get USDC:', ru: 'Как получить USDC:', ua: 'Як отримати USDC:', es: 'Cómo obtener USDC:' },
+  land_start_usdc_desc: {
+    en: '1. Buy USDC on an exchange (Binance, Bybit, OKX, Coinbase)<br>2. Withdraw to your MetaMask wallet address<br>3. Choose <b>Polygon network</b> when withdrawing (important!)<br>4. USDC will appear in your MetaMask within minutes',
+    ru: '1. Купите USDC на бирже (Binance, Bybit, OKX, Coinbase)<br>2. Выведите на адрес кошелька MetaMask<br>3. Выберите <b>сеть Polygon</b> при выводе (важно!)<br>4. USDC появится в MetaMask в течение минут',
+    ua: '1. Купіть USDC на біржі (Binance, Bybit, OKX, Coinbase)<br>2. Виведіть на адресу гаманця MetaMask<br>3. Оберіть <b>мережу Polygon</b> при виведенні (важливо!)<br>4. USDC з\'явиться в MetaMask протягом хвилин',
+    es: '1. Compra USDC en un exchange (Binance, Bybit, OKX, Coinbase)<br>2. Retira a tu dirección MetaMask<br>3. Elige <b>red Polygon</b> al retirar (¡importante!)<br>4. USDC aparecerá en tu MetaMask en minutos'
+  },
+  land_start_s5_title: { en: 'Connect & Activate Level 1', ru: 'Подключитесь и активируйте Уровень 1', ua: 'Підключіться та активуйте Рівень 1', es: 'Conecta y activa el Nivel 1' },
+  land_start_s5_desc: {
+    en: 'Tap "Connect Wallet" → approve in MetaMask → you\'re in! Go to Levels → tap Level 1 → Buy → confirm two transactions (Approve USDC + Activate). Done — you\'re earning!',
+    ru: 'Нажмите "Подключить кошелёк" → подтвердите в MetaMask → вы внутри! Перейдите на Уровни → Уровень 1 → Купить → подтвердите две транзакции (Одобрить USDC + Активировать). Готово — вы зарабатываете!',
+    ua: 'Натисніть "Підключити гаманець" → підтвердіть в MetaMask → ви всередині! Рівні → Рівень 1 → Купити → підтвердіть дві транзакції. Готово — ви заробляєте!',
+    es: 'Toca "Conectar billetera" → aprueba en MetaMask → ¡estás dentro! Niveles → Nivel 1 → Comprar → confirma dos transacciones. ¡Listo — estás ganando!'
+  },
   land_nav_mech: {
     en: 'Mechanics', ru: 'Механика', ua: 'Механіка',
     es: 'Mecánica', pt: 'Mecânica', fr: 'Mécanique',

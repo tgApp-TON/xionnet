@@ -475,6 +475,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
   <!-- Navigation -->
   <div class="cs-nav">
+    <a href="#cs-start" data-t="land_nav_start">Get started</a>
     <a href="#cs-how" data-t="land_nav_how">How it works</a>
     <a href="#cs-mechanics" data-t="land_nav_mech">Mechanics</a>
     <a href="#cs-why" data-t="land_nav_why">Why XiaonNET</a>
@@ -515,6 +516,67 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       <div id="downloadLinks" style="display:flex;gap:8px">
         <a href="https://metamask.io/download/" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)" data-t="land_dl_mm">Download MetaMask</a>
         <a href="https://trustwallet.com/download" target="_blank" style="flex:1;display:block;background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px;text-decoration:none;text-align:center;font-size:11px;font-weight:600;color:var(--text2)" data-t="land_dl_tw">Download Trust Wallet</a>
+      </div>
+    </div>
+
+    <!-- Getting started guide -->
+    <div id="cs-start" style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px">
+      <div data-t="land_start_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">Getting Started</div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(124,58,237,.15);color:var(--poly2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">1</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-t="land_start_s1_title">Install MetaMask</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_start_s1_desc">Download MetaMask on your phone (iOS / Android) or as a browser extension on PC. MetaMask is a crypto wallet that lets you interact with blockchain apps.</div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <a href="https://metamask.io/download/" target="_blank" style="font-size:11px;font-weight:600;color:var(--poly2);background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:6px 12px;text-decoration:none">Download MetaMask</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(6,214,160,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">2</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-t="land_start_s2_title">Open XiaonNET in MetaMask</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_start_s2_desc">In MetaMask app, tap the browser icon (bottom menu) and enter this address:</div>
+          <div style="background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <code style="font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--poly2)">xiaonnet.com</code>
+            <button onclick="navigator.clipboard.writeText('https://xiaonnet.com');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:6px;padding:4px 10px;cursor:pointer">Copy</button>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px" data-t="land_start_s2_hint">On PC: just open xiaonnet.com in Chrome/Brave with MetaMask extension installed.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.15);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">3</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-t="land_start_s3_title">Add Polygon Network & Get POL (gas)</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_start_s3_desc">When you connect, the app will automatically ask to switch to Polygon network. Just confirm. You'll need a small amount of POL token for gas fees.</div>
+          <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:10px 12px;margin-top:8px">
+            <div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:4px" data-t="land_start_gas_title">What is gas?</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.6" data-t="land_start_gas_desc">Gas is a tiny fee (less than $0.01) paid to the Polygon network for processing your transaction. It's like a postage stamp — you pay it once per action (register, buy level, etc). You need POL tokens for gas. Buy POL on any exchange (Binance, Bybit, OKX) and send to your MetaMask wallet address on Polygon network.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(96,165,250,.15);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">4</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-t="land_start_s4_title">Get USDC on Polygon</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_start_s4_desc">You need USDC stablecoin to activate levels. USDC = digital dollar, always worth $1. To start you need $3.30 USDC (Level 1 price $3 + 10% fee).</div>
+          <div style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.15);border-radius:8px;padding:10px 12px;margin-top:8px">
+            <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px" data-t="land_start_usdc_title">How to get USDC:</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.7" data-t="land_start_usdc_desc">1. Buy USDC on an exchange (Binance, Bybit, OKX, Coinbase)<br>2. Withdraw to your MetaMask wallet address<br>3. Choose <b>Polygon network</b> when withdrawing (important!)<br>4. USDC will appear in your MetaMask within minutes</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(6,214,160,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">5</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-t="land_start_s5_title">Connect & Activate Level 1</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_start_s5_desc">Tap "Connect Wallet" → approve in MetaMask → you're in! Go to Levels → tap Level 1 → Buy → confirm two transactions (Approve USDC + Activate). Done — you're earning!</div>
+        </div>
       </div>
     </div>
 
