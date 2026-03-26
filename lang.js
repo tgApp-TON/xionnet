@@ -3829,10 +3829,10 @@ const T = {
     zh: '激活等级', tr: 'Bir seviye etkinleştir'
   },
   land_step1_desc: {
-    en: 'Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.',
-    ru: 'Выберите любой уровень начиная от $3. Ваш платёж в USDC идёт напрямую в смарт-контракт — никто не может получить к нему доступ, кроме протокола.',
-    ua: 'Оберіть будь-який рівень починаючи від $3. Ваш платіж в USDC йде безпосередньо до смарт-контракту — ніхто не має доступу до нього, крім протоколу.',
-    es: 'Elige cualquier nivel a partir de $3. Tu pago en USDC va directamente al contrato inteligente — nadie puede acceder a él excepto el protocolo.',
+    en: 'Levels are purchased sequentially starting from Level 1 ($3). Your USDC payment goes directly to the smart contract — no one can access it except the protocol.',
+    ru: 'Уровни покупаются последовательно начиная с Уровня 1 ($3). Ваш платёж в USDC идёт напрямую в смарт-контракт — никто не может получить к нему доступ, кроме протокола.',
+    ua: 'Рівні купуються послідовно починаючи з Рівня 1 ($3). Ваш платіж в USDC йде безпосередньо до смарт-контракту — ніхто не має доступу до нього, крім протоколу.',
+    es: 'Los niveles se compran secuencialmente desde el Nivel 1 ($3). Tu pago en USDC va directamente al contrato inteligente — nadie puede acceder a él excepto el protocolo.',
     pt: 'Escolha qualquer nível a partir de $3. Seu pagamento em USDC vai diretamente para o contrato inteligente — ninguém pode acessá-lo exceto o protocolo.',
     fr: 'Choisissez un niveau à partir de 3$. Votre paiement USDC va directement au contrat intelligent — personne ne peut y accéder sauf le protocole.',
     de: 'Wählen Sie eine Stufe ab 3$. Ihre USDC-Zahlung geht direkt an den Smart Contract — niemand außer dem Protokoll kann darauf zugreifen.',
