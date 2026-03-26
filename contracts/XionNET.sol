@@ -26,7 +26,6 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
     address public masterWallet;
     uint256[18] public levelPrices; // index 0 unused, 1-17
     uint256 public totalFrozen;
-    uint8   private _currentDepth;  // recursion depth tracker
 
     struct LevelData {
         bool     active;
@@ -90,6 +89,8 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
     event SystemWalletChanged(address indexed oldWallet, address indexed newWallet);
     event MasterWalletChanged(address indexed oldWallet, address indexed newWallet);
     event AutoBuyToggled(address indexed user, uint8 level, bool enabled);
+    event SystemFeesWithdrawn(address indexed to, uint256 amount, uint32 timestamp);
+    event SpilloverMaxHops(address indexed user, uint8 level, uint16 hops);
 
     // ==================== CONSTRUCTOR ====================
     constructor(
@@ -193,8 +194,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
 
         users[msg.sender].totalPaid += total;
 
-        _currentDepth = 0;
-        _activateLevelInternal(msg.sender, levelNum, price, 1); // actType=1 manual
+        _activateLevelInternal(msg.sender, levelNum, price, 1, 0); // actType=1 manual, depth=0
 
         // Bonus check: bought L7 within 3 hours of registration
         if (levelNum == BONUS_TRIGGER
@@ -254,6 +254,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
     function checkAllowance(address user, uint8 level) external view returns (
         bool sufficient, uint256 required, uint256 current
     ) {
+        require(level >= 1 && level <= MAX_LEVELS, "Invalid level");
         uint256 req = levelPrices[level] + levelPrices[level] * PROTOCOL_PCT / 100;
         uint256 cur = usdcToken.allowance(user, address(this));
         return (cur >= req, req, cur);
@@ -295,9 +296,21 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
     function unpause() external onlyOwner { _unpause(); }
 
     function withdrawSystemFees(uint256 amount) external onlyOwner {
+        require(amount > 0, "Nothing to withdraw");
         uint256 available = usdcToken.balanceOf(address(this)) - totalFrozen;
         require(amount <= available, "Cannot touch frozen funds");
         usdcToken.safeTransfer(systemWallet, amount);
+        emit SystemFeesWithdrawn(systemWallet, amount, uint32(block.timestamp));
+    }
+
+    function emergencyUnfreeze(address user, uint8 levelNum) external onlyOwner {
+        LevelData storage ld = userLevels[user][levelNum];
+        require(ld.frozenAmount > 0, "Not frozen");
+        uint256 amount = ld.frozenAmount;
+        ld.frozenAmount = 0;
+        totalFrozen -= amount;
+        usdcToken.safeTransfer(user, amount);
+        emit FundsReturned(user, levelNum, amount, uint32(block.timestamp));
     }
 
     // ==================== INTERNAL HELPERS ====================
@@ -314,7 +327,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
 
     // ==================== INTERNAL: ACTIVATE ====================
     function _activateLevelInternal(
-        address user, uint8 levelNum, uint256 amount, uint8 actType
+        address user, uint8 levelNum, uint256 amount, uint8 actType, uint256 depth
     ) internal {
         LevelData storage level = userLevels[user][levelNum];
         level.active = true;
@@ -331,19 +344,19 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
         // Find sponsor with active level
         address sponsor = users[user].referrer;
         if (sponsor != address(0) && userLevels[sponsor][levelNum].active) {
-            _fillSlot(sponsor, levelNum, amount, user, 1); // srcType=1 direct
+            _fillSlot(sponsor, levelNum, amount, user, 1, depth); // srcType=1 direct
         } else {
-            _spillover(user, levelNum, amount);
+            _spillover(user, levelNum, amount, depth);
         }
     }
 
     // ==================== INTERNAL: FILL SLOT ====================
     function _fillSlot(
-        address owner, uint8 levelNum, uint256 amount, address from, uint8 srcType
+        address owner, uint8 levelNum, uint256 amount, address from, uint8 srcType, uint256 depth
     ) internal {
         // Recursion depth protection
-        _currentDepth += 1;
-        require(_currentDepth <= MAX_DEPTH, "Max recursion depth");
+        depth += 1;
+        require(depth <= MAX_DEPTH, "Max recursion depth");
 
         LevelData storage level = userLevels[owner][levelNum];
         require(level.filledSlots < MAX_SLOTS, "Level already full");
@@ -364,30 +377,27 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
                 _reactivate(owner, levelNum);
             }
             _payout(owner, from, levelNum, slotNum, amount);
-            _currentDepth -= 1;
             return;
         }
 
         if (slotNum == 1) {
-            _slot1(owner, from, levelNum, amount);
+            _slot1(owner, from, levelNum, amount, depth);
         } else if (slotNum == 2) {
-            _slot2(owner, from, levelNum, amount);
+            _slot2(owner, from, levelNum, amount, depth);
         } else if (slotNum == 3) {
-            _slot3(owner, from, levelNum, amount);
+            _slot3(owner, from, levelNum, amount, depth);
         } else if (slotNum == 4) {
-            _slot4(owner, from, levelNum, amount);
+            _slot4(owner, from, levelNum, amount, depth);
         }
-
-        _currentDepth -= 1;
     }
 
     // ==================== SLOT HANDLERS ====================
 
-    function _slot1(address owner, address from, uint8 levelNum, uint256 amount) internal {
+    function _slot1(address owner, address from, uint8 levelNum, uint256 amount, uint256 depth) internal {
         _payout(owner, from, levelNum, 1, amount);
     }
 
-    function _slot2(address owner, address from, uint8 levelNum, uint256 amount) internal {
+    function _slot2(address owner, address from, uint8 levelNum, uint256 amount, uint256 depth) internal {
         // L17: always payout
         if (levelNum == MAX_LEVELS) {
             _payout(owner, from, levelNum, 2, amount);
@@ -397,7 +407,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
         // If autoBuy enabled AND N+1 not bought → freeze
         if (autoBuyEnabled[owner][levelNum] && !userLevels[owner][levelNum + 1].active) {
             // Safety: ensure no existing frozen amount (should be 0 after activation)
-            assert(userLevels[owner][levelNum].frozenAmount == 0);
+            require(userLevels[owner][levelNum].frozenAmount == 0, "Already frozen");
             userLevels[owner][levelNum].frozenAmount = amount;
             totalFrozen += amount;
             emit FundsFrozen(owner, levelNum, amount, uint32(block.timestamp));
@@ -406,7 +416,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
         }
     }
 
-    function _slot3(address owner, address from, uint8 levelNum, uint256 amount) internal {
+    function _slot3(address owner, address from, uint8 levelNum, uint256 amount, uint256 depth) internal {
         // L17: always payout
         if (levelNum == MAX_LEVELS) {
             _payout(owner, from, levelNum, 3, amount);
@@ -422,7 +432,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
             emit FundsUnfrozen(owner, levelNum, frozen, true, uint32(block.timestamp));
 
             uint256 totalAmount = frozen + amount; // = price(N+1)
-            _activateLevelInternal(owner, levelNum + 1, totalAmount, 2); // actType=2 auto
+            _activateLevelInternal(owner, levelNum + 1, totalAmount, 2, depth); // actType=2 auto
 
         } else if (frozen > 0 && userLevels[owner][levelNum + 1].active) {
             // 3B: N+1 already bought, send frozen+incoming to N+1 slot
@@ -433,9 +443,9 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
             uint256 totalAmount = frozen + amount;
             address sponsor = users[owner].referrer;
             if (sponsor != address(0) && userLevels[sponsor][levelNum + 1].active) {
-                _fillSlot(sponsor, levelNum + 1, totalAmount, owner, 3); // srcType=3 unfreeze
+                _fillSlot(sponsor, levelNum + 1, totalAmount, owner, 3, depth); // srcType=3 unfreeze
             } else {
-                _spillover(owner, levelNum + 1, totalAmount);
+                _spillover(owner, levelNum + 1, totalAmount, depth);
             }
         } else {
             // 3C: no frozen, payout
@@ -443,9 +453,9 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
         }
     }
 
-    function _slot4(address owner, address /*from*/, uint8 levelNum, uint256 amount) internal {
+    function _slot4(address owner, address /*from*/, uint8 levelNum, uint256 amount, uint256 depth) internal {
         _reactivate(owner, levelNum);
-        _spillover(owner, levelNum, amount);
+        _spillover(owner, levelNum, amount, depth);
     }
 
     // ==================== INTERNAL: PAYOUT ====================
@@ -458,7 +468,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
     }
 
     // ==================== INTERNAL: SPILLOVER ====================
-    function _spillover(address fromUser, uint8 levelNum, uint256 amount) internal {
+    function _spillover(address fromUser, uint8 levelNum, uint256 amount, uint256 depth) internal {
         address p = users[fromUser].referrer;
         uint16 hops = 0;
 
@@ -468,6 +478,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
                 break;
             }
             if (hops >= MAX_HOPS) {
+                emit SpilloverMaxHops(fromUser, levelNum, hops);
                 emit Bounced(fromUser, levelNum, 2, uint32(block.timestamp));
                 p = masterWallet;
                 break;
@@ -478,7 +489,7 @@ contract XionNET is ReentrancyGuard, Ownable, Pausable {
         }
 
         emit SpilloverSent(fromUser, p, levelNum, amount, hops, uint32(block.timestamp));
-        _fillSlot(p, levelNum, amount, fromUser, 2); // srcType=2 spillover
+        _fillSlot(p, levelNum, amount, fromUser, 2, depth); // srcType=2 spillover
     }
 
     // ==================== INTERNAL: REACTIVATE ====================

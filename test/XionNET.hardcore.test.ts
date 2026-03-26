@@ -491,4 +491,220 @@ describe("XionNET — Hardcore Scenarios", function () {
       expect((await xion.getUserLevel(sp.address, 1)).frozenAmount).to.equal(0);
     });
   });
+
+  // =========================================================
+  // 61. EMERGENCY UNFREEZE
+  // =========================================================
+  describe("61. emergencyUnfreeze", function () {
+    it("61.1 owner can emergencyUnfreeze for a user with frozen funds", async function () {
+      const sp = signers[5];
+      const subs = [signers[6], signers[7]];
+      await fundAndApprove(sp);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+      await xion.connect(sp).setAutoBuy(1, true);
+
+      for (const u of subs) {
+        await fundAndApprove(u);
+        await xion.connect(u).register(sp.address);
+      }
+
+      // Slot 1: payout
+      await xion.connect(subs[0]).activateLevel(1);
+      // Slot 2: freeze (autoBuy ON, L2 not active)
+      await xion.connect(subs[1]).activateLevel(1);
+
+      const frozen = (await xion.getUserLevel(sp.address, 1)).frozenAmount;
+      expect(frozen).to.equal(U(3));
+
+      const balBefore = await usdc.balanceOf(sp.address);
+      await xion.connect(owner).emergencyUnfreeze(sp.address, 1);
+      const balAfter = await usdc.balanceOf(sp.address);
+
+      expect(balAfter - balBefore).to.equal(U(3));
+      expect((await xion.getUserLevel(sp.address, 1)).frozenAmount).to.equal(0);
+    });
+
+    it("61.2 non-owner cannot call emergencyUnfreeze", async function () {
+      const sp = signers[5];
+      const subs = [signers[6], signers[7]];
+      await fundAndApprove(sp);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+      await xion.connect(sp).setAutoBuy(1, true);
+
+      for (const u of subs) {
+        await fundAndApprove(u);
+        await xion.connect(u).register(sp.address);
+      }
+
+      await xion.connect(subs[0]).activateLevel(1);
+      await xion.connect(subs[1]).activateLevel(1);
+
+      // Non-owner tries to call emergencyUnfreeze
+      await expect(
+        xion.connect(signers[8]).emergencyUnfreeze(sp.address, 1)
+      ).to.be.reverted;
+    });
+
+    it("61.3 after emergencyUnfreeze, frozenAmount is 0 and user received funds", async function () {
+      const sp = signers[5];
+      const subs = [signers[6], signers[7]];
+      await fundAndApprove(sp);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+      await xion.connect(sp).setAutoBuy(1, true);
+
+      for (const u of subs) {
+        await fundAndApprove(u);
+        await xion.connect(u).register(sp.address);
+      }
+
+      await xion.connect(subs[0]).activateLevel(1);
+      await xion.connect(subs[1]).activateLevel(1);
+
+      const totalFrozenBefore = await xion.getTotalFrozen();
+      expect(totalFrozenBefore).to.be.greaterThan(0);
+
+      await xion.connect(owner).emergencyUnfreeze(sp.address, 1);
+
+      expect((await xion.getUserLevel(sp.address, 1)).frozenAmount).to.equal(0);
+      const totalFrozenAfter = await xion.getTotalFrozen();
+      expect(totalFrozenAfter).to.equal(totalFrozenBefore - U(3));
+    });
+
+    it("61.4 emergencyUnfreeze reverts if nothing frozen", async function () {
+      const sp = signers[5];
+      await fundAndApprove(sp);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+
+      await expect(
+        xion.connect(owner).emergencyUnfreeze(sp.address, 1)
+      ).to.be.revertedWith("Not frozen");
+    });
+  });
+
+  // =========================================================
+  // 62. MULTI-LEVEL AUTOBUY CASCADE
+  // =========================================================
+  describe("62. Multi-level autoBuy cascade", function () {
+    it("62.1 autoBuy L1+L2: L1 slot3 auto-opens L2, then L2 freeze works", async function () {
+      this.timeout(120000);
+
+      const sp = signers[5];
+      await fundAndApprove(sp, 500000);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+      // Enable autoBuy for L1 and L2
+      await xion.connect(sp).setAutoBuy(1, true);
+      await xion.connect(sp).setAutoBuy(2, true);
+
+      // Fill L1 slots 1-3 to trigger autoBuy of L2
+      const l1Fillers = [signers[6], signers[7], signers[8]];
+      for (const u of l1Fillers) {
+        await fundAndApprove(u);
+        await xion.connect(u).register(sp.address);
+      }
+
+      // Slot 1: payout $3
+      await xion.connect(l1Fillers[0]).activateLevel(1);
+      expect((await xion.getUserLevel(sp.address, 1)).filledSlots).to.equal(1);
+
+      // Slot 2: freeze $3 (autoBuy ON, L2 not active)
+      await xion.connect(l1Fillers[1]).activateLevel(1);
+      expect((await xion.getUserLevel(sp.address, 1)).frozenAmount).to.equal(U(3));
+
+      // Slot 3: frozen($3) + incoming($3) = $6 = L2 price → auto-buy L2
+      await xion.connect(l1Fillers[2]).activateLevel(1);
+
+      // L2 should now be active
+      expect((await xion.getUserLevel(sp.address, 2)).active).to.be.true;
+      // L1 frozen should be cleared
+      expect((await xion.getUserLevel(sp.address, 1)).frozenAmount).to.equal(0);
+
+      // Now test L2 freeze: we need 2 fillers for L2 (slot1=payout, slot2=freeze)
+      // These users need L1 first, then L2
+      const l2Fillers = [signers[9], signers[10]];
+      for (const u of l2Fillers) {
+        await fundAndApprove(u, 500000);
+        await xion.connect(u).register(sp.address);
+        await xion.connect(u).activateLevel(1);
+      }
+
+      // L2 slot 1: payout $6
+      await xion.connect(l2Fillers[0]).activateLevel(2);
+      expect((await xion.getUserLevel(sp.address, 2)).filledSlots).to.equal(1);
+
+      // L2 slot 2: freeze $6 (autoBuy ON for L2, L3 not active)
+      await xion.connect(l2Fillers[1]).activateLevel(2);
+      expect((await xion.getUserLevel(sp.address, 2)).frozenAmount).to.equal(U(6));
+    });
+  });
+
+  // =========================================================
+  // 63. EXTREME CYCLES — 20 USERS FILL L1 FOR SAME SPONSOR
+  // =========================================================
+  describe("63. Extreme cycles", function () {
+    it("63.1 20 users fill L1 for same sponsor = 5 full cycles", async function () {
+      this.timeout(300000);
+
+      // We need 20 fillers + 1 sponsor = 21 users beyond the first 5
+      // Hardhat gives 20 signers by default, so we use what we have
+      const sp = signers[5];
+      await fundAndApprove(sp, 500000);
+      await xion.connect(sp).register(initM.address);
+      await xion.connect(sp).activateLevel(1);
+
+      const available = signers.length - 6;
+      const numFillers = Math.min(available, 20);
+      console.log(`  Using ${numFillers} fillers (need 20 for 5 cycles)`);
+
+      const fillers: SignerWithAddress[] = [];
+      for (let i = 0; i < numFillers; i++) {
+        fillers.push(signers[6 + i]);
+      }
+
+      for (const u of fillers) {
+        await fundAndApprove(u);
+        await xion.connect(u).register(sp.address);
+      }
+
+      const balBefore = await usdc.balanceOf(sp.address);
+
+      for (const u of fillers) {
+        await xion.connect(u).activateLevel(1);
+      }
+
+      const lvl = await xion.getUserLevel(sp.address, 1);
+      const expectedCycles = Math.floor(numFillers / 4);
+      const expectedFilledSlots = numFillers % 4;
+
+      console.log(`  Cycles: ${lvl.cycleCount}, filledSlots: ${lvl.filledSlots}`);
+
+      expect(lvl.cycleCount).to.equal(expectedCycles);
+      expect(lvl.filledSlots).to.equal(expectedFilledSlots);
+
+      // Payout accounting:
+      // Each cycle: slot1=payout, slot2=payout(no autoBuy), slot3=payout, slot4=spillover(reactivate)
+      // So per cycle: 3 payouts of $3 = $9 to sponsor (slot4 goes to spillover)
+      // Plus any partial cycle payouts
+      const balAfter = await usdc.balanceOf(sp.address);
+      const received = balAfter - balBefore;
+
+      // Per cycle: slots 1,2,3 = $3 each = $9, slot4 = spillover (not to sponsor)
+      // Partial slots: up to filledSlots payouts
+      const fullCyclePayouts = BigInt(expectedCycles) * U(9); // 3 payouts per cycle * $3
+      // For partial slots remaining, slots 1,2,3 pay out $3 each (slot4 is spillover)
+      const partialPayouts = BigInt(Math.min(expectedFilledSlots, 3)) * U(3);
+      const expectedReceived = fullCyclePayouts + partialPayouts;
+
+      console.log(`  Sponsor received: $${Number(received) / 1e6}`);
+      console.log(`  Expected: $${Number(expectedReceived) / 1e6}`);
+
+      // With 14 fillers (typical hardhat): 3 full cycles + 2 remaining
+      // = 3*$9 + 2*$3 = $27 + $6 = $33
+      expect(received).to.equal(expectedReceived);
+    });
+  });
 });

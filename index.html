@@ -906,21 +906,30 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <script src="lang.js?v=6"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
-// Polyfill Node.js globals for WalletConnect SDK (must run before WC loads)
-// Using window AND globalThis to survive MetaMask SES lockdown
+// Polyfill Node.js globals for WalletConnect SDK
 (function(){
   var proc = { env: { NODE_DEBUG: '' }, version: 'v16.0.0', platform: 'browser',
     nextTick: function(fn){ Promise.resolve().then(fn); },
     emitWarning: function(){},
-    stderr: { write: function(){} }
+    stderr: { write: function(){} },
+    stdout: { write: function(){} }
   };
   window.process = proc;
   try { globalThis.process = proc; } catch(e){}
   if (typeof window.global === 'undefined') window.global = window;
-  if (typeof window.Buffer === 'undefined') window.Buffer = { isBuffer: function(){ return false; }, from: function(){ return []; } };
+  if (typeof window.Buffer === 'undefined') window.Buffer = { isBuffer: function(){ return false; }, from: function(){ return []; }, alloc: function(){ return []; } };
 })();
 </script>
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js" onerror="console.warn('WalletConnect SDK failed to load')"></script>
+<script>
+// Load WalletConnect dynamically to catch errors from SES lockdown
+(function(){
+  var s = document.createElement('script');
+  s.src = 'https://unpkg.com/@walletconnect/ethereum-provider@2.17.0/dist/index.umd.js';
+  s.onerror = function(){ console.warn('WalletConnect SDK failed to load'); };
+  s.onload = function(){ console.log('WalletConnect SDK loaded'); };
+  document.head.appendChild(s);
+})();
+</script>
 <script>
 // ==================== HTML SANITIZER ====================
 function esc(s) {
@@ -1553,7 +1562,6 @@ async function connectWallet(btn, walletType) {
     let needsRegister = false;
     try {
       const info = await xionContract.getUserInfo(connectedWallet);
-      console.log('[connect] getUserInfo:', { registered: info.registered, referrer: info.referrer, isMaster: info.isMaster });
       needsRegister = !info.registered;
     } catch (e) {
       console.warn('[connect] getUserInfo failed:', e.reason || e.message);
@@ -1580,7 +1588,6 @@ async function connectWallet(btn, walletType) {
         soundBonus();
         loadUserData(); // refresh after register
       }).catch(e => {
-        console.warn('[connect] register failed:', e.reason || e.message);
         btn.innerHTML = connectCheckIcon + ' Connected!';
       });
     }
@@ -1626,7 +1633,7 @@ function resetWalletButtons() {
 let _loadingUserData = false;
 async function loadUserData() {
   if (!xionContract || !connectedWallet) return;
-  if (_loadingUserData) { console.log('[loadUserData] skipped — already running'); return; }
+  if (_loadingUserData) return;
   _loadingUserData = true;
   try {
     const info = await xionContract.getUserInfo(connectedWallet);
@@ -1650,8 +1657,6 @@ async function loadUserData() {
 
     // Count how many valid results we got
     const validResults = levelResults.filter(r => r !== null).length;
-    console.log('[loadUserData] got ' + validResults + '/17 level results');
-
     // Only update LEVELS if we got valid data (protect against RPC returning empty)
     if (validResults > 0) {
       let changed = false;
@@ -1682,7 +1687,7 @@ async function loadUserData() {
         renderLevels('main-lvls');
       }
     } else {
-      console.warn('[loadUserData] all level calls failed, keeping existing data');
+      console.warn('All level calls failed, keeping existing data');
     }
 
     // Restore detail panel with fresh data (grid selection handled by buildLevelsHtml)
@@ -1705,7 +1710,7 @@ async function loadUserData() {
     const usdcBal = await usdcContract.balanceOf(connectedWallet);
     console.log('USDC balance:', Number(usdcBal) / 1e6);
   } catch (err) {
-    console.error('[loadUserData] ERROR:', err);
+    console.error('loadUserData error:', err);
   } finally {
     _loadingUserData = false;
   }
@@ -2816,19 +2821,6 @@ function soundError() {
   playBell(523, 0.15, 0.03);
   setTimeout(() => playBell(494, 0.2, 0.03), 130);
 }
-
-// ==================== DEBUG: WATCH FOR DOM CHANGES ON LEVEL GRID ====================
-setTimeout(function() {
-  ['main-lvls','dash-lvls'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    new MutationObserver(function(muts) {
-      var cards = el.querySelectorAll('.lvl-card').length;
-      console.warn('⚠️ [DOM CHANGED] #' + id + ' cards=' + cards);
-      console.trace('Source of DOM change:');
-    }).observe(el, { childList: true, subtree: true, characterData: true, attributes: true });
-  });
-}, 100);
 
 // ==================== AUTO-CONNECT ====================
 // If wallet was previously connected, auto-reconnect without user click
