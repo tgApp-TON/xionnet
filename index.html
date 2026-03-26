@@ -906,17 +906,21 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 <script src="lang.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
-// Polyfill for Node.js globals required by WalletConnect SDK
-// Must resist MetaMask SES lockdown removal
+// Polyfill Node.js globals for WalletConnect SDK (must run before WC loads)
+// Using window AND globalThis to survive MetaMask SES lockdown
 (function(){
-  var proc = { env: {}, version: '', platform: 'browser', nextTick: function(fn){ setTimeout(fn, 0); } };
-  try { Object.defineProperty(globalThis, 'process', { value: proc, writable: true, configurable: true, enumerable: true }); } catch(e){}
-  try { Object.defineProperty(window, 'process', { value: proc, writable: true, configurable: true, enumerable: true }); } catch(e){}
-  if (typeof globalThis.global === 'undefined') { try { Object.defineProperty(globalThis, 'global', { value: globalThis, writable: true, configurable: true }); } catch(e){} }
-  if (typeof globalThis.Buffer === 'undefined') { globalThis.Buffer = { isBuffer: function(){ return false; } }; }
+  var proc = { env: { NODE_DEBUG: '' }, version: 'v16.0.0', platform: 'browser',
+    nextTick: function(fn){ Promise.resolve().then(fn); },
+    emitWarning: function(){},
+    stderr: { write: function(){} }
+  };
+  window.process = proc;
+  try { globalThis.process = proc; } catch(e){}
+  if (typeof window.global === 'undefined') window.global = window;
+  if (typeof window.Buffer === 'undefined') window.Buffer = { isBuffer: function(){ return false; }, from: function(){ return []; } };
 })();
 </script>
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js"></script>
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js" onerror="console.warn('WalletConnect SDK failed to load')"></script>
 <script>
 // ==================== HTML SANITIZER ====================
 function esc(s) {
