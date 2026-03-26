@@ -24,6 +24,9 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overfl
 #mainApp{overflow-y:auto;overflow-x:hidden;height:100%;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:env(safe-area-inset-bottom);max-width:500px;margin:0 auto}
 ::-webkit-scrollbar{width:0;height:0}
 a{color:var(--poly2);text-decoration:none}
+.contract-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:10px 16px;border-radius:10px;border:1px solid var(--border2);text-decoration:none;background:linear-gradient(90deg,var(--green),var(--poly2),var(--frozen),var(--poly),var(--green));background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoShimmer 3s ease-in-out infinite;transition:border-color .2s}
+.contract-link:hover{border-color:var(--poly)}
+.contract-link svg{stroke:var(--poly2);flex-shrink:0;-webkit-text-fill-color:initial}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @keyframes slideUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes toastIn{from{transform:translateX(-50%) translateY(-8px);opacity:0}to{transform:translateX(-50%);opacity:1}}
@@ -588,10 +591,11 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
     <!-- Contract link -->
     <div style="text-align:center;margin-bottom:24px">
-      <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" style="font-size:11px;color:var(--text3);text-decoration:none;display:inline-flex;align-items:center;gap:4px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         Verified Smart Contract on Polygonscan
       </a>
+      <div style="margin-top:6px;font-size:9px;color:var(--text3);word-break:break-all">0x8F14178823b89da0a4b027235968eF508689e8e2</div>
     </div>
   </div>
 </div>
@@ -843,6 +847,20 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_languages_q">What languages are supported?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a" data-th="faq_languages_a">XiaonNET supports 14 languages: English, Russian, Ukrainian, Spanish, Portuguese, French, German, Polish, Vietnamese, Korean, Japanese, Hindi, Chinese, and Turkish. The app auto-detects your browser language. You can also change it manually in Settings.</div>
+  </div>
+
+  <div class="faq-section-label">🔗 Smart Contract</div>
+
+  <div class="faq-item open">
+    <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_verify_q">Where can I verify the contract?</span><div class="faq-arrow">▾</div></div>
+    <div class="faq-a">
+      <div style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:12px" data-t="faq_verify_a">The smart contract is fully verified and open-source on Polygonscan. Anyone can read the code, check how funds flow, and verify that the rules cannot be changed. No hidden logic, no admin backdoors.</div>
+      <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        View Verified Contract on Polygonscan
+      </a>
+      <div style="margin-top:8px;font-size:10px;color:var(--text3);word-break:break-all">0x8F14178823b89da0a4b027235968eF508689e8e2</div>
+    </div>
   </div>
 
   <div class="faq-section-label" data-t="faq_earnings">💰 Potential Earnings</div>

@@ -2865,6 +2865,51 @@ const T = {
     sw: 'XiaonNET inasaidia lugha 26: Kiingereza, Kirusi, Kiukreni, Kihispania, Kireno, Kifaransa, Kijerumani, Kipolandi, Kivietinamu, Kikorea, Kijapani, Kihindi, Kichina, Kituruki, Kiarabu, Kithai, Kiindonesia, Kifilipino, Kimalei, Kiitaliano, Kiholanzi, Kiromania, Kicheki, Kifarsi, Kibengali, na Kiswahili. Programu inagundua lugha ya kivinjari chako kiotomatiki. Unaweza pia kuibadilisha kwa mikono katika Mipangilio.'
   },
 
+  faq_verify_q: {
+    en: 'Where can I verify the contract?',
+    ru: 'Где можно проверить контракт?',
+    ua: 'Де можна перевірити контракт?',
+    es: '¿Dónde puedo verificar el contrato?',
+    pt: 'Onde posso verificar o contrato?',
+    fr: 'Où puis-je vérifier le contrat ?',
+    de: 'Wo kann ich den Vertrag überprüfen?',
+    pl: 'Gdzie mogę zweryfikować kontrakt?',
+    vi: 'Tôi có thể xác minh hợp đồng ở đâu?',
+    ko: '계약을 어디서 확인할 수 있나요?',
+    ja: 'コントラクトはどこで確認できますか？',
+    hi: 'कॉन्ट्रैक्ट कहाँ सत्यापित करें?',
+    zh: '在哪里可以验证合约？',
+    tr: 'Sözleşmeyi nerede doğrulayabilirim?',
+    ar: 'أين يمكنني التحقق من العقد؟',
+    th: 'ตรวจสอบสัญญาได้ที่ไหน?',
+    id: 'Di mana saya bisa memverifikasi kontrak?',
+    tl: 'Saan ko ma-verify ang contract?',
+    ms: 'Di mana saya boleh mengesahkan kontrak?',
+    it: 'Dove posso verificare il contratto?',
+    nl: 'Waar kan ik het contract verifiëren?',
+    ro: 'Unde pot verifica contractul?',
+    cs: 'Kde mohu ověřit kontrakt?',
+    fa: 'کجا می‌توانم قرارداد را بررسی کنم؟',
+    bn: 'কোথায় চুক্তি যাচাই করতে পারি?',
+    sw: 'Naweza kuthibitisha mkataba wapi?'
+  },
+  faq_verify_a: {
+    en: 'The smart contract is fully verified and open-source on Polygonscan. Anyone can read the code, check how funds flow, and verify that the rules cannot be changed. No hidden logic, no admin backdoors.',
+    ru: 'Смарт-контракт полностью верифицирован и находится в открытом доступе на Polygonscan. Любой может прочитать код, проверить движение средств и убедиться что правила нельзя изменить. Никакой скрытой логики, никаких админских лазеек.',
+    ua: 'Смарт-контракт повністю верифікований та відкритий на Polygonscan. Будь-хто може прочитати код, перевірити рух коштів та переконатися що правила не можна змінити.',
+    es: 'El contrato inteligente está completamente verificado y es de código abierto en Polygonscan. Cualquiera puede leer el código y verificar que las reglas no se pueden cambiar.',
+    pt: 'O contrato inteligente é totalmente verificado e de código aberto no Polygonscan. Qualquer pessoa pode ler o código e verificar que as regras não podem ser alteradas.',
+    fr: 'Le contrat intelligent est entièrement vérifié et open-source sur Polygonscan. N\'importe qui peut lire le code et vérifier que les règles ne peuvent pas être modifiées.',
+    de: 'Der Smart Contract ist vollständig verifiziert und Open-Source auf Polygonscan. Jeder kann den Code lesen und überprüfen, dass die Regeln nicht geändert werden können.',
+    pl: 'Smart kontrakt jest w pełni zweryfikowany i open-source na Polygonscan. Każdy może przeczytać kod i sprawdzić że reguły nie mogą być zmienione.',
+    vi: 'Hợp đồng thông minh được xác minh đầy đủ và mã nguồn mở trên Polygonscan. Bất kỳ ai cũng có thể đọc mã và xác minh rằng các quy tắc không thể bị thay đổi.',
+    ko: '스마트 컨트랙트는 Polygonscan에서 완전히 검증되고 오픈소스입니다. 누구나 코드를 읽고 규칙을 변경할 수 없음을 확인할 수 있습니다.',
+    ja: 'スマートコントラクトはPolygonscanで完全に検証されオープンソースです。誰でもコードを読み、ルールが変更できないことを確認できます。',
+    hi: 'स्मार्ट कॉन्ट्रैक्ट Polygonscan पर पूरी तरह सत्यापित और ओपन-सोर्स है। कोई भी कोड पढ़ सकता है और सत्यापित कर सकता है कि नियम बदले नहीं जा सकते।',
+    zh: '智能合约在Polygonscan上完全验证并开源。任何人都可以阅读代码并验证规则无法更改。',
+    tr: 'Akıllı sözleşme Polygonscan\'de tamamen doğrulanmış ve açık kaynaklıdır. Herkes kodu okuyabilir ve kuralların değiştirilemeyeceğini doğrulayabilir.'
+  },
+
   // ==================== EARNINGS SCENARIOS ====================
   scenario1_html: {
     en: '<div class="sc-hdr"><div class="sc-title">10 referrals × 7 levels</div><div class="sc-badge" style="color:var(--green);background:rgba(6,214,160,.15)">L1–L7 + L8 bonus</div></div><div style="font-size:11px;color:var(--text2);margin-bottom:10px">Your 10 referrals buy L1–L7 within 180 min → everyone gets <b style="color:var(--gold)">L8 free</b>. With L8, all slots pay you (3 payouts per 4 fills).</div><div style="background:var(--bg4);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--text2)"><b>10 referrals = 8 payouts per level</b></div><table class="earn-table"><tr><th>Level</th><th>Price</th><th>Earned</th></tr><tr><td class="lvl-cell">L1</td><td>$3</td><td class="amt-cell">$24</td></tr><tr><td class="lvl-cell">L2</td><td>$6</td><td class="amt-cell">$48</td></tr><tr><td class="lvl-cell">L3</td><td>$12</td><td class="amt-cell">$96</td></tr><tr><td class="lvl-cell">L4</td><td>$24</td><td class="amt-cell">$192</td></tr><tr><td class="lvl-cell">L5</td><td>$48</td><td class="amt-cell">$384</td></tr><tr><td class="lvl-cell">L6</td><td>$96</td><td class="amt-cell">$768</td></tr><tr><td class="lvl-cell">L7</td><td>$192</td><td class="amt-cell">$1536</td></tr><tr class="total-row"><td colspan="2">Total</td><td class="amt-cell">$3048</td></tr></table><div class="sc-total"><div class="lbl">Your Earnings</div><div class="val">$3048</div></div><div style="font-size:10px;color:var(--text3);text-align:center;margin-top:6px">Investment: $3.30 (L1 only) · Return: <b style="color:var(--green)">×923</b></div>',
