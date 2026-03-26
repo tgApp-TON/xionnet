@@ -917,6 +917,48 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
     <div style="font-size:11px;color:var(--text2);margin-top:4px" data-t="community_earned">Total USDC earned by the community</div>
   </div>
 
+  <!-- Admin Dashboard — only visible to master/owner -->
+  <div id="adminDashboard" style="display:none">
+    <div style="font-size:14px;font-weight:900;margin-bottom:10px;background:linear-gradient(90deg,var(--poly),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Admin Analytics</div>
+
+    <!-- Key metrics -->
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px">
+      <div class="stat-box"><div class="stat-lbl">Total Users</div><div class="stat-val" id="adm-users" style="color:var(--poly2)">—</div></div>
+      <div class="stat-box"><div class="stat-lbl">Total Volume</div><div class="stat-val" id="adm-volume" style="color:var(--green)">—</div></div>
+      <div class="stat-box"><div class="stat-lbl">Protocol Fees</div><div class="stat-val" id="adm-fees" style="color:var(--orange)">—</div></div>
+      <div class="stat-box"><div class="stat-lbl">Total Frozen</div><div class="stat-val" id="adm-frozen" style="color:var(--frozen)">—</div></div>
+      <div class="stat-box"><div class="stat-lbl">Spillovers</div><div class="stat-val" id="adm-spill" style="color:var(--poly2)">—</div></div>
+      <div class="stat-box"><div class="stat-lbl">Reactivations</div><div class="stat-val" id="adm-react" style="color:var(--orange)">—</div></div>
+    </div>
+
+    <!-- Level activity breakdown -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title" style="margin-bottom:10px">Level Activity</div>
+      <div id="adm-levels" style="font-size:11px">Loading...</div>
+    </div>
+
+    <!-- Recent registrations -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title" style="margin-bottom:10px">Recent Users (last 20)</div>
+      <div id="adm-recent" style="font-size:11px">Loading...</div>
+    </div>
+
+    <!-- Top earners -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title" style="margin-bottom:10px">Top Earners</div>
+      <div id="adm-top" style="font-size:11px">Loading...</div>
+    </div>
+
+    <!-- Contract balance -->
+    <div class="card" style="margin-bottom:12px;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(124,58,237,.2)">
+      <div class="card-title" style="margin-bottom:10px">Contract Balance</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:24px;font-weight:900;color:var(--poly2)" id="adm-contract-bal">—</div><div style="font-size:10px;color:var(--text3)">USDC in contract</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--orange)" id="adm-withdrawable">—</div><div style="font-size:10px;color:var(--text3)">Withdrawable fees</div></div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div class="card-title" data-t="my_earnings">My Earnings</div>
@@ -1650,10 +1692,15 @@ function f(n) {
 let isMasterWallet = false;
 const MASTER_WALLET = '0x07D7D2F65e01ec2B3ce97F58ED557830d46439BC';
 
+const OWNER_WALLET = '0xE4c41b544acafF7d6a6f8441690841935Ccc8038';
+
 function checkMasterAccess(wallet) {
-  isMasterWallet = wallet && wallet.toLowerCase() === MASTER_WALLET.toLowerCase() && MASTER_WALLET !== '';
+  const w = wallet ? wallet.toLowerCase() : '';
+  isMasterWallet = w === MASTER_WALLET.toLowerCase() || w === OWNER_WALLET.toLowerCase();
   document.getElementById('statsAdminGrid').style.display = isMasterWallet ? '' : 'none';
   document.getElementById('statsTotalPayoutsCard').style.display = isMasterWallet ? '' : 'none';
+  document.getElementById('adminDashboard').style.display = isMasterWallet ? '' : 'none';
+  if (isMasterWallet) loadAdminDashboard();
 }
 
 // Prototype level states
@@ -3164,6 +3211,90 @@ function soundError() {
   // Gentle error: two low bells, descending minor second
   playBell(523, 0.15, 0.03);
   setTimeout(() => playBell(494, 0.2, 0.03), 130);
+}
+
+// ==================== ADMIN DASHBOARD ====================
+async function loadAdminDashboard() {
+  if (!SUPABASE_URL || !isMasterWallet) return;
+  try {
+    const [statsRes, usersRes, levelsRes, topRes] = await Promise.all([
+      sbFetch('/rest/v1/system_stats?limit=1'),
+      sbFetch('/rest/v1/users?order=registered_at.desc&limit=20&select=wallet,active_levels,total_received,total_paid,registered_at'),
+      sbFetch('/rest/v1/user_levels?active=eq.true&select=level_num'),
+      sbFetch('/rest/v1/users?order=total_received.desc&limit=10&select=wallet,active_levels,total_received,referrer_wallet'),
+    ]);
+
+    // Key metrics
+    const s = statsRes && statsRes[0] ? statsRes[0] : {};
+    document.getElementById('adm-users').textContent = (s.total_users || 0).toLocaleString();
+    document.getElementById('adm-volume').textContent = '$' + ((s.total_paid_usdc || 0) / 1e6).toLocaleString(undefined, {maximumFractionDigits:0});
+    document.getElementById('adm-fees').textContent = '$' + ((s.total_fees || 0) / 1e6).toLocaleString(undefined, {maximumFractionDigits:0});
+    document.getElementById('adm-frozen').textContent = '$' + ((s.total_frozen || 0) / 1e6).toLocaleString(undefined, {maximumFractionDigits:0});
+    document.getElementById('adm-spill').textContent = (s.total_spillovers || 0).toLocaleString();
+    document.getElementById('adm-react').textContent = (s.total_reactivations || 0).toLocaleString();
+
+    // Level activity breakdown
+    if (levelsRes) {
+      const counts = {};
+      levelsRes.forEach(l => { counts[l.level_num] = (counts[l.level_num] || 0) + 1; });
+      let lhtml = '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center">';
+      for (let i = 1; i <= 17; i++) {
+        const c = counts[i] || 0;
+        const maxC = Math.max(...Object.values(counts), 1);
+        const pct = Math.round(c / maxC * 100);
+        lhtml += '<div style="font-weight:700;color:var(--poly2)">L' + i + '</div>';
+        lhtml += '<div style="background:var(--bg5);border-radius:3px;height:12px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--poly),var(--green));border-radius:3px;transition:width .3s"></div></div>';
+        lhtml += '<div style="color:var(--text2);text-align:right;min-width:24px">' + c + '</div>';
+      }
+      lhtml += '</div>';
+      document.getElementById('adm-levels').innerHTML = lhtml;
+    }
+
+    // Recent users
+    if (usersRes && usersRes.length) {
+      let rhtml = '';
+      usersRes.forEach(u => {
+        const short = u.wallet.slice(0,6) + '...' + u.wallet.slice(-4);
+        const date = u.registered_at ? new Date(u.registered_at).toLocaleDateString('en',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+        const earned = (u.total_received || 0) / 1e6;
+        rhtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">';
+        rhtml += '<div><div style="font-family:DM Mono,monospace;font-weight:600">' + esc(short) + '</div><div style="font-size:9px;color:var(--text3)">' + date + '</div></div>';
+        rhtml += '<div style="text-align:right"><div style="font-weight:700;color:var(--green)">L' + (u.active_levels || 0) + '</div><div style="font-size:9px;color:var(--text2)">$' + earned.toFixed(0) + ' earned</div></div>';
+        rhtml += '</div>';
+      });
+      document.getElementById('adm-recent').innerHTML = rhtml;
+    } else {
+      document.getElementById('adm-recent').innerHTML = '<div style="color:var(--text3);text-align:center;padding:10px">No users yet</div>';
+    }
+
+    // Top earners
+    if (topRes && topRes.length) {
+      let thtml = '';
+      topRes.forEach((u, i) => {
+        const short = u.wallet.slice(0,6) + '...' + u.wallet.slice(-4);
+        const earned = (u.total_received || 0) / 1e6;
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + '.';
+        thtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">';
+        thtml += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;min-width:24px">' + medal + '</span><span style="font-family:DM Mono,monospace;font-weight:600">' + esc(short) + '</span></div>';
+        thtml += '<div style="font-weight:800;color:var(--green)">$' + earned.toLocaleString(undefined,{maximumFractionDigits:0}) + '</div>';
+        thtml += '</div>';
+      });
+      document.getElementById('adm-top').innerHTML = thtml;
+    }
+
+    // Contract balance
+    if (usdcContract && xionContract) {
+      try {
+        const bal = await usdcContract.balanceOf(await xionContract.getAddress());
+        const totalFrz = await xionContract.getTotalFrozen();
+        const balNum = Number(bal) / 1e6;
+        const frzNum = Number(totalFrz) / 1e6;
+        const withdrawable = Math.max(0, balNum - frzNum);
+        document.getElementById('adm-contract-bal').textContent = '$' + balNum.toLocaleString(undefined,{maximumFractionDigits:2});
+        document.getElementById('adm-withdrawable').textContent = '$' + withdrawable.toLocaleString(undefined,{maximumFractionDigits:2});
+      } catch(e) {}
+    }
+  } catch(e) { console.warn('Admin dashboard:', e); }
 }
 
 // ==================== LANDING / AUTO-CONNECT ====================
