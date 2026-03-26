@@ -1647,31 +1647,43 @@ async function loadUserData() {
     }
     const levelResults = await Promise.all(levelPromises);
     const autoBuyResults = await Promise.all(autoBuyPromises);
-    for (let i = 0; i < 17; i++) {
-      const lv = levelResults[i];
-      if (!lv) continue;
-      LEVELS[i].active = lv.active;
-      LEVELS[i].slots = [
-        lv.s1 !== ethers.ZeroAddress ? 1 : 0,
-        lv.s2 !== ethers.ZeroAddress ? 1 : 0,
-        lv.s3 !== ethers.ZeroAddress ? 1 : 0,
-        lv.s4 !== ethers.ZeroAddress ? 1 : 0,
-      ];
-      LEVELS[i].slotAddrs = [lv.s1, lv.s2, lv.s3, lv.s4];
-      LEVELS[i].cycle_count = Number(lv.cycleCount);
-      LEVELS[i].frozenAmt = Number(lv.frozenAmount) / 1e6;
-      LEVELS[i].frzState = lv.frozenAmount > 0;
-      LEVELS[i].autoBuy = autoBuyResults[i];
-      // Debug: log levels with activity
-      const filled = LEVELS[i].slots.reduce((a, b) => a + b, 0);
-      if (LEVELS[i].active || filled > 0 || LEVELS[i].cycle_count > 0) {
-        console.log('L' + (i+1) + ': active=' + lv.active + ' slots=' + JSON.stringify(LEVELS[i].slots) + ' cycles=' + LEVELS[i].cycle_count + ' filled=' + filled);
-      }
-    }
 
-    // Re-render levels with fresh contract data
-    renderLevels('dash-lvls');
-    renderLevels('main-lvls');
+    // Count how many valid results we got
+    const validResults = levelResults.filter(r => r !== null).length;
+    console.log('[loadUserData] got ' + validResults + '/17 level results');
+
+    // Only update LEVELS if we got valid data (protect against RPC returning empty)
+    if (validResults > 0) {
+      let changed = false;
+      for (let i = 0; i < 17; i++) {
+        const lv = levelResults[i];
+        if (!lv) continue;
+        const newSlots = [
+          lv.s1 !== ethers.ZeroAddress ? 1 : 0,
+          lv.s2 !== ethers.ZeroAddress ? 1 : 0,
+          lv.s3 !== ethers.ZeroAddress ? 1 : 0,
+          lv.s4 !== ethers.ZeroAddress ? 1 : 0,
+        ];
+        // Detect changes
+        if (LEVELS[i].active !== lv.active || JSON.stringify(LEVELS[i].slots) !== JSON.stringify(newSlots)) {
+          changed = true;
+        }
+        LEVELS[i].active = lv.active;
+        LEVELS[i].slots = newSlots;
+        LEVELS[i].slotAddrs = [lv.s1, lv.s2, lv.s3, lv.s4];
+        LEVELS[i].cycle_count = Number(lv.cycleCount);
+        LEVELS[i].frozenAmt = Number(lv.frozenAmount) / 1e6;
+        LEVELS[i].frzState = lv.frozenAmount > 0;
+        LEVELS[i].autoBuy = autoBuyResults[i];
+      }
+      // Re-render only if data actually changed
+      if (changed || !document.getElementById('main-lvls')._lastHtml) {
+        renderLevels('dash-lvls');
+        renderLevels('main-lvls');
+      }
+    } else {
+      console.warn('[loadUserData] all level calls failed, keeping existing data');
+    }
 
     // Restore detail panel with fresh data (grid selection handled by buildLevelsHtml)
     if (selectedLevel > 0) {
@@ -1831,8 +1843,6 @@ async function openModal(n) {
       if (lv.active) {
         // Level already active — refresh UI and show next
         await loadUserData();
-        renderLevels('dash-lvls');
-        renderLevels('main-lvls');
         toast(t('level_activated') + ' ' + n + ' ' + t('level_already_active'), t('data_refreshed'), 100);
         soundNotif();
         selectedLevel = 0;
@@ -1934,11 +1944,10 @@ async function doStep() {
 
       // Reload data from contract (instant, no Supabase delay)
       const boughtLevel = modalLevel;
-      await loadUserData();
-      renderLevels('dash-lvls');
-      renderLevels('main-lvls');
       selectedLevel = 0;
       document.getElementById('lvlDetail').classList.remove('show');
+      document.getElementById('lvlDetail')._lastHtml = '';
+      await loadUserData();
       refreshData(true);
       // Trigger edge function to sync Supabase faster
       fetch(SUPABASE_URL + '/functions/v1/process-events', {
@@ -2822,19 +2831,8 @@ function soundError() {
 })();
 
 // ==================== AUTO-REFRESH ====================
-// Debounced refresh when user returns to app (tab focus, MetaMask switch back)
-let lastRefresh = 0;
-function maybeRefresh() {
-  const now = Date.now();
-  if (now - lastRefresh < 5000) return; // skip if refreshed <5s ago
-  lastRefresh = now;
-  loadUserData();
-  // selection + detail panel restore is handled inside loadUserData()
-}
-document.addEventListener('visibilitychange', () => { if (!document.hidden) maybeRefresh(); });
-window.addEventListener('focus', maybeRefresh);
-
-// Periodic background refresh every 30s + check notifications every 15s
+// Only refresh Supabase data (stats, referrals, notifications) — NOT contract level data.
+// Contract data is loaded ONCE at connection via loadUserData() and stays stable.
 setInterval(() => { if (!document.hidden) { refreshData(); loadReferrals(); } }, 30000);
 setInterval(() => { if (!document.hidden) checkNewEvents(); }, 15000);
 </script>
