@@ -15,16 +15,19 @@
   --poly:#7c3aed;--poly2:#a78bfa;--poly3:#4c1d95;
   --green:#06d6a0;--green2:#059669;--red:#fb4e6d;--orange:#f59e0b;
   --blue:#60a5fa;--frozen:#38bdf8;--gold:#fcd34d;
-  --text:#f0f2f8;--text2:#9099b0;--text3:#424d68;
+  --text:#f0f2f8;--text2:#b0b8cc;--text3:#7a84a0;
   --border:rgba(124,58,237,0.14);--border2:rgba(124,58,237,0.28);--border3:rgba(124,58,237,0.45);
 }
 html{scroll-behavior:smooth}
 html,body{margin:0;padding:0;scroll-behavior:smooth}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
-#connectScreen{max-width:600px;margin:0 auto;padding:16px;padding-top:16px;width:100%;box-sizing:border-box}
+#connectScreen{max-width:600px;margin:0 auto;padding:12px;width:100%;box-sizing:border-box}
+#landingBlock{width:100%}
 #landingBlock details div{font-size:13px!important;line-height:1.7!important}
-#landingBlock summary{font-size:13px!important}
-@media(min-width:600px){#connectScreen{padding:24px 32px}}
+#landingBlock summary{font-size:14px!important}
+#landingBlock .cs-nav{margin-bottom:12px}
+@media(min-width:480px){#connectScreen{padding:20px 28px}}
+@media(max-width:400px){.lang-flags{grid-template-columns:repeat(9,1fr)!important}.cs-nav a{font-size:9px;padding:5px 8px}}
 #mainApp{overflow-y:auto;overflow-x:hidden;position:fixed;top:0;left:0;right:0;bottom:0;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:env(safe-area-inset-bottom)}
 #mainApp>*{max-width:500px;margin:0 auto}
 .lang-flags{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;margin-bottom:12px;max-width:400px}
@@ -487,15 +490,15 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--green)">17</div>
-          <div data-t="land_stat_levels" style="font-size:10px;color:var(--text3)">Levels</div>
+          <div data-t="land_stat_levels" style="font-size:11px;color:var(--text2)">Levels</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--poly2)">USDC</div>
-          <div data-t="land_stat_stable" style="font-size:10px;color:var(--text3)">Stablecoin</div>
+          <div data-t="land_stat_stable" style="font-size:11px;color:var(--text2)">Stablecoin</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px 8px">
           <div style="font-size:20px;font-weight:900;color:var(--orange)">$3</div>
-          <div data-t="land_stat_entry" style="font-size:10px;color:var(--text3)">Entry</div>
+          <div data-t="land_stat_entry" style="font-size:11px;color:var(--text2)">Entry</div>
         </div>
       </div>
 
@@ -514,19 +517,19 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
       <div data-t="land_how_title" style="font-size:15px;font-weight:900;margin-bottom:14px;text-align:center">How It Works</div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(6,214,160,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">1</div>
-        <div><div data-t="land_step1_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Activate a level</div><div data-t="land_step1_desc" style="font-size:11px;color:var(--text3);line-height:1.5">Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.</div></div>
+        <div><div data-t="land_step1_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Activate a level</div><div data-t="land_step1_desc" style="font-size:12px;color:var(--text2);line-height:1.6">Choose any level starting from $3. Your USDC payment goes directly to the smart contract — no one can access it except the protocol.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(124,58,237,.15);color:var(--poly2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">2</div>
-        <div><div data-t="land_step2_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Receive payouts</div><div data-t="land_step2_desc" style="font-size:11px;color:var(--text3);line-height:1.5">When other participants activate the same level, the smart contract distributes USDC payouts directly to your wallet. 3 out of 4 slot fills pay you.</div></div>
+        <div><div data-t="land_step2_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Receive payouts</div><div data-t="land_step2_desc" style="font-size:12px;color:var(--text2);line-height:1.6">When other participants activate the same level, the smart contract distributes USDC payouts directly to your wallet. 3 out of 4 slot fills pay you.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(96,165,250,.15);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">3</div>
-        <div><div data-t="land_step3_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Auto-cycle</div><div data-t="land_step3_desc" style="font-size:11px;color:var(--text3);line-height:1.5">After 4 fills your level resets automatically and starts earning again. No limit on cycles — the system works indefinitely.</div></div>
+        <div><div data-t="land_step3_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Auto-cycle</div><div data-t="land_step3_desc" style="font-size:12px;color:var(--text2);line-height:1.6">After 4 fills your level resets automatically and starts earning again. No limit on cycles — the system works indefinitely.</div></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="min-width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.15);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">4</div>
-        <div><div data-t="land_step4_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Grow your network</div><div data-t="land_step4_desc" style="font-size:11px;color:var(--text3);line-height:1.5">Share your referral link. When someone joins through you, their activity fills your slots. The bigger your team, the more active your levels.</div></div>
+        <div><div data-t="land_step4_title" style="font-weight:700;font-size:13px;margin-bottom:2px">Grow your network</div><div data-t="land_step4_desc" style="font-size:12px;color:var(--text2);line-height:1.6">Share your referral link. When someone joins through you, their activity fills your slots. The bigger your team, the more active your levels.</div></div>
       </div>
     </div>
 
@@ -538,22 +541,22 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
       <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">1</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s1_title">Slot 1 — Direct Payout</span></div>
-        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s1_desc">First person fills your slot → you receive the full level price in USDC directly to your wallet. Example: Level 1 = $3 payout.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_mech_s1_desc">First person fills your slot → you receive the full level price in USDC directly to your wallet. Example: Level 1 = $3 payout.</div>
       </div>
 
       <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--frozen);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">2</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s2_title">Slot 2 — Payout or Freeze</span></div>
-        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s2_desc">If you already own the next level → direct payout to your wallet. If you don't own the next level and auto-buy is ON → funds are frozen (held by smart contract) to auto-purchase the next level when slot 3 fills.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_mech_s2_desc">If you already own the next level → direct payout to your wallet. If you don't own the next level and auto-buy is ON → funds are frozen (held by smart contract) to auto-purchase the next level when slot 3 fills.</div>
       </div>
 
       <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--poly2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff">3</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s3_title">Slot 3 — Payout or Auto-Buy</span></div>
-        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s3_desc">If slot 2 was frozen → frozen funds + this payout combine to automatically purchase the next level. You now own a new level without paying anything extra! If slot 2 was a payout → slot 3 is also a direct payout to you.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_mech_s3_desc">If slot 2 was frozen → frozen funds + this payout combine to automatically purchase the next level. You now own a new level without paying anything extra! If slot 2 was a payout → slot 3 is also a direct payout to you.</div>
       </div>
 
       <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:16px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="width:20px;height:20px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#000">4</div><span style="font-weight:700;font-size:13px" data-t="land_mech_s4_title">Slot 4 — Reset & Spillover</span></div>
-        <div style="font-size:12px;color:var(--text3);line-height:1.6" data-t="land_mech_s4_desc">Your level resets (all slots clear, cycle count +1) and the payout spills over upward to the nearest active sponsor in the referral chain. Your level is now ready to accept new participants again — unlimited cycles.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6" data-t="land_mech_s4_desc">Your level resets (all slots clear, cycle count +1) and the payout spills over upward to the nearest active sponsor in the referral chain. Your level is now ready to accept new participants again — unlimited cycles.</div>
       </div>
 
       <div style="font-size:13px;font-weight:700;margin-bottom:8px" data-t="land_mech_example_title">Example: You activated Level 1 ($3)</div>
@@ -572,22 +575,22 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">🔗</div>
           <div data-t="land_why1_title" style="font-weight:700;font-size:11px;margin-bottom:2px">100% On-Chain</div>
-          <div data-t="land_why1_desc" style="font-size:10px;color:var(--text3);line-height:1.4">All logic lives in a verified smart contract. No admin can freeze your funds or change the rules.</div>
+          <div data-t="land_why1_desc" style="font-size:11px;color:var(--text2);line-height:1.5">All logic lives in a verified smart contract. No admin can freeze your funds or change the rules.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">💵</div>
           <div data-t="land_why2_title" style="font-weight:700;font-size:11px;margin-bottom:2px">USDC Stablecoin</div>
-          <div data-t="land_why2_desc" style="font-size:10px;color:var(--text3);line-height:1.4">Payouts in USDC — no volatile tokens. $1 in = $1 out. Stable, liquid, universally accepted.</div>
+          <div data-t="land_why2_desc" style="font-size:11px;color:var(--text2);line-height:1.5">Payouts in USDC — no volatile tokens. $1 in = $1 out. Stable, liquid, universally accepted.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">⚡</div>
           <div data-t="land_why3_title" style="font-weight:700;font-size:11px;margin-bottom:2px">Instant Payouts</div>
-          <div data-t="land_why3_desc" style="font-size:10px;color:var(--text3);line-height:1.4">No waiting periods, no approval queues. Payouts are sent in the same transaction — within seconds.</div>
+          <div data-t="land_why3_desc" style="font-size:11px;color:var(--text2);line-height:1.5">No waiting periods, no approval queues. Payouts are sent in the same transaction — within seconds.</div>
         </div>
         <div style="background:var(--bg4);border-radius:10px;padding:12px">
           <div style="font-size:18px;margin-bottom:4px">🔒</div>
           <div data-t="land_why4_title" style="font-weight:700;font-size:11px;margin-bottom:2px">Verified Contract</div>
-          <div data-t="land_why4_desc" style="font-size:10px;color:var(--text3);line-height:1.4">Source code published and verified on Polygonscan. Anyone can audit exactly how funds flow.</div>
+          <div data-t="land_why4_desc" style="font-size:11px;color:var(--text2);line-height:1.5">Source code published and verified on Polygonscan. Anyone can audit exactly how funds flow.</div>
         </div>
       </div>
     </div>
@@ -910,7 +913,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
   <div class="faq-item open">
     <div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_verify_q">Where can I verify the contract?</span><div class="faq-arrow">▾</div></div>
     <div class="faq-a">
-      <div style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:12px" data-t="faq_verify_a">The smart contract is fully verified and open-source on Polygonscan. Anyone can read the code, check how funds flow, and verify that the rules cannot be changed. No hidden logic, no admin backdoors.</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px" data-t="faq_verify_a">The smart contract is fully verified and open-source on Polygonscan. Anyone can read the code, check how funds flow, and verify that the rules cannot be changed. No hidden logic, no admin backdoors.</div>
       <a href="https://polygonscan.com/address/0x8F14178823b89da0a4b027235968eF508689e8e2#code" target="_blank" class="contract-link">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         View Verified Contract on Polygonscan
