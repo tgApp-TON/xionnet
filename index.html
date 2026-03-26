@@ -904,6 +904,15 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 </div>
 
 <script src="lang.js"></script>
+<script>
+// Polyfill for Node.js globals required by WalletConnect SDK
+if (typeof globalThis.process === 'undefined') {
+  globalThis.process = { env: {}, version: '', platform: 'browser', nextTick: function(fn){ setTimeout(fn, 0); } };
+}
+if (typeof globalThis.global === 'undefined') {
+  globalThis.global = globalThis;
+}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.js" defer></script>
 <script>
