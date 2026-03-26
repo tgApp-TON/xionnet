@@ -2910,6 +2910,25 @@ const T = {
     tr: 'Akıllı sözleşme Polygonscan\'de tamamen doğrulanmış ve açık kaynaklıdır. Herkes kodu okuyabilir ve kuralların değiştirilemeyeceğini doğrulayabilir.'
   },
 
+  faq_tokens_q: {
+    en: 'How to check token addresses in MetaMask?',
+    ru: 'Как проверить адреса токенов в MetaMask?',
+    ua: 'Як перевірити адреси токенів в MetaMask?',
+    es: '¿Cómo verificar direcciones de tokens en MetaMask?'
+  },
+  faq_tokens_desc: {
+    en: 'Make sure you have the correct tokens added in MetaMask on the Polygon network. Scammers may create fake tokens with similar names — always verify the contract address.',
+    ru: 'Убедитесь что в MetaMask добавлены правильные токены в сети Polygon. Мошенники могут создать фейковые токены с похожими названиями — всегда проверяйте адрес контракта.',
+    ua: 'Переконайтесь що в MetaMask додані правильні токени в мережі Polygon. Шахраї можуть створити фейкові токени — завжди перевіряйте адресу контракту.',
+    es: 'Asegúrate de tener los tokens correctos en MetaMask en la red Polygon. Los estafadores pueden crear tokens falsos — siempre verifica la dirección del contrato.'
+  },
+  faq_tokens_howto: {
+    en: '<b>How to add USDC to MetaMask:</b> Open MetaMask → Tokens → Import Token → paste the USDC address above → confirm. Make sure you\'re on Polygon network.',
+    ru: '<b>Как добавить USDC в MetaMask:</b> Откройте MetaMask → Токены → Импорт токена → вставьте адрес USDC выше → подтвердите. Убедитесь что вы в сети Polygon.',
+    ua: '<b>Як додати USDC в MetaMask:</b> Відкрийте MetaMask → Токени → Імпорт токена → вставте адресу USDC вище → підтвердіть. Переконайтесь що ви в мережі Polygon.',
+    es: '<b>Cómo agregar USDC a MetaMask:</b> Abre MetaMask → Tokens → Importar token → pega la dirección USDC de arriba → confirma. Asegúrate de estar en la red Polygon.'
+  },
+
   // ==================== EARNINGS SCENARIOS ====================
   scenario1_html: {
     en: '<div class="sc-hdr"><div class="sc-title">10 referrals × 7 levels</div><div class="sc-badge" style="color:var(--green);background:rgba(6,214,160,.15)">L1–L7 + L8 bonus</div></div><div style="font-size:11px;color:var(--text2);margin-bottom:10px">Your 10 referrals buy L1–L7 within 180 min → everyone gets <b style="color:var(--gold)">L8 free</b>. With L8, all slots pay you (3 payouts per 4 fills).</div><div style="background:var(--bg4);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--text2)"><b>10 referrals = 8 payouts per level</b></div><table class="earn-table"><tr><th>Level</th><th>Price</th><th>Earned</th></tr><tr><td class="lvl-cell">L1</td><td>$3</td><td class="amt-cell">$24</td></tr><tr><td class="lvl-cell">L2</td><td>$6</td><td class="amt-cell">$48</td></tr><tr><td class="lvl-cell">L3</td><td>$12</td><td class="amt-cell">$96</td></tr><tr><td class="lvl-cell">L4</td><td>$24</td><td class="amt-cell">$192</td></tr><tr><td class="lvl-cell">L5</td><td>$48</td><td class="amt-cell">$384</td></tr><tr><td class="lvl-cell">L6</td><td>$96</td><td class="amt-cell">$768</td></tr><tr><td class="lvl-cell">L7</td><td>$192</td><td class="amt-cell">$1536</td></tr><tr class="total-row"><td colspan="2">Total</td><td class="amt-cell">$3048</td></tr></table><div class="sc-total"><div class="lbl">Your Earnings</div><div class="val">$3048</div></div><div style="font-size:10px;color:var(--text3);text-align:center;margin-top:6px">Investment: $3.30 (L1 only) · Return: <b style="color:var(--green)">×923</b></div>',
