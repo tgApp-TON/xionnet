@@ -2910,6 +2910,15 @@ const T = {
     tr: 'Akıllı sözleşme Polygonscan\'de tamamen doğrulanmış ve açık kaynaklıdır. Herkes kodu okuyabilir ve kuralların değiştirilemeyeceğini doğrulayabilir.'
   },
 
+  land_tokens_title: {
+    en: 'Verify Token Addresses', ru: 'Проверьте адреса токенов', ua: 'Перевірте адреси токенів', es: 'Verifica las direcciones de tokens'
+  },
+  land_tokens_warn: {
+    en: 'Always check addresses before adding tokens. Scammers create fakes!',
+    ru: 'Всегда проверяйте адреса перед добавлением токенов. Мошенники создают подделки!',
+    ua: 'Завжди перевіряйте адреси перед додаванням токенів. Шахраї створюють підробки!',
+    es: 'Siempre verifica las direcciones antes de agregar tokens. ¡Los estafadores crean falsificaciones!'
+  },
   faq_tokens_q: {
     en: 'How to check token addresses in MetaMask?',
     ru: 'Как проверить адреса токенов в MetaMask?',
