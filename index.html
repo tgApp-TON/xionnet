@@ -2817,6 +2817,19 @@ function soundError() {
   setTimeout(() => playBell(494, 0.2, 0.03), 130);
 }
 
+// ==================== DEBUG: WATCH FOR DOM CHANGES ON LEVEL GRID ====================
+setTimeout(function() {
+  ['main-lvls','dash-lvls'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    new MutationObserver(function(muts) {
+      var cards = el.querySelectorAll('.lvl-card').length;
+      console.warn('⚠️ [DOM CHANGED] #' + id + ' cards=' + cards);
+      console.trace('Source of DOM change:');
+    }).observe(el, { childList: true, subtree: true, characterData: true, attributes: true });
+  });
+}, 100);
+
 // ==================== AUTO-CONNECT ====================
 // If wallet was previously connected, auto-reconnect without user click
 (async function autoConnect() {
