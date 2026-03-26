@@ -1612,7 +1612,7 @@ function updateGlobalStats(stats) {
   const frozenEl = document.querySelector('#frozenStatsBox .stat-val');
   const feesEl = document.querySelector('#systemFeesBox .stat-val');
   const payoutsEl = document.getElementById('statsTotalPayouts');
-  if (participantsEl) participantsEl.textContent = f(stats.total_users || 0);
+  if (participantsEl) participantsEl.textContent = (stats.total_users || 0).toLocaleString();
   if (frozenEl) frozenEl.textContent = f((stats.total_frozen || 0) / 1e6);
   if (feesEl) feesEl.textContent = f((stats.total_fees || 0) / 1e6);
   if (payoutsEl) payoutsEl.textContent = f((stats.total_payouts || 0) / 1e6);
