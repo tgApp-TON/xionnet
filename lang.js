@@ -2910,6 +2910,11 @@ const T = {
     tr: 'Akıllı sözleşme Polygonscan\'de tamamen doğrulanmış ve açık kaynaklıdır. Herkes kodu okuyabilir ve kuralların değiştirilemeyeceğini doğrulayabilir.'
   },
 
+  total_users_lbl: {
+    en: 'Total Users', ru: 'Всего юзеров', ua: 'Всього юзерів', es: 'Total usuarios',
+    pt: 'Total de usuários', fr: 'Total utilisateurs', de: 'Gesamtbenutzer', pl: 'Łącznie użytkowników',
+    vi: 'Tổng người dùng', ko: '총 사용자', ja: '総ユーザー', hi: 'कुल उपयोगकर्ता', zh: '总用户', tr: 'Toplam kullanıcı'
+  },
   faq_trust_section: { en: 'Trust & Security', ru: 'Доверие и безопасность', ua: 'Довіра та безпека', es: 'Confianza y seguridad', pt: 'Confiança e Segurança', fr: 'Confiance et Sécurité', de: 'Vertrauen & Sicherheit', pl: 'Zaufanie i bezpieczeństwo', vi: 'Tin cậy & Bảo mật', ko: '신뢰 및 보안', ja: '信頼とセキュリティ', hi: 'विश्वास और सुरक्षा', zh: '信任与安全', tr: 'Güven ve Güvenlik' },
   faq_pyramid_q: { en: 'Is this a pyramid scheme?', ru: 'Это пирамида?', ua: 'Це піраміда?', es: '¿Es esto un esquema piramidal?', pt: 'Isso é um esquema de pirâmide?', fr: 'Est-ce un système pyramidal ?', de: 'Ist das ein Schneeballsystem?', pl: 'Czy to piramida finansowa?', vi: 'Đây có phải là mô hình kim tự tháp không?', ko: '이것은 피라미드 사기인가요?', ja: 'これはネズミ講ですか？', hi: 'क्या यह पिरामिड योजना है?', zh: '这是金字塔骗局吗？', tr: 'Bu bir piramit şeması mı?' },
   faq_pyramid_a: {
