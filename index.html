@@ -1650,9 +1650,9 @@ async function loadReferrals() {
     const userMap = {};
     if (users) users.forEach(u => userMap[u.wallet] = u);
 
-    // Get sub-referral counts for each direct referral
+    // Get sub-referral counts for each direct referral (query users table — more reliable)
     const subCountMap = {};
-    const allSubRefs = await sbFetch('/rest/v1/referrals?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet');
+    const allSubRefs = await sbFetch('/rest/v1/users?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet,wallet,active_levels');
     if (allSubRefs) allSubRefs.forEach(sr => {
       subCountMap[sr.referrer_wallet] = (subCountMap[sr.referrer_wallet] || 0) + 1;
     });
@@ -2627,18 +2627,18 @@ async function loadSubRefs(wallet, containerId, offset) {
   if (offset === 0) container.innerHTML = '<div style="padding:10px 20px;color:var(--text3);font-size:11px">Loading...</div>';
 
   try {
-    // Get referrals of this referral
-    const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + wallet.toLowerCase() + '&order=created_at.desc&limit=' + SUB_PAGE_SIZE + '&offset=' + offset);
-    if (!refs || !refs.length) {
+    // Get referrals of this referral (from users table — more reliable than referrals table)
+    const subUsers = await sbFetch('/rest/v1/users?referrer_wallet=eq.' + wallet.toLowerCase() + '&order=registered_at.desc&limit=' + SUB_PAGE_SIZE + '&offset=' + offset + '&select=wallet,active_levels,total_received,registered_at,referrer_wallet');
+    if (!subUsers || !subUsers.length) {
       if (offset === 0) container.innerHTML = '<div style="padding:10px 20px;color:var(--text3);font-size:11px">No referrals</div>';
       return;
     }
 
-    // Get user info for each
+    // Map for compatibility with the rendering code below
+    const refs = subUsers.map(u => ({ referred_wallet: u.wallet, created_at: u.registered_at }));
     const wallets = refs.map(r => r.referred_wallet);
-    const users = await sbFetch('/rest/v1/users?wallet=in.(' + wallets.join(',') + ')&select=wallet,active_levels,total_received,registered_at');
     const userMap = {};
-    if (users) users.forEach(u => userMap[u.wallet] = u);
+    subUsers.forEach(u => userMap[u.wallet] = u);
 
     let html = offset === 0 ? '' : container.innerHTML.replace(/<button[^>]*>Show more.*?<\/button>/, '');
 
