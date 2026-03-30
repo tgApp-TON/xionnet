@@ -27,6 +27,13 @@ export default function Network({ referrals, indirectReferrals, shareLink, webAp
 
   return (
     <>
+      {/* DEBUG — remove after fix */}
+      <div style={{ background: '#1a1a2e', border: '1px solid #f00', borderRadius: 8, padding: 10, marginBottom: 10, fontSize: 9, fontFamily: 'monospace', color: '#0f0', wordBreak: 'break-all' }}>
+        <div>DEBUG indirect: {indirectReferrals.length}</div>
+        <div>direct wallets: {referrals.map(r => r.wallet).join(', ')}</div>
+        <div>indirect data: {JSON.stringify(indirectReferrals)}</div>
+      </div>
+
       <div className="ref-stats" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
         <div className="ref-stat">
           <div className="val" style={{ color: 'var(--poly2)' }}>{referrals.length}</div>
