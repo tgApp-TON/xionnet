@@ -993,6 +993,7 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
+  <div id="debugIndirect" style="background:#1a1a2e;border:1px solid #f00;border-radius:8px;padding:10px;margin-bottom:10px;font-size:9px;font-family:monospace;color:#0f0;word-break:break-all;display:none"></div>
   <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
     <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0 / 0</div><div class="lbl" data-t="direct_slash_indirect">direct / indirect</div></div>
     <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl" data-t="active">Active</div></div>
@@ -1652,7 +1653,14 @@ async function loadReferrals() {
 
     // Get sub-referral counts for each direct referral (query users table — more reliable)
     const subCountMap = {};
-    const allSubRefs = await sbFetch('/rest/v1/users?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet,wallet,active_levels');
+    const subUrl = '/rest/v1/users?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet,wallet,active_levels';
+    const allSubRefs = await sbFetch(subUrl);
+    // DEBUG — show on screen
+    const dbg = document.getElementById('debugIndirect');
+    if (dbg) {
+      dbg.style.display = 'block';
+      dbg.innerHTML = '<b>DEBUG</b><br>direct wallets: ' + wallets.join(', ') + '<br>query: ' + subUrl + '<br>result: ' + JSON.stringify(allSubRefs);
+    }
     if (allSubRefs) allSubRefs.forEach(sr => {
       subCountMap[sr.referrer_wallet] = (subCountMap[sr.referrer_wallet] || 0) + 1;
     });
