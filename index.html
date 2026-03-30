@@ -993,7 +993,6 @@ body.bw .bonus-timer{border-color:rgba(255,255,255,.2);color:#fff;background:rgb
 
 <!-- ==================== REFERRALS ==================== -->
 <div id="screen-referrals" class="screen">
-  <div id="debugIndirect" style="background:#1a1a2e;border:1px solid #f00;border-radius:8px;padding:10px;margin-bottom:10px;font-size:9px;font-family:monospace;color:#0f0;word-break:break-all;display:none"></div>
   <div class="ref-stats" style="grid-template-columns:repeat(4,1fr)">
     <div class="ref-stat"><div class="val" id="refStatDirect" style="color:var(--poly2)">0 / 0</div><div class="lbl" data-t="direct_slash_indirect">direct / indirect</div></div>
     <div class="ref-stat"><div class="val" id="refStatActive" style="color:var(--green)">0</div><div class="lbl" data-t="active">Active</div></div>
@@ -1651,19 +1650,29 @@ async function loadReferrals() {
     const userMap = {};
     if (users) users.forEach(u => userMap[u.wallet] = u);
 
-    // Get sub-referral counts for each direct referral (query users table — more reliable)
+    // Get sub-referral counts — try both referrals table AND users table, merge results
     const subCountMap = {};
-    const subUrl = '/rest/v1/users?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet,wallet,active_levels';
-    const allSubRefs = await sbFetch(subUrl);
-    // DEBUG — show on screen
-    const dbg = document.getElementById('debugIndirect');
-    if (dbg) {
-      dbg.style.display = 'block';
-      dbg.innerHTML = '<b>DEBUG</b><br>direct wallets: ' + wallets.join(', ') + '<br>query: ' + subUrl + '<br>result: ' + JSON.stringify(allSubRefs);
-    }
-    if (allSubRefs) allSubRefs.forEach(sr => {
-      subCountMap[sr.referrer_wallet] = (subCountMap[sr.referrer_wallet] || 0) + 1;
-    });
+    const walletsLower = wallets.map(w => w.toLowerCase());
+
+    // Method 1: users table (referrer_wallet field)
+    try {
+      const subFromUsers = await sbFetch('/rest/v1/users?referrer_wallet=in.(' + walletsLower.join(',') + ')&select=referrer_wallet,wallet');
+      if (subFromUsers) subFromUsers.forEach(sr => {
+        const key = sr.referrer_wallet.toLowerCase();
+        subCountMap[key] = (subCountMap[key] || 0) + 1;
+      });
+    } catch(e) {}
+
+    // Method 2: referrals table (fallback / additional)
+    try {
+      const subFromRefs = await sbFetch('/rest/v1/referrals?referrer_wallet=in.(' + walletsLower.join(',') + ')&select=referrer_wallet,referred_wallet');
+      if (subFromRefs) subFromRefs.forEach(sr => {
+        const key = sr.referrer_wallet.toLowerCase();
+        if (!subCountMap[key]) subCountMap[key] = 0;
+        // Only count if not already counted from users table
+        subCountMap[key] = Math.max(subCountMap[key], (subFromRefs.filter(x => x.referrer_wallet.toLowerCase() === key).length));
+      });
+    } catch(e) {}
 
     const enriched = refs.map(r => ({
       ...r,
@@ -1671,7 +1680,7 @@ async function loadReferrals() {
       total_received: userMap[r.referred_wallet]?.total_received || 0,
       earned_from: earnedFromMap[r.referred_wallet] || 0,
       registered_at: userMap[r.referred_wallet]?.registered_at || r.created_at,
-      sub_count: subCountMap[r.referred_wallet] || 0,
+      sub_count: subCountMap[r.referred_wallet] || subCountMap[r.referred_wallet.toLowerCase()] || 0,
     }));
 
     updateReferralsUI(enriched);
