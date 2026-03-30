@@ -80,41 +80,33 @@ export function useUserData() {
       }
       setReferrals(directRefs);
 
-      // 2. Load indirect referrals (referrals of my direct referrals)
+      // 2. Load indirect referrals via users table (more reliable than referrals table)
       const directWallets = directRefs.map(r => r.wallet);
       if (directWallets.length === 0) {
         setIndirectReferrals([]);
         return;
       }
 
-      const { data: indirectData } = await supabase
-        .from('referrals')
-        .select('referrer_wallet, referred_wallet, created_at')
-        .in('referrer_wallet', directWallets)
-        .order('created_at', { ascending: false });
+      const { data: indirectUsers, error: indirectErr } = await supabase
+        .from('users')
+        .select('wallet, referrer_wallet, active_levels, total_received, registered_at')
+        .in('referrer_wallet', directWallets);
 
-      if (!indirectData || indirectData.length === 0) {
+      console.log('[Network] indirect query for wallets:', directWallets, 'result:', indirectUsers, 'error:', indirectErr);
+
+      if (!indirectUsers || indirectUsers.length === 0) {
         setIndirectReferrals([]);
         return;
       }
 
-      const indirectRefs: ReferralInfo[] = [];
-      for (const r of indirectData) {
-        const { data: userData } = await supabase
-          .from('users')
-          .select('active_levels, total_received, registered_at')
-          .eq('wallet', r.referred_wallet)
-          .single();
-
-        indirectRefs.push({
-          wallet: r.referred_wallet,
-          active_levels: userData?.active_levels || 0,
-          total_received: userData?.total_received || 0,
-          registered_at: r.created_at,
-          level: 2,
-          referrer_wallet: r.referrer_wallet,
-        });
-      }
+      const indirectRefs: ReferralInfo[] = indirectUsers.map(u => ({
+        wallet: u.wallet,
+        active_levels: u.active_levels || 0,
+        total_received: u.total_received || 0,
+        registered_at: u.registered_at,
+        level: 2,
+        referrer_wallet: u.referrer_wallet,
+      }));
       setIndirectReferrals(indirectRefs);
     } catch (e) {
       console.error('Referrals load error:', e);
