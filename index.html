@@ -1627,60 +1627,40 @@ async function loadHistory() {
   } catch (e) { console.warn('History load failed:', e); }
 }
 
-// Load referrals from Supabase
+// Load referrals from Supabase (uses users table as single source of truth)
 async function loadReferrals() {
   if (!SUPABASE_URL || !currentWallet) return;
   try {
-    // Get referral links
-    const refs = await sbFetch('/rest/v1/referrals?referrer_wallet=eq.' + currentWallet.toLowerCase() + '&order=created_at.desc');
-    if (!refs || !refs.length) return;
+    const myWallet = currentWallet.toLowerCase();
 
-    // Get user details for each referral
-    const wallets = refs.map(r => r.referred_wallet);
-    const users = await sbFetch('/rest/v1/users?wallet=in.(' + wallets.join(',') + ')&select=wallet,active_levels,total_received,registered_at');
+    // Get ALL direct referrals from users table (referrer_wallet = me)
+    const directUsers = await sbFetch('/rest/v1/users?referrer_wallet=eq.' + myWallet + '&select=wallet,active_levels,total_received,registered_at&order=registered_at.desc');
+    if (!directUsers || !directUsers.length) return;
+
+    const wallets = directUsers.map(u => u.wallet);
 
     // Get how much I earned from each referral (payouts where sender = referral)
-    const myPayouts = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + currentWallet.toLowerCase() + '&select=sender_wallet,amount');
+    const myPayouts = await sbFetch('/rest/v1/payouts?receiver_wallet=eq.' + myWallet + '&select=sender_wallet,amount');
     const earnedFromMap = {};
     if (myPayouts) myPayouts.forEach(p => {
       const sw = p.sender_wallet;
       earnedFromMap[sw] = (earnedFromMap[sw] || 0) + (p.amount || 0);
     });
 
-    const userMap = {};
-    if (users) users.forEach(u => userMap[u.wallet] = u);
-
-    // Get sub-referral counts — try both referrals table AND users table, merge results
+    // Get sub-referral counts (indirect — users whose referrer is one of my directs)
     const subCountMap = {};
-    const walletsLower = wallets.map(w => w.toLowerCase());
+    const subUsers = await sbFetch('/rest/v1/users?referrer_wallet=in.(' + wallets.join(',') + ')&select=referrer_wallet,wallet');
+    if (subUsers) subUsers.forEach(sr => {
+      subCountMap[sr.referrer_wallet] = (subCountMap[sr.referrer_wallet] || 0) + 1;
+    });
 
-    // Method 1: users table (referrer_wallet field)
-    try {
-      const subFromUsers = await sbFetch('/rest/v1/users?referrer_wallet=in.(' + walletsLower.join(',') + ')&select=referrer_wallet,wallet');
-      if (subFromUsers) subFromUsers.forEach(sr => {
-        const key = sr.referrer_wallet.toLowerCase();
-        subCountMap[key] = (subCountMap[key] || 0) + 1;
-      });
-    } catch(e) {}
-
-    // Method 2: referrals table (fallback / additional)
-    try {
-      const subFromRefs = await sbFetch('/rest/v1/referrals?referrer_wallet=in.(' + walletsLower.join(',') + ')&select=referrer_wallet,referred_wallet');
-      if (subFromRefs) subFromRefs.forEach(sr => {
-        const key = sr.referrer_wallet.toLowerCase();
-        if (!subCountMap[key]) subCountMap[key] = 0;
-        // Only count if not already counted from users table
-        subCountMap[key] = Math.max(subCountMap[key], (subFromRefs.filter(x => x.referrer_wallet.toLowerCase() === key).length));
-      });
-    } catch(e) {}
-
-    const enriched = refs.map(r => ({
-      ...r,
-      active_levels: userMap[r.referred_wallet]?.active_levels || 0,
-      total_received: userMap[r.referred_wallet]?.total_received || 0,
-      earned_from: earnedFromMap[r.referred_wallet] || 0,
-      registered_at: userMap[r.referred_wallet]?.registered_at || r.created_at,
-      sub_count: subCountMap[r.referred_wallet] || subCountMap[r.referred_wallet.toLowerCase()] || 0,
+    const enriched = directUsers.map(u => ({
+      referred_wallet: u.wallet,
+      active_levels: u.active_levels || 0,
+      total_received: u.total_received || 0,
+      earned_from: earnedFromMap[u.wallet] || 0,
+      registered_at: u.registered_at,
+      sub_count: subCountMap[u.wallet] || 0,
     }));
 
     updateReferralsUI(enriched);
