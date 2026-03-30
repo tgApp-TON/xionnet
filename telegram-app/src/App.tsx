@@ -197,6 +197,7 @@ export default function App() {
         {tab === 'network' && (
           <Network
             referrals={userData.referrals}
+            indirectReferrals={userData.indirectReferrals}
             shareLink={getShareLink(contract.address || '')}
             webApp={webApp}
             address={contract.address || ''}
